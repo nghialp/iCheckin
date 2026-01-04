@@ -1,0 +1,100 @@
+{
+  "home": "Trang chủ",
+  "map": "Bản đồ",
+  "validation": {
+    "required": "{{field}} bắt buộc",
+    "minLength": "{{field}} phải có ít nhất {{min}} ký tự",
+    "email": "Định dạng email không hợp lệ",
+    "number": "Phải là số",
+    "match": "{{field}} không khớp"
+  },
+  "login": {
+    "title": "Đăng nhập",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "button": "Đăng nhập",
+    "noAccount": "Chưa có tài khoản? Đăng ký",
+    "rememberPassword": "Nhớ mật khẩu",
+    "forgotPassword": "Quên mật khẩu?",
+    "signUp": "Đăng ký"
+  },
+  "forgotPassword": {
+    "title": "Quên Mật Khẩu",
+    "email": "Email",
+    "button": "Đặt lại mật khẩu",
+    "backToLogin": "Quay lại đăng nhập",
+    "instruction": "Nhập email của bạn để đặt lại mật khẩu.",
+    "rememberPassword": "Bạn nhớ mật khẩu?"
+  },
+  "changePassword": {
+    "title": "Đổi mật khẩu",
+    "newPassword": "Mật khẩu mới",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "button": "Đổi mật khẩu",
+    "subtitle": "Tạo tài khoản mới để bắt đầu",
+    "errorMessage": "Mật khẩu không khớp"
+  },
+  "signUp": {
+    "title": "Đăng ký",
+    "subtitle": "Tạo tài khoản mới để bắt đầu",
+    "fullName": "Họ và tên",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "button": "Tạo tài khoản",
+    "haveAccount": "Đã có tài khoản? Đăng nhập"
+  },
+  "emailSent": {
+    "title": "Đã gửi email",
+    "message": "Chúng tôi đã gửi mật khẩu mới cho bạn qua email.",
+    "backToLogin": "Quay lại đăng nhập"
+  },
+  "checkin": {
+    "title": "Check In",
+    "currentLocation": "Vị trí hiện tại",
+    "locationUnknown": "Chưa xác định được vị trí",
+    "shareThoughts": "Chia sẻ cảm nghĩ",
+    "placeholder": "Bạn đang cảm thấy thế nào?",
+    "feeling": "Bạn đang cảm thấy?",
+    "button": "Check In Ngay",
+    "success": "Thành công!",
+    "successMessage": "Bạn đã check-in thành công.",
+    "error": "Lỗi",
+    "errorMessage": "Có lỗi xảy ra. Vui lòng thử lại.",
+    "locationRequired": "Cần có vị trí để check-in."
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "language": "Ngôn ngữ",
+    "account": "Tài khoản",
+    "preferences": "Tùy chọn",
+    "about": "Về ứng dụng",
+    "changePassword": "Đổi mật khẩu",
+    "changePasswordDesc": "Cập nhật mật khẩu của bạn",
+    "profile": "Chỉnh sửa hồ sơ",
+    "profileDesc": "Quản lý thông tin hồ sơ",
+    "notifications": "Thông báo",
+    "notificationsDesc": "Quản lý tùy chọn thông báo",
+    "privacy": "Quyền riêng tư",
+    "privacyDesc": "Kiểm soát cài đặt quyền riêng tư",
+    "version": "Phiên bản",
+    "logout": "Đăng xuất",
+    "logoutTitle": "Đăng xuất",
+    "logoutMessage": "Bạn có chắc muốn đăng xuất?",
+    "cancel": "Hủy"
+  },
+  "rewards": "Phần thưởng",
+  "profile": "Hồ sơ",
+  "trip": "Chuyến đi",
+  "checkIn": "Check-In",
+  "openHours": "Mở cửa {{open}} – {{close}}",
+  "userReviews": "Đánh giá người dùng",
+  "loading": "Đang tải...",
+  "recentCheckIns": "Check-In gần đây",
+  "articles": "Bài viết",
+  "checkInSuccess": "Check-in thành công!",
+  "checkInFailed": "Check-in thất bại",
+  "checkInFailedMessage": "Check-in không thành công. Vui lòng thử lại.",
+  "comments": "Bình luận",
+  "close": "Đóng"
+}

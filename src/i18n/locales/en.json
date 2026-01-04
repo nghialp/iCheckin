@@ -1,0 +1,100 @@
+{
+  "home": "Home",
+  "map": "Map",
+  "validation": {
+    "required": "{{field}} is required",
+    "minLength": "{{field}} must be at least {{min}} characters",
+    "email": "Invalid email format",
+    "number": "Must be a number",
+    "match": "{{field}} does not match"
+  },
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "button": "Login",
+    "noAccount": "Don't have an account? Sign Up",
+    "rememberPassword": "Remember Password",
+    "forgotPassword": "Forgot Password?",
+    "signUp": "Sign Up"
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "email": "Email",
+    "button": "Reset Password",
+    "backToLogin": "Back to Login",
+    "instruction": "Enter your email to reset your password.",
+    "rememberPassword": "Remember your password?"
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "button": "Change Password",
+    "subtitle": "Create a new account to get started",
+    "errorMessage": "Passwords do not match"
+  },
+  "signUp": {
+    "title": "Sign Up",
+    "subtitle": "Create a new account to get started",
+    "fullName": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "button": "Create Account",
+    "haveAccount": "Already have an account? Login"
+  },
+  "emailSent": {
+    "title": "Email Sent",
+    "message": "We have sent the new password to your email.",
+    "backToLogin": "Back to Login"
+  },
+  "checkin": {
+    "title": "Check In",
+    "currentLocation": "Current Location",
+    "locationUnknown": "Location unknown",
+    "shareThoughts": "Share your thoughts",
+    "placeholder": "What are you feeling?",
+    "feeling": "How are you feeling?",
+    "button": "Check In Now",
+    "success": "Success!",
+    "successMessage": "You have checked in successfully.",
+    "error": "Error",
+    "errorMessage": "Something went wrong. Please try again.",
+    "locationRequired": "Location is required to check in."
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "account": "Account",
+    "preferences": "Preferences",
+    "about": "About",
+    "changePassword": "Change Password",
+    "changePasswordDesc": "Update your password",
+    "profile": "Edit Profile",
+    "profileDesc": "Manage your profile information",
+    "notifications": "Notifications",
+    "notificationsDesc": "Manage notification preferences",
+    "privacy": "Privacy",
+    "privacyDesc": "Control your privacy settings",
+    "version": "Version",
+    "logout": "Logout",
+    "logoutTitle": "Logout",
+    "logoutMessage": "Are you sure you want to logout?",
+    "cancel": "Cancel"
+  },
+  "rewards": "Rewards",
+  "profile": "Profile",
+  "trip": "Trip",
+  "checkIn": "Check In",
+  "openHours": "Open {{open}} – {{close}}",
+  "userReviews": "User Reviews",
+  "loading": "Loading...",
+  "recentCheckIns": "Recent Check-Ins",
+  "articles": "Articles",
+  "checkInSuccess": "Check-in successful!",
+  "checkInFailed": "Check-in failed",
+  "checkInFailedMessage": "Failed to check in. Please try again.",
+  "comments": "Comments",
+  "close": "Close"
+}
