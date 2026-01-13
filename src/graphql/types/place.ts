@@ -7,16 +7,14 @@ export interface Coordinates {
 export interface Place {
   id: string;
   name: string;
-  type?: string;
+  types?: string;
   category?: string;
   address?: string;
   lat: number;
   lng: number;
   thumbnail?: string;
   description?: string;
-  openingHours?: OpeningHour[];
-  distance?: number;
-  googlePlaceId?: string;
+  mapboxId?: string;
   // Extended fields for MapPage/LocationDetailPage
   photos?: string[];
 }
@@ -24,13 +22,12 @@ export interface Place {
 // Google Places API response type
 export interface GooglePlace {
   name: string;
-  type: string;
+  types: string;
   address: string;
   lat: number;
   lng: number;
   thumbnail: string;
-  googlePlaceId: string;
-  distance?: string;
+  mapboxId: string;
 }
 
 export interface OpeningHour {

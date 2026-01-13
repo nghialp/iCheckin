@@ -1,15 +1,15 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text, ViewStyle } from 'react-native';
+import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HomePage from '../screens/app/HomePage';
 import LocationDetailPage from '../screens/app/LocationDetailPage';
-import RewardsPage from '../screens/app/RewardsPage';
 import ProfilePage from '../screens/app/ProfilePage';
-import SettingsPage from '../screens/app/SettingsPage';
-import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../utils/router';
 import Icon from '../components/common/Icon';
+import RewardsPage from '../screens/app/RewardsPage';
+import { useTranslation } from 'react-i18next';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -27,15 +27,16 @@ const TabIcon = ({ icon, focused }: { icon: string; focused: boolean }) => (
 );
 
 export default function TabNavigator() {
-  const navigation = useNavigation<NavigationProp>();
+  const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          height: 60,
-          paddingBottom: 8,
+          height: 100,
+          paddingBottom: Math.max(insets.bottom, 24),
           paddingTop: 8,
         },
         tabBarActiveTintColor: '#0066CC',
@@ -46,40 +47,32 @@ export default function TabNavigator() {
         name="HomeTab"
         component={HomePage}
         options={{
-          title: 'Home',
+          title: t('home'),
           tabBarIcon: ({ focused }) => <TabIcon icon="home" focused={focused} />,
         }}
       />
       <Tab.Screen
-        name="SearchTab"
+        name="MapTab"
         component={LocationDetailPage}
         options={{
-          title: 'Search',
+          title: t('map'),
           tabBarIcon: ({ focused }) => <TabIcon icon="magnify" focused={focused} />,
         }}
       />
       <Tab.Screen
-        name="RewardsTab"
+        name="RewardTab"
         component={RewardsPage}
         options={{
-          title: 'Rewards',
-          tabBarIcon: ({ focused }) => <TabIcon icon="gift" focused={focused} />,
+          title: t('rewards'),
+          tabBarIcon: ({ focused }) => <TabIcon icon="star" focused={focused} />,
         }}
       />
       <Tab.Screen
         name="ProfileTab"
         component={ProfilePage}
         options={{
-          title: 'Profile',
+          title: t('profile'),
           tabBarIcon: ({ focused }) => <TabIcon icon="account" focused={focused} />,
-        }}
-      />
-      <Tab.Screen
-        name="SettingsTab"
-        component={SettingsPage}
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ focused }) => <TabIcon icon="cog" focused={focused} />,
         }}
       />
     </Tab.Navigator>

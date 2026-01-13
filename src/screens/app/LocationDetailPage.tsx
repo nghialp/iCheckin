@@ -53,13 +53,7 @@ export default function LocationDetailPage({ place_id }: { place_id?: string }) 
       {/* Tiêu đề */}
       <Text style={styles.title}>{place.name}</Text>
       <Text style={styles.subtitle}>
-        {place.category} • {place.type}
-      </Text>
-      <Text style={styles.opening}>
-        {t('openHours', {
-          open: place?.openingHours?.[0]?.open,
-          close: place?.openingHours?.[0]?.close,
-        })}
+        {place.category} • {place.types}
       </Text>
 
       {/* Ảnh địa điểm */}

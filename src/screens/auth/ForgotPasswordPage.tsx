@@ -1,4 +1,3 @@
-// src/screens/ForgotPasswordPage.tsx
 import React, { useState } from 'react';
 import {
   View,
@@ -22,10 +21,29 @@ import InputField from '../../components/common/InputField';
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'ForgotPassword'>;
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const navigation = useNavigation<NavigationProp>();
   const [forgotPassword] = useMutation<ForgotPasswordResponse, ForgotPasswordVariables>(FORGOT_PASSWORD_MUTATION);
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      setEmailError('Email is required');
+      return false;
+    }
+    if (!emailRegex.test(email)) {
+      setEmailError('Please enter a valid email');
+      return false;
+    }
+    setEmailError('');
+    return true;
+  };
+
   const handleSendInstructions = async () => {
+    if (!validateEmail(email)) {
+      return;
+    }
+    
     try {
       const res = await forgotPassword({ variables: { email } });
       if (res.data?.success) {
@@ -53,17 +71,25 @@ export default function ForgotPasswordPage() {
         <Text style={authTheme.subtitle}>
           {t('forgotPassword.instruction')}
         </Text>
+        
         <InputField
           label="Email"
           type="email"
           value={email}
-          onChange={setEmail}
+          onChange={(text) => {
+            setEmail(text);
+            if (emailError) {
+              validateEmail(text);
+            }
+          }}
           required
+          error={emailError}
         />
 
         <TouchableOpacity style={authTheme.button} onPress={handleSendInstructions}>
           <Text style={authTheme.buttonText}>{t('forgotPassword.button')}</Text>
         </TouchableOpacity>
+        
         <TouchableOpacity onPress={() => navigation?.navigate?.('Login')}>
           <Text style={authTheme.link}>
             {t('forgotPassword.rememberPassword')} <Text style={{ color: colors.primary, fontWeight: '600' }}>{t('forgotPassword.backToLogin')}</Text>

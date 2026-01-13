@@ -15,7 +15,7 @@ export type AuthContextValue = {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
-  error: any;
+  errors: any;
   login: (email: string, password: string, remember: boolean) => Promise<LoginResponse | null>;
   signUp: (name: string, email: string, password: string) => Promise<SignupResponse | null>;
   logout: () => Promise<void>;
@@ -30,14 +30,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [initialLoading, setInitialLoading] = useState(true);
   // Sử dụng useRef để lưu trữ error và có thể clear được
-  const [error, setError] = useState<any>(null);
+  const [errors, setErrors] = useState<any>(null);
   const loginMutation = useMutation<LoginResponse, LoginInput>(LOGIN_MUTATION)[0];
   const signUpMutation = useMutation<SignupResponse, SignupInput>(SIGNUP_MUTATION)[0];
 
   useEffect(() => {
     (async () => {
       try {
-        setError(null);
+        setErrors(null);
         const raw = await AsyncStorage.getItem('auth_user');
         if (raw) {
           const parsed = JSON.parse(raw);
@@ -57,7 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = useCallback(
     async (email: string, password: string, remember: boolean) => {
-      setError(null); // Clear error trước khi gọi API
+      setErrors(null); // Clear error trước khi gọi API
       try {
         const res = await loginMutation({
           variables: { input: { email, password } },
@@ -78,9 +78,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
         return null;
       } catch (err: any) {
-        const message = err.errors[0].extensions?.originalError?.message || error?.message || 'Signup failed';
-        console.log('error message:', message);
-        setError(message);
+        const errorsArray = err.errors[0].extensions?.originalError?.message || errors || 'Signup failed';
+        const errorsObj: any = {};
+        errorsArray.forEach((error: any) => {
+          errorsObj[error.field] = { message: error.message };
+        });
+        console.log('error message:', errorsObj);
+        setErrors(errorsObj);
         return null;
       }
     },
@@ -89,7 +93,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = useCallback(
     async (name: string, email: string, password: string) => {
-      setError(null); // Clear error trước khi gọi API
+      setErrors(null); // Clear error trước khi gọi API
       try {
         const res = await signUpMutation({ variables: { input: { name, email, password } } });
         const logged: SignupResponse | undefined = res?.data;
@@ -104,9 +108,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
         return null;
       } catch (err: any) {
-        const message = err.errors[0].extensions?.originalError?.message || error?.message || 'Signup failed';
-        console.log('error message:', message);
-        setError(message);
+        const errorsArray = err.errors[0].extensions?.originalError?.message || errors || 'Signup failed';
+        const errorsObj: any = {};
+        errorsArray.forEach((error: any) => {
+          errorsObj[error.field] = { message: error.message };
+        });
+        setErrors(errorsObj);
         return null;
       }
     },
@@ -116,12 +123,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = useCallback(async () => {
     setUser(null);
     setAuth({});
-    setError(null);
+    setErrors(null);
     await AsyncStorage.removeItem('auth_user');
   }, []);
 
   const clearError = useCallback(() => {
-    setError(null);
+    setErrors(null);
   }, []);
 
   const value: AuthContextValue = {
@@ -129,7 +136,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     user,
     isAuthenticated: !!user,
     loading: initialLoading,
-    error,
+    errors,
     login,
     signUp,
     logout,

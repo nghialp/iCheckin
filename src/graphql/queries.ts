@@ -4,7 +4,7 @@ import { gql } from "@apollo/client";
 export const GET_HOME_DATA = gql`
   query GetHomeData($lat: Float!, $lng: Float!) {
     nearbyPlaces(lat: $lat, lng: $lng) {
-      googlePlaceId
+      mapboxId
       name
       types
       address
@@ -16,7 +16,7 @@ export const GET_HOME_DATA = gql`
       id
       place {
         id
-        googlePlaceId
+        mapboxId
         name
         thumbnail
       }
@@ -164,6 +164,32 @@ export const GET_USER_STATS = gql`
       totalCheckins
       totalBadges
       visitedPlaces
+    }
+  }
+`;
+
+// Get my friends
+export const GET_MY_FRIENDS = gql`
+  query GetMyFriends {
+    myFriends {
+      id
+      name
+      avatar
+      bio
+      country
+    }
+  }
+`;
+
+// Get my followings
+export const GET_MY_FOLLOWINGS = gql`
+  query GetMyFollowings {
+    myFollowings {
+      id
+      name
+      avatar
+      bio
+      country
     }
   }
 `;

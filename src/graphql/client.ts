@@ -18,34 +18,41 @@ export const useApolloClientWithAuth = () => {
 
   // ApolloLink middleware để gắn token từ context
   const authLink = new ApolloLink((operation, forward) => {
-    operation.setContext(async ({ headers = {} }) => {
-      try {
+    return new Observable(observer => {
+      (async () => {
+        try {
           const raw = await AsyncStorage.getItem('auth_user');
           const parsed = raw ? JSON.parse(raw) : null;
           const token = parsed?.accessToken;
 
-          return {
+          operation.setContext({
             headers: {
-              ...headers,
+              ...operation.getContext().headers,
               authorization: token ? `Bearer ${token}` : '',
             },
-          };
+          });
+
+          const subscription = forward(operation).subscribe(observer);
+          return () => subscription.unsubscribe();
         } catch (e) {
-          return { headers };
+          const subscription = forward(operation).subscribe(observer);
+          return () => subscription.unsubscribe();
         }
+      })();
     });
-    return forward(operation);
   });
-    // Link xử lý lỗi thay cho onError
+
+  // Link xử lý lỗi thay cho onError
   const errorLink = new ApolloLink((operation, forward) => {
     return new Observable(observer => {
-      const subscription = forward(operation).subscribe({
+      let subscription = forward(operation).subscribe({
         next: async result => {
           const graphQLErrors = result?.errors;
           if (graphQLErrors?.some(err => err.extensions?.code === 'UNAUTHENTICATED')) {
             const raw = await AsyncStorage.getItem('auth_user');
             const parsed = raw ? JSON.parse(raw) : null;
             const refreshToken = parsed?.refreshToken;
+            
             if (!refreshToken) {
               await AsyncStorage.removeItem('auth_user');
               observer.error(new Error('No refresh token'));
@@ -66,12 +73,17 @@ export const useApolloClientWithAuth = () => {
 
               const newAccessToken = res?.data?.refreshToken?.accessToken;
               const newRefreshToken = res?.data?.refreshToken?.refreshToken;
+              
+              if (!newAccessToken || !newRefreshToken) {
+                throw new Error('No tokens received from refresh');
+              }
+
               await AsyncStorage.setItem(
                 'auth_user',
                 JSON.stringify({
                   accessToken: newAccessToken,
                   refreshToken: newRefreshToken,
-                  user: parsed.user, // nếu bạn muốn lưu cả user
+                  user: parsed.user,
                 }),
               );
 
@@ -79,11 +91,16 @@ export const useApolloClientWithAuth = () => {
               operation.setContext(({ headers = {} }) => ({
                 headers: {
                   ...headers,
-                  Authorization: `Bearer ${newAccessToken}`,
+                  authorization: `Bearer ${newAccessToken}`,
                 },
               }));
 
-              forward(operation).subscribe(observer);
+              // Properly forward the retried operation
+              subscription = forward(operation).subscribe({
+                next: newResult => observer.next(newResult),
+                error: err => observer.error(err),
+                complete: () => observer.complete(),
+              });
             } catch (e) {
               await AsyncStorage.removeItem('auth_user');
               observer.error(e);

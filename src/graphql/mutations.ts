@@ -24,14 +24,18 @@ const CHECK_IN_MUTATION = gql`
 `;
 
 const CHECK_IN_PLACE_MUTATION = gql`
-  mutation CheckInPlace($placeId: ID!, $content: String, $photos: [String]) {
-    checkInPlace(input: { placeId: $placeId, content: $content, photos: $photos }) {
+  mutation CheckInPlace($placeId: ID!, $content: String, $media: [String]) {
+    checkInPlace(input: { placeId: $placeId, content: $content, media: $media }) {
       success
       message
       checkin {
         id
         checkedAt
         content
+        media {
+          id
+          url
+        }
         place {
           id
           name

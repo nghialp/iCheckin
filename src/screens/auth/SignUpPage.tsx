@@ -1,11 +1,10 @@
-// src/screens/SignUpPage.tsx
 import React, { useEffect } from 'react';
 import {
   View,
   Text,
   Image,
 } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -13,6 +12,7 @@ import { authTheme } from '../../theme/authTheme';
 import AuthCard from '../../components/common/AuthenCard';
 import { t } from 'i18next';
 import useAuth from '../../hooks/useAuth';
+import InputField from '../../components/common/InputField';
 
 type SignUpFormData = {
   fullName: string;
@@ -33,7 +33,7 @@ const signUpSchema = yup.object({
   password: yup
     .string()
     .required('Password is required')
-    .min(6, 'Password must be at least 6 characters'),
+    .min(8, 'Password must be at least 8 characters'),
   confirmPassword: yup
     .string()
     .required('Please confirm your password')
@@ -41,14 +41,15 @@ const signUpSchema = yup.object({
 });
 
 export default function SignUpPage({ navigation }: any) {
-  const { signUp, loading, error, clearError } = useAuth();
+  const { signUp, loading, errors, clearError } = useAuth();
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors: formErrors},
   } = useForm<SignUpFormData>({
     resolver: yupResolver(signUpSchema),
+    mode: "onChange", 
     defaultValues: {
       fullName: '',
       email: '',
@@ -83,104 +84,75 @@ export default function SignUpPage({ navigation }: any) {
         </View>
         <Text style={authTheme.pageTitle}>{t('signUp.title')}</Text>
         <Text style={authTheme.subtitle}>{t('signUp.subtitle')}</Text>
-        {error && <Text style={authTheme.errorText}>{String(error.message || error)}</Text>}
+        
         {/* Form đăng ký */}
-
         <Controller
           control={control}
           name="fullName"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              mode="outlined"
+          render={({ field: { onChange, value } }) => (
+            <InputField
               label={t('signUp.fullName')}
+              type="text"
               value={value}
-              onChangeText={(text) => {
+              onChange={(text) => {
                 onChange(text);
                 clearError();
               }}
-              onBlur={onBlur}
-              style={authTheme.input}
-              outlineStyle={authTheme.inputOutline}
-              contentStyle={{ height: 48 }}
-              error={!!errors.fullName}
-              underlineColorAndroid="#0066CC"
+              error={errors?.fullName?.message || formErrors.fullName?.message}
             />
           )}
         />
-        {errors.fullName && <Text style={authTheme.fieldError}>{errors.fullName.message}</Text>}
 
         <Controller
           control={control}
           name="email"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              mode="outlined"
+          render={({ field: { onChange, value } }) => (
+            <InputField
               label={t('signUp.email')}
+              type="email"
               value={value}
-              onChangeText={(text) => {
+              onChange={(text) => {
                 onChange(text);
                 clearError();
               }}
-              onBlur={onBlur}
-              style={authTheme.input}
-              outlineStyle={authTheme.inputOutline}
-              contentStyle={{ height: 48 }}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              error={!!errors.email}
-              underlineColorAndroid="#0066CC"
+              error={errors?.email?.message || formErrors.email?.message}
             />
           )}
         />
-        {errors.email && <Text style={authTheme.fieldError}>{errors.email.message}</Text>}
 
         <Controller
           control={control}
           name="password"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              mode="outlined"
+          render={({ field: { onChange, value } }) => (
+            <InputField
               label={t('signUp.password')}
-              secureTextEntry
+              type="password"
               value={value}
-              onChangeText={(text) => {
+              onChange={(text) => {
                 onChange(text);
                 clearError();
               }}
-              onBlur={onBlur}
-              style={authTheme.input}
-              outlineStyle={authTheme.inputOutline}
-              contentStyle={{ height: 48 }}
-              error={!!errors.password}
-              underlineColorAndroid="#0066CC"
+              error={errors?.password?.message || formErrors.password?.message}
             />
           )}
         />
-        {errors.password && <Text style={authTheme.fieldError}>{errors.password.message}</Text>}
 
         <Controller
           control={control}
           name="confirmPassword"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              mode="outlined"
+          render={({ field: { onChange, value } }) => (
+            <InputField
               label="Confirm Password"
-              secureTextEntry
+              type="password"
               value={value}
-              onChangeText={(text) => {
+              onChange={(text) => {
                 onChange(text);
                 clearError();
               }}
-              onBlur={onBlur}
-              style={authTheme.input}
-              outlineStyle={authTheme.inputOutline}
-              contentStyle={{ height: 48 }}
-              error={!!errors.confirmPassword}
-              underlineColorAndroid="#0066CC"
+              error={formErrors.confirmPassword?.message}
             />
           )}
         />
-        {errors.confirmPassword && <Text style={authTheme.fieldError}>{errors.confirmPassword.message}</Text>}
 
         {/* Nút Create Account */}
         <Button

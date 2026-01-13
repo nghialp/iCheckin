@@ -6,7 +6,7 @@ const theme = {
     ...DefaultTheme.colors,
     primary: '#0066CC',
     accent: '#03dac4',
-    background: '#ffffff',
+    background: '##ddf4feff',
     surface: '#ffffff',
     onSurface: '#000000',
     outline: '#cccccc',

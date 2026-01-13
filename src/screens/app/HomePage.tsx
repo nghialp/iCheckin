@@ -1,7 +1,8 @@
 import React from 'react';
-import { ScrollView, Text, FlatList } from 'react-native';
+import { Text, FlatList, View, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { useQuery } from '@apollo/client/react';
 import ProfileCard from '../../components/common/ProfileCard';
+import FriendsFollowingCard from '../../components/common/FriendsFollowingCard';
 import PlaceItem from '../../components/common/PlaceItem';
 import CheckInFeedItem from '../../components/common/CheckInFeedItem';
 import { GET_HOME_DATA } from '../../graphql/queries';
@@ -9,6 +10,8 @@ import { GetHomeDataResponse } from '../../graphql/types';
 import AppLayout from '../../components/common/AppLayout';
 import { Coordinates } from '../../graphql/types/place';
 import useLocation from '../../hooks/useLocation';
+
+const screenWidth = Dimensions.get('window').width;
 
 export default function HomePage() {
   const location = useLocation();
@@ -23,27 +26,83 @@ export default function HomePage() {
 
   const { nearbyPlaces = [], myCheckins = [] } = data || {};
 
+  const ListHeader = () => (
+    <View style={styles.section}>
+      <ProfileCard />
+      <FriendsFollowingCard />
+    </View>
+  );
+
+  const SectionHeader = ({ title }: { title: string }) => (
+    <Text style={styles.sectionTitle}>{title}</Text>
+  );
+
+  const PlacesSection = () => (
+    <>
+      <SectionHeader title="Places" />
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={16}
+        contentContainerStyle={styles.placesScrollContainer}
+      >
+        {nearbyPlaces.map((place) => (
+          <View key={place.mapboxId} style={styles.placeItemWrapper}>
+            <PlaceItem place={place} />
+          </View>
+        ))}
+      </ScrollView>
+    </>
+  );
+
+  const combinedData = [
+    { id: 'header', type: 'header' } as any,
+    { id: 'places-section', type: 'places-section' } as any,
+    { id: 'checkins-title', type: 'checkins-title' } as any,
+    ...myCheckins.map(checkin => ({ ...checkin, type: 'checkin' })),
+  ];
+
+  const renderItem = ({ item }: any) => {
+    if (item.type === 'header') return <ListHeader />;
+    if (item.type === 'places-section') return <PlacesSection />;
+    if (item.type === 'checkins-title') return <SectionHeader title="Recent Check-Ins" />;
+    if (item.type === 'checkin') return <CheckInFeedItem checkin={item} />;
+    return null;
+  };
+
   return (
     <AppLayout>
-      <ScrollView style={{ flex: 1, padding: 16 }}>
-        <ProfileCard />
-
-        <Text style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 8 }}>📍 Places Nearby</Text>
-        <FlatList
-          data={nearbyPlaces}
-          keyExtractor={(item) => item.googlePlaceId}
-          renderItem={({ item }) => <PlaceItem place={item} />}
-          showsVerticalScrollIndicator={false}
-        />
-
-        <Text style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 8 }}>📝 Recent Check-Ins</Text>
-        <FlatList
-          data={myCheckins}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <CheckInFeedItem checkin={item} />}
-          showsVerticalScrollIndicator={false}
-        />
-      </ScrollView>
+      <FlatList
+        data={combinedData}
+        keyExtractor={(item: any, index) => `${item.type}-${item.mapboxId || item.id || index}`}
+        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainer}
+        scrollIndicatorInsets={{ right: 1 }}
+      />
     </AppLayout>
   );
 }
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    paddingVertical: 12,
+  },
+  section: {
+    marginBottom: 8,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 12,
+    marginHorizontal: 16,
+  },
+  placesScrollContainer: {
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  placeItemWrapper: {
+    width: screenWidth * 0.9,
+    marginRight: 12,
+  },
+});

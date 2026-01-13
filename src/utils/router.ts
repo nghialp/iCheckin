@@ -14,4 +14,5 @@ export type RootStackParamList = {
   Profile: undefined;
   Setting: undefined;
   CheckIn: undefined;
+  Search: undefined;
 };
