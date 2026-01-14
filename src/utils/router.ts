@@ -13,6 +13,7 @@ export type RootStackParamList = {
   Rewards: undefined;
   Profile: undefined;
   Setting: undefined;
-  CheckIn: undefined;
+  CheckIn: { placeId?: string };
   Search: undefined;
+  CheckInDetail: { placeId: string };
 };

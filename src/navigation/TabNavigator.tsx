@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HomePage from '../screens/app/HomePage';
-import LocationDetailPage from '../screens/app/LocationDetailPage';
+import CheckInScreen from '../screens/app/CheckInScreen';
 import ProfilePage from '../screens/app/ProfilePage';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../utils/router';
@@ -53,10 +53,10 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="MapTab"
-        component={LocationDetailPage}
+        component={CheckInScreen}
         options={{
           title: t('map'),
-          tabBarIcon: ({ focused }) => <TabIcon icon="magnify" focused={focused} />,
+          tabBarIcon: ({ focused }) => <TabIcon icon="map" focused={focused} />,
         }}
       />
       <Tab.Screen

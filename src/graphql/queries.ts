@@ -194,3 +194,46 @@ export const GET_MY_FOLLOWINGS = gql`
   }
 `;
 
+// Get place detail for CheckInDetail screen
+export const GET_PLACE_DETAIL_FULL = gql`
+  query GetPlaceDetail($id: ID!) {
+    place(id: $id) {
+      id
+      name
+      type
+      address
+      city
+      image
+      rating
+      hours
+      isOpenNow
+      description
+      lat
+      lng
+      distance
+      totalCheckIns
+    }
+  }
+`;
+
+// Get check-ins at a specific place
+export const GET_PLACE_CHECKINS = gql`
+  query GetPlaceCheckIns($placeId: ID!, $limit: Int, $offset: Int) {
+    placeCheckIns(placeId: $placeId, limit: $limit, offset: $offset) {
+      id
+      user {
+        id
+        name
+        avatar
+      }
+      content
+      emotion
+      images
+      createdAt
+      likes
+      comments
+      liked
+      timeAgo
+    }
+  }
+`;

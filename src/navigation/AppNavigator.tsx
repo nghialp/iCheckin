@@ -12,6 +12,8 @@ import SettingsPage from '../screens/app/SettingsPage';
 import ChangePasswordPage from '../screens/auth/ChangePasswordPage';
 import MapPage from '../screens/app/MapPage';
 import CheckInPage from '../screens/app/CheckInPage';
+import SearchScreen from '../screens/app/SearchScreen';
+import CheckInDetailScreen from '../screens/app/CheckInDetailScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -48,6 +50,16 @@ export default function AppNavigator() {
             name="Map" 
             component={MapPage} 
             options={{ title: 'Map' }}
+          />
+          <Stack.Screen 
+            name="Search" 
+            component={SearchScreen} 
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name="CheckInDetail" 
+            component={CheckInDetailScreen} 
+            options={{ headerShown: false }}
           />
           <Stack.Screen 
             name="Rewards" 
