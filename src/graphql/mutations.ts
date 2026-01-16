@@ -101,16 +101,67 @@ const COMMENT_CHECKIN_MUTATION = gql`
 
 // Profile mutations
 const UPDATE_PROFILE_MUTATION = gql`
-  mutation UpdateProfile($name: String, $bio: String, $country: String, $interests: [String]) {
-    updateProfile(input: { name: $name, bio: $bio, country: $country, interests: $interests }) {
+  mutation UpdateProfile($input: UpdateProfileInput!) {
+    updateProfile(input: $input) {
       success
       message
       user {
         id
         name
+        email
+        phone
+        avatar
+        dateOfBirth
+        gender
+        location
         bio
-        country
-        interests
+      }
+    }
+  }
+`;
+
+const UPDATE_USER_AVATAR_MUTATION = gql`
+  mutation UpdateUserAvatar($avatarUrl: String!) {
+    updateUserAvatar(avatarUrl: $avatarUrl) {
+      success
+      message
+      user {
+        id
+        avatar
+      }
+    }
+  }
+`;
+
+const UPDATE_NOTIFICATION_SETTINGS_MUTATION = gql`
+  mutation UpdateNotificationSettings($input: NotificationSettingsInput!) {
+    updateNotificationSettings(input: $input) {
+      success
+      message
+      notificationSettings {
+        pushNotifications
+        emailNotifications
+        smsNotifications
+        promotions
+        updates
+        reminders
+      }
+    }
+  }
+`;
+
+const UPDATE_PRIVACY_SETTINGS_MUTATION = gql`
+  mutation UpdatePrivacySettings($input: PrivacySettingsInput!) {
+    updatePrivacySettings(input: $input) {
+      success
+      message
+      privacySettings {
+        locationAccess
+        contactsAccess
+        cameraAccess
+        microphoneAccess
+        profileVisibility
+        activityStatus
       }
     }
   }
@@ -119,6 +170,24 @@ const UPDATE_PROFILE_MUTATION = gql`
 const CHANGE_PASSWORD_MUTATION = gql`
   mutation ChangePassword($currentPassword: String!, $newPassword: String!) {
     changePassword(input: { currentPassword: $currentPassword, newPassword: $newPassword }) {
+      success
+      message
+    }
+  }
+`;
+
+const DELETE_ACCOUNT_MUTATION = gql`
+  mutation DeleteAccount {
+    deleteAccount {
+      success
+      message
+    }
+  }
+`;
+
+const LOGOUT_MUTATION = gql`
+  mutation Logout {
+    logout {
       success
       message
     }
@@ -136,5 +205,10 @@ export {
   LIKE_CHECKIN_MUTATION,
   COMMENT_CHECKIN_MUTATION,
   UPDATE_PROFILE_MUTATION,
-  CHANGE_PASSWORD_MUTATION
+  UPDATE_USER_AVATAR_MUTATION,
+  UPDATE_NOTIFICATION_SETTINGS_MUTATION,
+  UPDATE_PRIVACY_SETTINGS_MUTATION,
+  CHANGE_PASSWORD_MUTATION,
+  DELETE_ACCOUNT_MUTATION,
+  LOGOUT_MUTATION
 };

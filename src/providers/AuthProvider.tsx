@@ -78,17 +78,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
         return null;
       } catch (err: any) {
-        const errorsArray = err.errors[0].extensions?.originalError?.message || errors || 'Signup failed';
+        console.log(JSON.stringify(err));
         const errorsObj: any = {};
-        errorsArray.forEach((error: any) => {
-          errorsObj[error.field] = { message: error.message };
-        });
+        
+        // Handle different error formats from GraphQL
+        try {
+          const errorMessage = err.errors?.[0]?.extensions?.originalError?.message;
+          
+          if (Array.isArray(errorMessage)) {
+            // Handle array format (e.g., [{ field: 'email', message: '...' }])
+            errorMessage.forEach((error: any) => {
+              errorsObj[error.field] = { message: error.message };
+            });
+          } else if (typeof errorMessage === 'string') {
+            // Handle string format
+            errorsObj.general = { message: errorMessage };
+          } else {
+            // Fallback to original errors state or default message
+            const fallbackMessage = errors || 'Login failed';
+            if (Array.isArray(fallbackMessage)) {
+              fallbackMessage.forEach((error: any) => {
+                errorsObj[error.field] = { message: error.message };
+              });
+            } else {
+              errorsObj.general = { message: fallbackMessage };
+            }
+          }
+        } catch (parseError) {
+          errorsObj.general = { message: errors || 'An error occurred during login' };
+        }
+        
         console.log('error message:', errorsObj);
         setErrors(errorsObj);
         return null;
       }
     },
-    [loginMutation]
+    [loginMutation, errors]
   );
 
   const signUp = useCallback(
@@ -108,16 +133,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
         return null;
       } catch (err: any) {
-        const errorsArray = err.errors[0].extensions?.originalError?.message || errors || 'Signup failed';
         const errorsObj: any = {};
-        errorsArray.forEach((error: any) => {
-          errorsObj[error.field] = { message: error.message };
-        });
+        
+        // Handle different error formats from GraphQL
+        try {
+          const errorMessage = err.errors?.[0]?.extensions?.originalError?.message;
+          
+          if (Array.isArray(errorMessage)) {
+            // Handle array format (e.g., [{ field: 'email', message: '...' }])
+            errorMessage.forEach((error: any) => {
+              errorsObj[error.field] = { message: error.message };
+            });
+          } else if (typeof errorMessage === 'string') {
+            // Handle string format
+            errorsObj.general = { message: errorMessage };
+          } else {
+            // Fallback to original errors state or default message
+            const fallbackMessage = errors || 'Signup failed';
+            if (Array.isArray(fallbackMessage)) {
+              fallbackMessage.forEach((error: any) => {
+                errorsObj[error.field] = { message: error.message };
+              });
+            } else {
+              errorsObj.general = { message: fallbackMessage };
+            }
+          }
+        } catch (parseError) {
+          errorsObj.general = { message: errors || 'An error occurred during signup' };
+        }
+        
         setErrors(errorsObj);
         return null;
       }
     },
-    [signUpMutation]
+    [signUpMutation, errors]
   );
 
   const logout = useCallback(async () => {

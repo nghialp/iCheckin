@@ -237,3 +237,75 @@ export const GET_PLACE_CHECKINS = gql`
     }
   }
 `;
+
+// Get user rewards and points
+export const GET_USER_REWARDS = gql`
+  query GetUserRewards($limit: Int, $offset: Int) {
+    userRewards(limit: $limit, offset: $offset) {
+      currentPoints
+      tier
+      nextTierPoints
+      totalRedeemed
+      rewards {
+        id
+        title
+        description
+        image
+        pointsRequired
+        category
+        partner
+        inStock
+        likes
+        redeemed
+        isLimited
+        expiresAt
+        tier
+      }
+    }
+  }
+`;
+
+// Get reward detail
+export const GET_REWARD_DETAIL = gql`
+  query GetRewardDetail($id: ID!) {
+    reward(id: $id) {
+      id
+      title
+      description
+      image
+      pointsRequired
+      category
+      partner
+      inStock
+      likes
+      redeemed
+      isLimited
+      expiresAt
+      tier
+      qrCode
+      redeemCode
+      partnerContact
+      validUntil
+    }
+  }
+`;
+
+// Get redeem history
+export const GET_REDEEM_HISTORY = gql`
+  query GetRedeemHistory($limit: Int, $offset: Int) {
+    redeemHistory(limit: $limit, offset: $offset) {
+      id
+      reward {
+        id
+        title
+        image
+        pointsRequired
+      }
+      redeemedAt
+      status
+      qrCode
+      expiresAt
+      usedAt
+    }
+  }
+`;

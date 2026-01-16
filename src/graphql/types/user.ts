@@ -1,4 +1,43 @@
 // User types - consolidated from utils/types.ts
+export interface NotificationSettings {
+  pushNotifications?: boolean;
+  emailNotifications?: boolean;
+  smsNotifications?: boolean;
+  promotions?: boolean;
+  updates?: boolean;
+  reminders?: boolean;
+}
+
+export interface PrivacySettings {
+  locationAccess?: boolean;
+  contactsAccess?: boolean;
+  cameraAccess?: boolean;
+  microphoneAccess?: boolean;
+  profileVisibility?: 'public' | 'friends' | 'private';
+  activityStatus?: boolean;
+}
+
+export interface SecuritySettings {
+  twoFactorEnabled?: boolean;
+  loginHistory?: LoginHistoryItem[];
+  connectedDevices?: ConnectedDeviceItem[];
+}
+
+export interface LoginHistoryItem {
+  timestamp?: string;
+  device?: string;
+  ip?: string;
+  location?: string;
+  status?: string;
+}
+
+export interface ConnectedDeviceItem {
+  id?: string;
+  name?: string;
+  type?: string;
+  lastActive?: string;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -15,6 +54,13 @@ export interface User {
   totalCheckins?: number;
   totalBadges?: number;
   visitedPlaces?: number;
+  phone?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  location?: string;
+  notificationSettings?: NotificationSettings;
+  privacySettings?: PrivacySettings;
+  securitySettings?: SecuritySettings;
 }
 
 export interface UserBasic {
@@ -22,4 +68,5 @@ export interface UserBasic {
   name: string;
   avatarUrl?: string;
 }
+
 
