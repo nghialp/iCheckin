@@ -22,33 +22,10 @@ interface ProfilePageProps {
 export default function ProfilePage({ navigation }: ProfilePageProps) {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = () => {
-    Alert.alert(
-      t('profile.confirmLogout'),
-      t('profile.logoutMessage'),
-      [
-        {
-          text: t('profile.cancel'),
-          onPress: () => {},
-          style: 'cancel',
-        },
-        {
-          text: t('profile.logout'),
-          onPress: async () => {
-            setIsLoggingOut(true);
-            try {
-              await logout();
-            } catch (error) {
-              Alert.alert(t('profile.error'), t('profile.logoutError'));
-              setIsLoggingOut(false);
-            }
-          },
-          style: 'destructive',
-        },
-      ]
-    );
+    logout();
+    navigation.replace('Login' as any);
   };
 
   const menuItems = [
@@ -130,13 +107,12 @@ export default function ProfilePage({ navigation }: ProfilePageProps) {
 
         {/* Logout Button */}
         <TouchableOpacity
-          style={[styles.logoutButton, isLoggingOut && styles.logoutButtonDisabled]}
+          style={styles.logoutButton}
           onPress={handleLogout}
-          disabled={isLoggingOut}
           activeOpacity={0.8}
         >
           <Text style={styles.logoutButtonText}>
-            {isLoggingOut ? t('profile.loggingOut') : t('profile.logout')}
+            {t('logout')}
           </Text>
         </TouchableOpacity>
       </ScrollView>

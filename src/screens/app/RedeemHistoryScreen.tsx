@@ -13,6 +13,7 @@ import {
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useQuery as useApolloQuery } from '@apollo/client/react';
+import { t } from 'i18next';
 import Icon from '../../components/common/Icon';
 import { GET_REDEEM_HISTORY } from '../../graphql/queries';
 
@@ -137,7 +138,7 @@ export default function RedeemHistoryScreen() {
         <View style={styles.datesSection}>
           <View style={styles.dateItem}>
             <Icon name="calendar" size={14} color="#999" />
-            <Text style={styles.dateLabel}>Redeemed</Text>
+            <Text style={styles.dateLabel}>{t('redeemHistory.redeemed')}</Text>
             <Text style={styles.dateValue}>{item.redeemedAt}</Text>
           </View>
 
@@ -145,14 +146,14 @@ export default function RedeemHistoryScreen() {
 
           <View style={styles.dateItem}>
             <Icon name="calendar-check" size={14} color="#999" />
-            <Text style={styles.dateLabel}>Expires</Text>
+            <Text style={styles.dateLabel}>{t('redeemHistory.expires')}</Text>
             <Text style={styles.dateValue}>{item.expiresAt}</Text>
           </View>
         </View>
 
         {item.usedAt && (
           <Text style={styles.usedText}>
-            Used on {item.usedAt}
+            {t('rewardDetail.usedOn', { date: item.usedAt })}
           </Text>
         )}
       </View>
@@ -174,7 +175,7 @@ export default function RedeemHistoryScreen() {
         >
           <Icon name="chevron-left" size={28} color="#000" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Redemption History</Text>
+        <Text style={styles.headerTitle}>{t('redeemHistory.title')}</Text>
         <View style={{ width: 44 }} />
       </View>
 
@@ -205,7 +206,7 @@ export default function RedeemHistoryScreen() {
                       filter === f && styles.filterTabTextActive,
                     ]}
                   >
-                    {f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}
+                    {f === 'all' ? t('redeemHistory.all') : t(`redeemHistory.${f}`)}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -213,7 +214,7 @@ export default function RedeemHistoryScreen() {
 
             {/* Count */}
             <Text style={styles.countText}>
-              {history.length} {history.length === 1 ? 'reward' : 'rewards'}
+              {history.length} {history.length === 1 ? t('redeemHistory.reward_one') : t('redeemHistory.reward_other')}
             </Text>
           </>
         }
@@ -225,9 +226,9 @@ export default function RedeemHistoryScreen() {
           !historyLoading ? (
             <View style={styles.emptyState}>
               <Icon name="gift-outline" size={48} color="#ddd" />
-              <Text style={styles.emptyTitle}>No redemptions yet</Text>
+              <Text style={styles.emptyTitle}>{t('redeemHistory.noRedemptions')}</Text>
               <Text style={styles.emptySubtitle}>
-                Start earning points and redeem rewards!
+                {t('redeemHistory.startEarning')}
               </Text>
             </View>
           ) : null
@@ -237,7 +238,7 @@ export default function RedeemHistoryScreen() {
       {/* Loading State */}
       {historyLoading && (
         <View style={styles.loadingOverlay}>
-          <Text style={styles.loadingText}>Loading history...</Text>
+          <Text style={styles.loadingText}>{t('redeemHistory.loading')}</Text>
         </View>
       )}
     </SafeAreaView>

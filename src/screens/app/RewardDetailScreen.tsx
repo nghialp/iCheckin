@@ -12,6 +12,7 @@ import {
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useQuery as useApolloQuery, useMutation } from '@apollo/client/react';
+import { t } from 'i18next';
 import Icon from '../../components/common/Icon';
 import { GET_REWARD_DETAIL } from '../../graphql/queries';
 import { REDEEM_REWARD_MUTATION } from '../../graphql/mutations';
@@ -109,7 +110,7 @@ export default function RewardDetailScreen() {
   if (rewardLoading) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.loadingText}>Loading reward details...</Text>
+        <Text style={styles.loadingText}>{t('rewardDetail.loading')}</Text>
       </SafeAreaView>
     );
   }
@@ -117,7 +118,7 @@ export default function RewardDetailScreen() {
   if (!reward) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.errorText}>Reward not found</Text>
+        <Text style={styles.errorText}>{t('rewardDetail.notFound')}</Text>
       </SafeAreaView>
     );
   }
@@ -132,7 +133,7 @@ export default function RewardDetailScreen() {
         >
           <Icon name="chevron-left" size={28} color="#000" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Reward Details</Text>
+        <Text style={styles.headerTitle}>{t('rewardDetail.title')}</Text>
         <View style={{ width: 44 }} />
       </View>
 
@@ -148,7 +149,7 @@ export default function RewardDetailScreen() {
           {/* Stock Badge */}
           {reward.inStock === 0 && (
             <View style={styles.outOfStockOverlay}>
-              <Text style={styles.outOfStockText}>Out of Stock</Text>
+              <Text style={styles.outOfStockText}>{t('rewardDetail.outOfStock')}</Text>
             </View>
           )}
 
@@ -156,7 +157,7 @@ export default function RewardDetailScreen() {
           {reward.isLimited && (
             <View style={styles.limitedBadge}>
               <Icon name="flash" size={16} color="#fff" />
-              <Text style={styles.limitedText}>Limited Time</Text>
+              <Text style={styles.limitedText}>{t('rewardDetail.limitedTime')}</Text>
             </View>
           )}
 
@@ -187,20 +188,20 @@ export default function RewardDetailScreen() {
           <View style={styles.infoGrid}>
             <View style={styles.infoItem}>
               <Icon name="star" size={20} color="#FFB800" />
-              <Text style={styles.infoLabel}>Points Required</Text>
+              <Text style={styles.infoLabel}>{t('rewardDetail.pointsRequired')}</Text>
               <Text style={styles.infoValue}>{reward.pointsRequired}</Text>
             </View>
 
             <View style={styles.infoItem}>
               <Icon name="package" size={20} color="#4CAF50" />
-              <Text style={styles.infoLabel}>In Stock</Text>
+              <Text style={styles.infoLabel}>{t('rewardDetail.inStock')}</Text>
               <Text style={styles.infoValue}>{reward.inStock}</Text>
             </View>
 
             {reward.expiresAt && (
               <View style={styles.infoItem}>
                 <Icon name="calendar" size={20} color="#FF9800" />
-                <Text style={styles.infoLabel}>Expires</Text>
+                <Text style={styles.infoLabel}>{t('rewardDetail.expires')}</Text>
                 <Text style={styles.infoValue}>{reward.expiresAt}</Text>
               </View>
             )}
@@ -209,13 +210,13 @@ export default function RewardDetailScreen() {
 
         {/* Description */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Description</Text>
+          <Text style={styles.sectionTitle}>{t('rewardDetail.description')}</Text>
           <Text style={styles.description}>{reward.description}</Text>
         </View>
 
         {/* How to Use */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>How to Use</Text>
+          <Text style={styles.sectionTitle}>{t('rewardDetail.howToUse')}</Text>
           <View style={styles.steps}>
             <View style={styles.step}>
               <View style={styles.stepNumber}>
@@ -250,7 +251,7 @@ export default function RewardDetailScreen() {
         {/* Partner Info */}
         {reward.partnerContact && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Partner Contact</Text>
+            <Text style={styles.sectionTitle}>{t('rewardDetail.partnerContact')}</Text>
             <View style={styles.contactBox}>
               <Icon name="phone" size={20} color="#0066CC" />
               <Text style={styles.contactText}>{reward.partnerContact}</Text>
@@ -261,10 +262,10 @@ export default function RewardDetailScreen() {
         {/* Valid Until */}
         {reward.validUntil && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Validity</Text>
+            <Text style={styles.sectionTitle}>{t('rewardDetail.validity')}</Text>
             <View style={styles.validityBox}>
               <Icon name="calendar-check" size={20} color="#4CAF50" />
-              <Text style={styles.validityText}>Valid until {reward.validUntil}</Text>
+              <Text style={styles.validityText}>{t('rewardDetail.validUntil', { date: reward.validUntil })}</Text>
             </View>
           </View>
         )}
@@ -282,13 +283,13 @@ export default function RewardDetailScreen() {
             {reward.inStock === 0 ? (
               <>
                 <Icon name="alert-circle" size={16} color="#FF5252" />
-                <Text style={styles.reasonText}>Out of stock</Text>
+                <Text style={styles.reasonText}>{t('rewardDetail.outOfStock')}</Text>
               </>
             ) : (
               <>
                 <Icon name="alert-circle" size={16} color="#FF9800" />
                 <Text style={styles.reasonText}>
-                  Need {(reward.pointsRequired || 0) - userPoints} more points
+                  {t('rewardDetail.notEnoughPoints', { points: (reward.pointsRequired || 0) - userPoints })}
                 </Text>
               </>
             )}
@@ -305,12 +306,12 @@ export default function RewardDetailScreen() {
         >
           <Icon name="gift" size={20} color="#fff" />
           <Text style={styles.redeemButtonText}>
-            {isRedeeming ? 'Redeeming...' : 'Redeem Reward'}
+            {isRedeeming ? t('rewardDetail.redeeming') : t('rewardDetail.redeem')}
           </Text>
         </TouchableOpacity>
 
         {canRedeem && (
-          <Text style={styles.pointsInfo}>You have {userPoints} points</Text>
+          <Text style={styles.pointsInfo}>{t('rewardDetail.pointsInfo', { points: userPoints })}</Text>
         )}
       </View>
     </SafeAreaView>

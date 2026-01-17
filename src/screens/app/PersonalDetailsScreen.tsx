@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  SafeAreaView,
   Alert,
   TextInput,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import useAuth from '../../hooks/useAuth';
 import { useMutation } from '@apollo/client/react';
 import { UPDATE_PROFILE_MUTATION, UPDATE_USER_AVATAR_MUTATION } from '../../graphql/mutations';
@@ -266,14 +266,14 @@ export default function PersonalDetailsScreen({ navigation }: PersonalDetailsScr
           {/* Location Field */}
           <View style={styles.fieldContainer}>
             <View style={styles.fieldHeader}>
-              <Text style={styles.fieldLabel}>{t('personalDetails.location')}</Text>
+              <Text style={styles.fieldLabel}>{t('personalDetails.address')}</Text>
             </View>
             {editMode ? (
               <TextInput
                 style={styles.input}
                 value={formData.location}
                 onChangeText={(text) => setFormData({ ...formData, location: text })}
-                placeholder={t('personalDetails.enterLocation')}
+                placeholder={t('personalDetails.enterAddress')}
               />
             ) : (
               <Text style={styles.fieldValue}>{formData.location || t('personalDetails.notProvided')}</Text>

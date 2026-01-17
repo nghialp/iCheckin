@@ -66,6 +66,9 @@ yarn-error.log
 # testing
 /coverage
 
+#document
+/documents
+
 # Environment files
 .env
 

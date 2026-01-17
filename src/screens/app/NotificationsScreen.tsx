@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   Alert,
   Switch,
 } from 'react-native';
@@ -16,6 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
 import useAuth from '../../hooks/useAuth';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = NativeStackNavigationProp<RootStackParamList, 'Notifications'>;
 
@@ -70,7 +70,7 @@ export default function NotificationsScreen({ navigation }: NotificationsScreenP
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Main Notification Settings */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('notifications.channelTitle')}</Text>
+          <Text style={styles.sectionTitle}>{t('notifications.chanelTitle')}</Text>
 
           <View style={styles.settingItem}>
             <View style={styles.settingContent}>

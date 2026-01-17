@@ -63,7 +63,7 @@ export default function TabNavigator() {
         name="RewardTab"
         component={RewardsPage}
         options={{
-          title: t('rewards'),
+          title: t('rewards.title'),
           tabBarIcon: ({ focused }) => <TabIcon icon="star" focused={focused} />,
         }}
       />
@@ -71,7 +71,7 @@ export default function TabNavigator() {
         name="ProfileTab"
         component={ProfilePage}
         options={{
-          title: t('profile'),
+          title: t('profile.title'),
           tabBarIcon: ({ focused }) => <TabIcon icon="account" focused={focused} />,
         }}
       />
