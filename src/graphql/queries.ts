@@ -11,6 +11,7 @@ export const GET_HOME_DATA = gql`
       thumbnail
       lat
       lng
+      distance
     }
     myCheckins {
       id
@@ -57,11 +58,13 @@ export const GET_PLACE_DETAIL = gql`
 export const SEARCH_PLACES = gql`
   query SearchPlaces($query: String!, $lat: Float, $lng: Float) {
     searchPlaces(query: $query, lat: $lat, lng: $lng) {
-      id
+      mapboxId
       name
-      type
+      rating
       address
-      coordinates
+      types
+      lat
+      lng
       thumbnail
     }
   }
@@ -71,20 +74,22 @@ export const SEARCH_PLACES = gql`
 export const GET_NEARBY_PLACES = gql`
   query GetNearbyPlaces($lat: Float!, $lng: Float!, $radius: Float) {
     nearbyPlaces(lat: $lat, lng: $lng, radius: $radius) {
-      id
+      mapboxId
       name
-      type
+      types
       address
-      coordinates
       thumbnail
+      lat
+      lng
+      distance
     }
   }
 `;
 
 // Get check-in locations feed
 export const GET_CHECKIN_FEED = gql`
-  query GetCheckInFeed($limit: Int, $offset: Int) {
-    checkInFeed(limit: $limit, offset: $offset) {
+  query GetCheckInFeed($limit: Int, $limit: Int) {
+    placeCheckins(mapboxId: $mapboxId, limit: $limit, limit: $limit) {
       id
       caption
       photos

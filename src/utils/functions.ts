@@ -32,24 +32,28 @@ export async function requestLocationPermission(): Promise<boolean> {
 
 export function getDistanceFromLatLonInKm(
   currentCoordinates: Coordinates | null,
-  nearbyCoordinates: Coordinates | null
+  nearbyCoordinates: Coordinates | null,
+  distance: number | null = null,
 ): string {
+  let distanceKm = distance; // khoảng cách đã có sẵn (km)
+  if (!distanceKm) {
     if (!currentCoordinates || !nearbyCoordinates) {
-        return '0 m';
+      return '0 m';
     }
-  const R = 6371; // bán kính Trái Đất (km)
-  const dLat = deg2rad(nearbyCoordinates.lat - currentCoordinates.lat);
-  const dLon = deg2rad(nearbyCoordinates.lng - currentCoordinates.lng);
+    const R = 6371; // bán kính Trái Đất (km)
+    const dLat = deg2rad(nearbyCoordinates.lat - currentCoordinates.lat);
+    const dLon = deg2rad(nearbyCoordinates.lng - currentCoordinates.lng);
 
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(currentCoordinates.lat)) *
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(currentCoordinates.lat)) *
       Math.cos(deg2rad(currentCoordinates.lng)) *
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
 
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distanceKm = R * c; // khoảng cách (km)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    distanceKm = R * c; // khoảng cách (km)
+  }
   if (distanceKm < 1) {
     return `${Math.round(distanceKm * 1000)} m`; // đổi sang mét
   }

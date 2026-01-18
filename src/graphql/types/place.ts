@@ -15,7 +15,6 @@ export interface Place {
   thumbnail?: string;
   description?: string;
   mapboxId?: string;
-  // Extended fields for MapPage/LocationDetailPage
   photos?: string[];
 }
 
@@ -28,6 +27,7 @@ export interface GooglePlace {
   lng: number;
   thumbnail: string;
   mapboxId: string;
+  distance?: number;
 }
 
 export interface OpeningHour {

@@ -6,28 +6,38 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  Platform,
-  PermissionsAndroid,
 } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
-import MapView, { Marker } from 'react-native-maps';
+import MapboxGL from '@rnmapbox/maps';
 import { useNavigation } from '@react-navigation/native';
-import { useQuery } from '@apollo/client/react';
-import { GET_CHECKIN_FEED } from '../../graphql/queries';
+import { useQuery as useApolloQuery } from '@apollo/client/react';
+import { GET_CHECKIN_FEED, GET_NEARBY_PLACES } from '../../graphql/queries';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
-import { Checkin } from '../../graphql/types';
+import { Checkin, Place } from '../../graphql/types';
+import useLocation from '../../hooks/useLocation';
 
 const screenWidth = Dimensions.get('window').width;
 interface CHECKINS {
-    checkIns: Checkin[];
+  checkIns: Checkin[];
 }
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Map'>;
 
 
 export default function MapPage() {
   const navigation = useNavigation<NavigationProp>();
-  const { data, loading, error } = useQuery<CHECKINS>(GET_CHECKIN_FEED);
+  const location = useLocation();
+  // Query for nearby places on map
+  const { data: nearbyData, loading: nearbyLoading } = useApolloQuery(GET_NEARBY_PLACES, {
+    variables: {
+      latitude: location?.lat || 0,
+      longitude: location?.lng || 0,
+      radius: 5000, // 5km radius for map
+    },
+    skip: !location,
+  });
+  const places = (nearbyData as any)?.nearbyPlaces || [];
+
+  const { data, loading, error } = useApolloQuery<CHECKINS>(GET_CHECKIN_FEED);
   const [selectedCheckIn, setSelectedCheckIn] = useState<Checkin | null>(null);
 
   if (loading) return <Text>Loading...</Text>;
@@ -35,70 +45,54 @@ export default function MapPage() {
 
   const checkIns: Checkin[] = data?.checkIns || [];
 
-  const [region, setRegion] = useState<{
-    latitude: number;
-    longitude: number;
-    latitudeDelta: number;
-    longitudeDelta: number;
-  } | null>(null);
-
-  useEffect(() => {
-    const requestLocation = async () => {
-      if (Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-        );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) return;
+  const handleSelectPlace = (place: Place) => {
+    const { data, loading, error } = useApolloQuery(GET_CHECKIN_FEED,
+      {
+        variables: {
+          mapboxId: place.mapboxId
+        },
       }
-
-      Geolocation.getCurrentPosition(
-        (position) => {
-          setRegion({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          });
-        },
-        (error) => {
-          console.error('Location error:', error);
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-      );
-    };
-
-    requestLocation();
-  }, []);
-
+    );
+  }
   return (
     <View style={{ flex: 1 }}>
       {/* Bản đồ */}
-      <MapView
+      <MapboxGL.MapView
         style={{ flex: 1 }}
-        initialRegion={{
-          latitude: region?.latitude || 40.7128,
-          longitude: region?.longitude || -74.006,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
-        }}
+        styleURL={MapboxGL.StyleURL.Street}
         onPress={() => setSelectedCheckIn(null)}
       >
-        {checkIns.map((ci) => (
-          <Marker
-            key={ci.id}
-            coordinate={{
-              latitude: ci.place.lat,
-              longitude: ci.place.lng,
-            }}
-            onPress={() => setSelectedCheckIn(ci)}
+        <MapboxGL.Camera
+          zoomLevel={12}
+          centerCoordinate={[
+            location?.lng || 106.660172,
+            location?.lat || 10.762622,
+          ]}
+          animationMode="flyTo"
+          animationDuration={1000}
+        />
+
+        {/* Markers for each check-in */}
+        {places.map((place: any) => (
+          <MapboxGL.MarkerView
+            key={place.mapboxId}
+            coordinate={[place.lng, place.lat]}
           >
-            <Image
-              source={{ uri: ci.user?.avatarUrl }}
-              style={{ width: 40, height: 40, borderRadius: 20 }}
-            />
-          </Marker>
+            <TouchableOpacity
+              onPress={() => setSelectedCheckIn(place)}
+              activeOpacity={0.7}
+            >
+              <Image
+                source={{ uri: place.thumbnail }}
+                style={[
+                  styles.markerImage,
+                  selectedCheckIn?.place?.mapboxId === place.mapboxId && styles.markerImageSelected,
+                ]}
+              />
+            </TouchableOpacity>
+          </MapboxGL.MarkerView>
         ))}
-      </MapView>
+      </MapboxGL.MapView>
 
       {/* Thẻ thông tin check-in */}
       {selectedCheckIn && (
@@ -148,6 +142,20 @@ export default function MapPage() {
 }
 
 const styles = StyleSheet.create({
+  markerImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  markerImageSelected: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 3,
+    borderColor: '#0a84ff',
+  },
   card: {
     position: 'absolute',
     bottom: 80,

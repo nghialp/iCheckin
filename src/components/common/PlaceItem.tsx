@@ -28,7 +28,7 @@ const PlaceItem: React.FC<PlaceItemProps> = ({ place }) => {
 			<View style={styles.content}>
 				<Text style={styles.name}>{place.name}</Text>
 				<Text style={styles.info}>
-					{place.types[0]} • {getDistanceFromLatLonInKm(location, place)}
+					{place.types[0]} • {getDistanceFromLatLonInKm(location, place, place.distance)}
 				</Text>
 			</View>
 		</TouchableOpacity>

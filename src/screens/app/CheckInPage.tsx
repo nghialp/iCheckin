@@ -43,7 +43,7 @@ interface CheckInPlaceResponse {
   };
 }
 
-type PlaceWithDistance = GooglePlace & { distance: string };
+type PlaceWithDistance = GooglePlace & { distance: number };
 
 export default function CheckInPage() {
   const { t } = useTranslation();
@@ -80,9 +80,7 @@ export default function CheckInPage() {
     if (!data?.nearbyPlaces) return [];
     return data.nearbyPlaces.map((place) => ({
       ...place,
-      distance: currentLocation
-        ? getDistanceFromLatLonInKm(currentLocation, place)
-        : '0',
+      distance: place?.distance || 0,
     }));
   }, [data, currentLocation]);
 
@@ -97,7 +95,7 @@ export default function CheckInPage() {
     try {
       const res = await checkInPlace({
         variables: {
-          placeId: selectedPlace.googlePlaceId,
+          placeId: selectedPlace.mapboxId,
           content,
           photos: selectedPhotos,
         },
@@ -171,7 +169,7 @@ export default function CheckInPage() {
       ) : (
         <FlatList
           data={nearbyPlaces}
-          keyExtractor={(item) => item.googlePlaceId}
+          keyExtractor={(item) => item.mapboxId}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.placeCard}
@@ -179,18 +177,18 @@ export default function CheckInPage() {
             >
               <View style={styles.placeIcon}>
                 <IconButton
-                  icon={getPlaceIcon(item.type)}
+                  icon={getPlaceIcon(item?.types?.[0])}
                   size={24}
                   iconColor="#0066CC"
                 />
               </View>
               <View style={styles.placeInfo}>
                 <Text style={styles.placeName}>{item.name}</Text>
-                <Text style={styles.placeType}>{item.type}</Text>
+                <Text style={styles.placeType}>{item?.types?.[0]}</Text>
                 <Text style={styles.placeAddress}>{item.address}</Text>
               </View>
               <View style={styles.placeDistance}>
-                <Text style={styles.distanceText}>{item.distance} km</Text>
+                <Text style={styles.distanceText}>{getDistanceFromLatLonInKm(currentLocation, item, item.distance)} km</Text>
                 <IconButton icon="chevron-right" size={20} iconColor="#999" />
               </View>
             </TouchableOpacity>
@@ -216,7 +214,7 @@ export default function CheckInPage() {
                 {selectedPlace?.name || t('checkin.unknownPlace')}
               </Text>
               <Text style={styles.selectedPlaceType}>
-                {selectedPlace?.type || ''}
+                {selectedPlace?.types?.[0] || ''}
               </Text>
             </View>
           </View>

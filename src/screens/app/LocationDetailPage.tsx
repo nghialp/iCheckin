@@ -11,7 +11,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapboxGL from '@rnmapbox/maps';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation } from '@apollo/client/react';
 import { GET_PLACE_DETAIL } from '../../graphql/queries';
@@ -70,23 +70,38 @@ export default function LocationDetailPage({ place_id }: { place_id?: string }) 
 
       {/* Bản đồ */}
       <View style={styles.mapContainer}>
-        <MapView
-          style={{ flex: 1 }}
-          initialRegion={{
-            latitude: place.lat,
-            longitude: place.lng,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          }}
-        >
-          <Marker
-            coordinate={{
-              latitude: place.lat,
-              longitude: place.lng,
-            }}
-            title={place.name}
+        <MapboxGL.MapView style={{ flex: 1 }} styleURL={MapboxGL.StyleURL.Street}>
+          <MapboxGL.Camera
+            zoomLevel={15}
+            centerCoordinate={[place.lng, place.lat]}
+            animationMode="flyTo"
+            animationDuration={1500}
           />
-        </MapView>
+          <MapboxGL.ShapeSource id="point-source" shape={{
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [place.lng, place.lat],
+            },
+            properties: {
+              title: place.name,
+            },
+          }}>
+            <MapboxGL.CircleLayer
+              id="point-layer"
+              style={{
+                circleRadius: 8,
+                circleColor: '#0a84ff',
+                circleOpacity: 0.8,
+              }}
+            />
+          </MapboxGL.ShapeSource>
+          <MapboxGL.MarkerView coordinate={[place.lng, place.lat]}>
+            <View style={styles.mapMarker}>
+              <Text style={styles.mapMarkerText}>📍</Text>
+            </View>
+          </MapboxGL.MarkerView>
+        </MapboxGL.MapView>
       </View>
 
       {/* Nút Check-In */}
@@ -173,6 +188,19 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     marginBottom: 12,
+  },
+  mapMarker: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#0a84ff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 3,
+    borderColor: '#fff',
+  },
+  mapMarkerText: {
+    fontSize: 20,
   },
   checkInButton: {
     backgroundColor: '#0a84ff',

@@ -12,6 +12,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useQuery as useApolloQuery } from '@apollo/client/react';
+import MapboxGL from '@rnmapbox/maps';
 import Icon from '../../components/common/Icon';
 import { GET_NEARBY_PLACES } from '../../graphql/queries';
 import useLocation from '../../hooks/useLocation';
@@ -99,64 +100,76 @@ export default function CheckInScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Map Container (Placeholder for actual map) */}
+      {/* Map Container */}
       <View style={styles.mapContainer}>
-        <View style={styles.mapPlaceholder}>
-          {/* User Location Pin */}
-          <View style={styles.userLocationPin}>
-            <View style={styles.userLocationDot} />
-          </View>
+        <MapboxGL.MapView
+          style={{ flex: 1 }}
+          styleURL={MapboxGL.StyleURL.Street}
+        >
+          <MapboxGL.Camera
+            zoomLevel={14}
+            centerCoordinate={[
+              location?.lng || 106.660172,
+              location?.lat || 10.762622,
+            ]}
+            animationMode="flyTo"
+            animationDuration={1000}
+          />
 
-          {/* Place Pins */}
-          {places.map((place: Place, index: number) => (
-            <TouchableOpacity
-              key={place.id}
-              style={[
-                styles.placePin,
-                {
-                  top: `${15 + (index * 20)}%`,
-                  left: `${10 + (index * 15)}%`,
-                },
-              ]}
-              onPress={() => handleSelectPlace(place)}
+          {/* User location marker */}
+          {location && (
+            <MapboxGL.MarkerView
+              coordinate={[location.lng, location.lat]}
             >
-              <View
-                style={[
-                  styles.pinMarker,
-                  selectedPlace?.id === place.id && styles.pinMarkerActive,
-                ]}
+              <View style={styles.userLocationMarker}>
+                <View style={styles.userLocationDot} />
+              </View>
+            </MapboxGL.MarkerView>
+          )}
+
+          {/* Place markers */}
+          {places.map((place: Place) => (
+            <MapboxGL.MarkerView
+              key={place.id}
+              coordinate={[place.lng, place.lat]}
+            >
+              <TouchableOpacity
+                onPress={() => handleSelectPlace(place)}
+                activeOpacity={0.7}
               >
-                {place.image ? (
-                  <Image
-                    source={{ uri: place.image }}
-                    style={styles.pinImage}
-                  />
-                ) : (
-                  <Icon name="map-marker" size={20} color="#fff" />
-                )}
-              </View>
-              <View style={styles.pinLabel}>
-                <Text style={styles.pinLabelText} numberOfLines={1}>
-                  {place.name}
-                </Text>
-              </View>
-            </TouchableOpacity>
+                <View
+                  style={[
+                    styles.pinMarker,
+                    selectedPlace?.id === place.id && styles.pinMarkerActive,
+                  ]}
+                >
+                  {place.image ? (
+                    <Image
+                      source={{ uri: place.image }}
+                      style={styles.pinImage}
+                    />
+                  ) : (
+                    <Icon name="map-marker" size={20} color="#fff" />
+                  )}
+                </View>
+              </TouchableOpacity>
+            </MapboxGL.MarkerView>
           ))}
+        </MapboxGL.MapView>
 
-          {/* Loading or Empty State */}
-          {nearbyLoading && (
-            <View style={styles.loadingContainer}>
-              <Text style={styles.loadingText}>Loading nearby places...</Text>
-            </View>
-          )}
+        {/* Loading or Empty State Overlay */}
+        {nearbyLoading && (
+          <View style={styles.loadingContainer}>
+            <Text style={styles.loadingText}>Loading nearby places...</Text>
+          </View>
+        )}
 
-          {!nearbyLoading && places.length === 0 && (
-            <View style={styles.emptyStateContainer}>
-              <Icon name="map-search" size={48} color="#ddd" />
-              <Text style={styles.emptyStateText}>No places nearby</Text>
-            </View>
-          )}
-        </View>
+        {!nearbyLoading && places.length === 0 && (
+          <View style={styles.emptyStateContainer}>
+            <Icon name="map-search" size={48} color="#ddd" />
+            <Text style={styles.emptyStateText}>No places nearby</Text>
+          </View>
+        )}
       </View>
 
       {/* Bottom Sheet - Place Info */}
@@ -310,24 +323,13 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
   },
-  mapPlaceholder: {
-    flex: 1,
-    backgroundColor: '#E8F4FD',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  userLocationPin: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -12 }, { translateY: -12 }],
-    zIndex: 10,
-  },
-  userLocationDot: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+  userLocationMarker: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     backgroundColor: '#0066CC',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 3,
     borderColor: '#fff',
     shadowColor: '#000',
@@ -336,10 +338,11 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  placePin: {
-    position: 'absolute',
-    alignItems: 'center',
-    zIndex: 5,
+  userLocationDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#fff',
   },
   pinMarker: {
     width: 44,
@@ -366,24 +369,11 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
   },
-  pinLabel: {
-    marginTop: 4,
-    backgroundColor: '#000',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-    maxWidth: 80,
-  },
-  pinLabelText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
   loadingContainer: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
   },
   loadingText: {
     fontSize: 14,
@@ -528,5 +518,5 @@ const styles = StyleSheet.create({
   },
 });
 
-// Note: Replace <View style={styles.mapPlaceholder}> with actual Mapbox <MapView> component
+// Note: Replace <View style={styles.mapPlaceholder}> with actual MapboxGL <MapView> component
 // For now using View placeholder to simulate map
