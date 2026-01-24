@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useQuery as useApolloQuery } from '@apollo/client/react';
+import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
 import Icon from '../../components/common/Icon';
 import CheckInModal from '../../components/common/CheckInModal';
 import { GET_PLACE_DETAIL_FULL, GET_PLACE_CHECKINS } from '../../graphql/queries';
@@ -61,13 +61,13 @@ export default function CheckInDetailScreen() {
   const placeId = route.params?.placeId;
 
   // Query place details
-  const { data: placeData, loading: placeLoading } = useApolloQuery(GET_PLACE_DETAIL_FULL, {
+  const { data: placeData, loading: placeLoading } = useApolloQueryWrapper(GET_PLACE_DETAIL_FULL, {
     variables: { id: placeId },
     skip: !placeId,
   });
 
   // Query check-ins at this place
-  const { data: checkInsData, loading: checkInsLoading } = useApolloQuery(
+  const { data: checkInsData, loading: checkInsLoading } = useApolloQueryWrapper(
     GET_PLACE_CHECKINS,
     {
       variables: { placeId, limit: 20, offset: 0 },

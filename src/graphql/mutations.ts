@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
-import { LOGIN_MUTATION, REFRESH_TOKEN } from "../graphql/queries/login";
-import { SIGNUP_MUTATION } from "./queries/signup";
+import { LOGIN_MUTATION, REFRESH_TOKEN } from "./mutations/login.mutation";
+import { SIGNUP_MUTATION } from "./mutations/signup.mutation";
 
 // Check-in mutations
 const CHECK_IN_MUTATION = gql`
@@ -25,22 +25,9 @@ const CHECK_IN_MUTATION = gql`
 
 const CHECK_IN_PLACE_MUTATION = gql`
   mutation CheckInPlace($placeId: ID!, $content: String, $media: [String]) {
-    checkInPlace(input: { placeId: $placeId, content: $content, media: $media }) {
-      success
-      message
+    myCheckinForPlace(input: { placeId: $placeId, content: $content, media: $media }) {
       checkin {
-        id
-        checkedAt
-        content
-        media {
-          id
-          url
-        }
-        place {
-          id
-          name
-        }
-      }
+        ...CHECKIN_FIELDS
     }
   }
 `;

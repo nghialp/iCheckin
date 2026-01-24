@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Alert, Image } from 'react-native';
 import { Text, TextInput, Button } from 'react-native-paper';
 import { useMutation } from '@apollo/client/react';
-import { RESET_PASSWORD_MUTATION } from '../../graphql/queries/resetPassword';
+import { RESET_PASSWORD_MUTATION } from '../../graphql/mutations/resetPassword.mutation';
 import { ResetPasswordResponse, ResetPasswordVariables } from '../../graphql/types/resetPassword';
 import { t } from 'i18next';
 import { authTheme } from '../../theme/authTheme';

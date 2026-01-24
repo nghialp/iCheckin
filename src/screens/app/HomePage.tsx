@@ -1,21 +1,21 @@
 import React from 'react';
 import { Text, FlatList, View, StyleSheet, ScrollView, Dimensions } from 'react-native';
-import { useQuery } from '@apollo/client/react';
+import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
 import ProfileCard from '../../components/common/ProfileCard';
 import FriendsFollowingCard from '../../components/common/FriendsFollowingCard';
 import PlaceItem from '../../components/common/PlaceItem';
 import CheckInFeedItem from '../../components/common/CheckInFeedItem';
-import { GET_HOME_DATA } from '../../graphql/queries';
-import { GetHomeDataResponse } from '../../graphql/types';
 import AppLayout from '../../components/common/AppLayout';
-import { Coordinates } from '../../graphql/types/place';
 import useLocation from '../../hooks/useLocation';
+import { GET_HOME_DATA } from '../../graphql/queries/home.query';
+import { Coordinates } from '../../graphql/interfaces/entities/place.interface';
+import { GetHomeDataResponse } from '../../graphql/interfaces/pages/home.interface';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function HomePage() {
   const location = useLocation();
-  const { data, loading, error } = useQuery<GetHomeDataResponse, Coordinates>(
+  const { data, loading, error } = useApolloQueryWrapper<GetHomeDataResponse, Coordinates>(
     GET_HOME_DATA,
     {
       variables: { lat: location?.lat || 10.762622, lng: location?.lng || 106.660172 },

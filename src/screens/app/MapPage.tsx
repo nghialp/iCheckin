@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,135 +9,150 @@ import {
 } from 'react-native';
 import MapboxGL from '@rnmapbox/maps';
 import { useNavigation } from '@react-navigation/native';
-import { useQuery as useApolloQuery } from '@apollo/client/react';
-import { GET_CHECKIN_FEED, GET_NEARBY_PLACES } from '../../graphql/queries';
+import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
-import { Checkin, Place } from '../../graphql/types';
 import useLocation from '../../hooks/useLocation';
+import AppLayout from '../../components/common/AppLayout';
+import { GET_CHECKIN_FEED, GET_NEARBY_PLACES } from '../../graphql/queries/map.query';
+import { Coordinates, MapPlace } from '../../graphql/interfaces/entities/place.interface';
+import { Checkin, CHECKINS } from '../../graphql/interfaces/entities/checkin.interface';
 
 const screenWidth = Dimensions.get('window').width;
-interface CHECKINS {
-  checkIns: Checkin[];
-}
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Map'>;
 
+// GraphQL Response types
+interface NearbyPlacesResponse {
+  nearbyPlaces: MapPlace[];
+}
+
+interface CheckInsResponse {
+  checkIns: Checkin[];
+}
 
 export default function MapPage() {
   const navigation = useNavigation<NavigationProp>();
   const location = useLocation();
-  // Query for nearby places on map
-  const { data: nearbyData, loading: nearbyLoading } = useApolloQuery(GET_NEARBY_PLACES, {
-    variables: {
-      latitude: location?.lat || 0,
-      longitude: location?.lng || 0,
-      radius: 5000, // 5km radius for map
-    },
-    skip: !location,
-  });
-  const places = (nearbyData as any)?.nearbyPlaces || [];
+  const [selectedPlace, setSelectedPlace] = useState<MapPlace | null>(null);
 
-  const { data, loading, error } = useApolloQuery<CHECKINS>(GET_CHECKIN_FEED);
+  // Query for nearby places on map
+  const { data: nearbyData, loading: nearbyLoading } = useApolloQueryWrapper<NearbyPlacesResponse, Coordinates>(
+    GET_NEARBY_PLACES,
+    {
+      variables: {
+        lat: location?.lat || 0,
+        lng: location?.lng || 0,
+        radius: 5000, // 5km radius for map
+      },
+      skip: !location,
+    }
+  );
+  const places = (nearbyData as NearbyPlacesResponse)?.nearbyPlaces || [];
+
+  // Query for check-ins when a place is selected
+  const { data: checkInsData, loading: checkInsLoading } = useApolloQueryWrapper<CheckInsResponse>(
+    GET_CHECKIN_FEED,
+    {
+      variables: {
+        mapboxId: selectedPlace?.mapboxId || '',
+      },
+      skip: !selectedPlace?.mapboxId,
+    }
+  );
+
   const [selectedCheckIn, setSelectedCheckIn] = useState<Checkin | null>(null);
 
-  if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error: {error.message}</Text>;
+  // Update selectedCheckIn when checkInsData changes
+  useEffect(() => {
+    if (checkInsData?.checkIns && checkInsData.checkIns.length > 0) {
+      setSelectedCheckIn(checkInsData.checkIns[0]);
+    } else {
+      setSelectedCheckIn(null);
+    }
+  }, [checkInsData]);
 
-  const checkIns: Checkin[] = data?.checkIns || [];
+  const handleSelectPlace = (place: MapPlace | null) => {
+    setSelectedPlace(place);
+    if (place === null) {
+      setSelectedCheckIn(null);
+    }
+  };
 
-  const handleSelectPlace = (place: Place) => {
-    const { data, loading, error } = useApolloQuery(GET_CHECKIN_FEED,
-      {
-        variables: {
-          mapboxId: place.mapboxId
-        },
-      }
-    );
-  }
   return (
-    <View style={{ flex: 1 }}>
-      {/* Bản đồ */}
-      <MapboxGL.MapView
-        style={{ flex: 1 }}
-        styleURL={MapboxGL.StyleURL.Street}
-        onPress={() => setSelectedCheckIn(null)}
-      >
-        <MapboxGL.Camera
-          zoomLevel={12}
-          centerCoordinate={[
-            location?.lng || 106.660172,
-            location?.lat || 10.762622,
-          ]}
-          animationMode="flyTo"
-          animationDuration={1000}
-        />
+    <AppLayout>
+      <View style={{ flex: 1 }}>
+        {/* Bản đồ */}
+        <MapboxGL.MapView
+          style={{ flex: 1 }}
+          styleURL={MapboxGL.StyleURL.Street}
+          onPress={() => handleSelectPlace(null)}
+        >
+          <MapboxGL.Camera
+            zoomLevel={12}
+            centerCoordinate={[
+              location?.lng || 106.660172,
+              location?.lat || 10.762622,
+            ]}
+            animationMode="flyTo"
+            animationDuration={1000}
+          />
 
-        {/* Markers for each check-in */}
-        {places.map((place: any) => (
-          <MapboxGL.MarkerView
-            key={place.mapboxId}
-            coordinate={[place.lng, place.lat]}
-          >
-            <TouchableOpacity
-              onPress={() => setSelectedCheckIn(place)}
-              activeOpacity={0.7}
+          {/* Markers for each check-in */}
+          {places.map((place) => (
+            <MapboxGL.MarkerView
+              key={place.mapboxId}
+              coordinate={[place.lng, place.lat]}
             >
-              <Image
-                source={{ uri: place.thumbnail }}
-                style={[
-                  styles.markerImage,
-                  selectedCheckIn?.place?.mapboxId === place.mapboxId && styles.markerImageSelected,
-                ]}
-              />
-            </TouchableOpacity>
-          </MapboxGL.MarkerView>
-        ))}
-      </MapboxGL.MapView>
+              <TouchableOpacity
+                onPress={() => handleSelectPlace(place)}
+                activeOpacity={0.7}
+              >
+                <Image
+                  source={{ uri: place.thumbnail }}
+                  style={[
+                    styles.markerImage,
+                    selectedCheckIn?.place?.mapboxId === place.mapboxId && styles.markerImageSelected,
+                  ]}
+                />
+              </TouchableOpacity>
+            </MapboxGL.MarkerView>
+          ))}
+        </MapboxGL.MapView>
 
-      {/* Thẻ thông tin check-in */}
-      {selectedCheckIn && (
-        <View style={styles.card}>
-          <Text style={styles.placeName}>{selectedCheckIn.place.name}</Text>
-          <Text style={styles.userName}>by {selectedCheckIn.user?.name}</Text>
+        {/* Thẻ thông tin check-in */}
+        {selectedCheckIn && (
+          <View style={styles.card}>
+            <Text style={styles.placeName}>{selectedCheckIn.place.name}</Text>
+            <Text style={styles.userName}>by {selectedCheckIn.user?.name}</Text>
 
-          <View style={styles.actionRow}>
-            <TouchableOpacity style={styles.actionButton}>
-              <Text>❤️ Like</Text>
-            </TouchableOpacity>
+            <View style={styles.actionRow}>
+              <TouchableOpacity style={styles.actionButton}>
+                <Text>❤️ Like</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={() =>
-                navigation.navigate('LocationDetail', {
-                  placeId: selectedCheckIn.place.id,
-                })
-              }
-            >
-              <Text>Check In</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Bình luận
-          {selectedCheckIn.comments?.length ? (
-            <View style={{ marginTop: 8 }}>
-              <Text style={styles.comment}>
-                {selectedCheckIn.comments[0].user.name}:{' '}
-                {selectedCheckIn.comments[0].content}
-              </Text>
-              <Text style={styles.timestamp}>2h</Text>
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={() =>
+                  navigation.navigate('LocationDetail', {
+                    placeId: selectedCheckIn.place.id,
+                  })
+                }
+              >
+                <Text>Check In</Text>
+              </TouchableOpacity>
             </View>
-          ) : null} */}
-        </View>
-      )}
+          </View>
+        )}
 
-      {/* Thanh điều hướng */}
-      <View style={styles.navBar}>
-        <Text style={styles.navItem}>Home</Text>
-        <Text style={styles.navItem}>Map</Text>
-        <Text style={styles.navItem}>Rewards</Text>
-        <Text style={styles.navItem}>Profile</Text>
+        {/* Thanh điều hướng */}
+        <View style={styles.navBar}>
+          <Text style={styles.navItem}>Home</Text>
+          <Text style={styles.navItem}>Map</Text>
+          <Text style={styles.navItem}>Rewards</Text>
+          <Text style={styles.navItem}>Profile</Text>
+        </View>
       </View>
-    </View>
+    </AppLayout>
   );
 }
 
@@ -178,8 +193,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 4,
   },
-  comment: { marginTop: 8, fontStyle: 'italic' },
-  timestamp: { color: '#999', fontSize: 12 },
   navBar: {
     position: 'absolute',
     bottom: 0,
@@ -195,3 +208,4 @@ const styles = StyleSheet.create({
   },
   navItem: { fontSize: 14, fontWeight: '500' },
 });
+

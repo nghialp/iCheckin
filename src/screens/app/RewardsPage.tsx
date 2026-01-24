@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useQuery as useApolloQuery } from '@apollo/client/react';
+import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
 import Icon from '../../components/common/Icon';
 import { GET_USER_REWARDS } from '../../graphql/queries';
 
@@ -51,7 +51,7 @@ export default function RewardsPage() {
   const [refreshing, setRefreshing] = useState(false);
 
   // Query user rewards
-  const { data: rewardsData, loading: rewardsLoading, refetch } = useApolloQuery(
+  const { data: rewardsData, loading: rewardsLoading } = useApolloQueryWrapper(
     GET_USER_REWARDS,
     {
       variables: { limit: 50 },
@@ -76,15 +76,6 @@ export default function RewardsPage() {
   } else if (sortBy === 'popular') {
     rewards = [...rewards].sort((a, b) => (b.likes || 0) - (a.likes || 0));
   }
-
-  const handleRefresh = useCallback(async () => {
-    setRefreshing(true);
-    try {
-      await refetch();
-    } finally {
-      setRefreshing(false);
-    }
-  }, [refetch]);
 
   const handleSearch = () => {
     navigation.navigate('Search');
@@ -216,7 +207,7 @@ export default function RewardsPage() {
         keyExtractor={(item) => item.id}
         scrollEnabled={true}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          <RefreshControl refreshing={refreshing} />
         }
         ListHeaderComponent={
           <>

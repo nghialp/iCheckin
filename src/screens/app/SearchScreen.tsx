@@ -11,10 +11,11 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useQuery as useApolloQuery } from '@apollo/client/react';
+import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
 import Icon from '../../components/common/Icon';
 import FilterModal from '../../components/common/FilterModal';
-import { GET_NEARBY_PLACES, SEARCH_PLACES } from '../../graphql/queries';
+import { SEARCH_PLACES } from '../../graphql/queries';
+import { GET_NEARBY_PLACES } from '../../graphql/queries/map.query';
 import useLocation from '../../hooks/useLocation';
 
 interface Filter {
@@ -38,22 +39,21 @@ export default function SearchPage() {
   });
 
   // Query for nearby places
-  const { data: nearbyData, loading: nearbyLoading } = useApolloQuery(GET_NEARBY_PLACES, {
+  const { data: nearbyData, loading: nearbyLoading } = useApolloQueryWrapper(GET_NEARBY_PLACES, {
     variables: {
-      latitude: location?.lat || 0,
-      longitude: location?.lng || 0,
+      lat: location?.lat || 0,
+      lng: location?.lng || 0,
       radius: (filters.distance || 10) * 1000, // Convert km to meters
     },
     skip: !location,
   });
 
   // Query for search results
-  const { data: searchData, loading: searchLoading } = useApolloQuery(SEARCH_PLACES, {
+  const { data: searchData, loading: searchLoading } = useApolloQueryWrapper(SEARCH_PLACES, {
     variables: {
       query: searchQuery,
-      latitude: location?.lat || 0,
-      longitude: location?.lng || 0,
-      limit: 20,
+      lat: location?.lat || 0,
+      lng: location?.lng || 0,
     },
     skip: !searchQuery,
   });

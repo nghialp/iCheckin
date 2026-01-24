@@ -9,7 +9,6 @@ import Config from 'react-native-config';
 // TODO: Replace with your actual MapboxGL access token
 // Get your token from: https://account.mapbox.com/tokens/
 // Store in .env file as: MAPBOX_ACCESS_TOKEN=your_token_here
-console.log('Mapbox Access Token:', Config.MAPBOX_ACCESS_TOKEN);
 export const MAPBOX_ACCESS_TOKEN = Config.MAPBOX_ACCESS_TOKEN || '';
 
 /**

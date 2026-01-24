@@ -1,33 +1,5 @@
 import { gql } from "@apollo/client";
 
-// Home page data query
-export const GET_HOME_DATA = gql`
-  query GetHomeData($lat: Float!, $lng: Float!) {
-    nearbyPlaces(lat: $lat, lng: $lng) {
-      mapboxId
-      name
-      types
-      address
-      thumbnail
-      lat
-      lng
-      distance
-    }
-    myCheckins {
-      id
-      place {
-        id
-        mapboxId
-        name
-        thumbnail
-      }
-      checkedAt
-      status
-      mood
-    }
-  }
-`;
-
 // Place detail query
 export const GET_PLACE_DETAIL = gql`
   query GetPlaceDetail($placeId: ID!) {
@@ -70,59 +42,8 @@ export const SEARCH_PLACES = gql`
   }
 `;
 
-// Get nearby places query
-export const GET_NEARBY_PLACES = gql`
-  query GetNearbyPlaces($lat: Float!, $lng: Float!, $radius: Float) {
-    nearbyPlaces(lat: $lat, lng: $lng, radius: $radius) {
-      mapboxId
-      name
-      types
-      address
-      thumbnail
-      lat
-      lng
-      distance
-    }
-  }
-`;
 
-// Get check-in locations feed
-export const GET_CHECKIN_FEED = gql`
-  query GetCheckInFeed($limit: Int, $limit: Int) {
-    placeCheckins(mapboxId: $mapboxId, limit: $limit, limit: $limit) {
-      id
-      caption
-      photos
-      feelings
-      likes
-      createdAt
-      user {
-        id
-        name
-        avatar
-      }
-      place {
-        id
-        name
-        category
-        location {
-          lat
-          lng
-        }
-      }
-      comments {
-        id
-        content
-        createdAt
-        user {
-          id
-          name
-          avatar
-        }
-      }
-    }
-  }
-`;
+
 
 // Get rewards page data
 export const GET_REWARD_PAGE = gql`

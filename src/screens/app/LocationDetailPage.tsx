@@ -13,21 +13,61 @@ import {
 } from 'react-native';
 import MapboxGL from '@rnmapbox/maps';
 import { useTranslation } from 'react-i18next';
-import { useQuery, useMutation } from '@apollo/client/react';
+import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
+import { useApolloMutationWrapper } from '../../hooks/useApolloMutationWrapper';
 import { GET_PLACE_DETAIL } from '../../graphql/queries';
 import { CHECK_IN_PLACE_MUTATION } from '../../graphql/mutations';
-import { CheckInPlaceResponse, Place, Review } from '../../graphql/types';
-// import { CheckInPlaceResponse, Place, Review } from '../utils/types';
+import { Place } from '../../graphql/interfaces/entities/place.interface';
 
 const screenWidth = Dimensions.get('window').width;
+
+// GraphQL Response types
+interface PlaceDetailResponse {
+  place: Place;
+  placeCheckins: Review[];
+}
+
+interface CheckInPlaceResponse {
+  success: boolean;
+  message: string;
+}
+
+interface User {
+  id: string;
+  name: string;
+  avatarUrl: string;
+}
+
+interface Review {
+  id: string;
+  caption: string;
+  photos: string[];
+  feelings: string[];
+  likes: number;
+  comments: Comment[];
+  user: User;
+  createdAt: string;
+}
+
+interface Comment {
+  id: string;
+  content: string;
+  createdAt: string;
+  user: User;
+}
 
 export default function LocationDetailPage({ place_id }: { place_id?: string }) {
   const { t } = useTranslation();
 
-  const { data, loading, error } = useQuery<any>(GET_PLACE_DETAIL, {
-    variables: { id: place_id || '' },
-  });
-  const [checkIn] = useMutation<CheckInPlaceResponse>(CHECK_IN_PLACE_MUTATION);
+  const { data, loading, error } = useApolloQueryWrapper<PlaceDetailResponse>(
+    GET_PLACE_DETAIL,
+    {
+      variables: { id: place_id || '' },
+    }
+  );
+  const { mutate: checkIn } = useApolloMutationWrapper<CheckInPlaceResponse>(
+    CHECK_IN_PLACE_MUTATION
+  );
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
 
   if (loading) return <Text>{t('loading')}</Text>;
@@ -39,11 +79,11 @@ export default function LocationDetailPage({ place_id }: { place_id?: string }) 
 
   const handleCheckIn = async () => {
     try {
-      const res = await checkIn({ variables: { placeId: place.id } });
+      const res = await checkIn({ placeId: place.id });
       if (res.data?.success) {
         Alert.alert(t('checkInSuccess'), res.data.message);
       }
-    } catch (err) {
+    } catch (err: any) {
       Alert.alert(t('checkInFailed'), t('checkInFailedMessage'));
     }
   };
@@ -243,3 +283,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
+

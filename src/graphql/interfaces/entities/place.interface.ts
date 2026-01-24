@@ -1,7 +1,10 @@
+import { UserBasic } from "./user.interface";
+
 // Place types - consolidated (single source of truth)
 export interface Coordinates {
   lat: number;
   lng: number;
+  radius?: number;
 }
 
 export interface Place {
@@ -19,7 +22,7 @@ export interface Place {
 }
 
 // Google Places API response type
-export interface GooglePlace {
+export interface MapPlace {
   name: string;
   types: string;
   address: string;
@@ -35,4 +38,3 @@ export interface OpeningHour {
   open: string;
   close: string;
 }
-

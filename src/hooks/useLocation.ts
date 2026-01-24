@@ -1,10 +1,8 @@
 // src/hooks/useLocation.ts
 import { useState, useEffect } from "react";
-import { Platform } from "react-native";
-import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
-import Geolocation, { GeoPosition } from "react-native-geolocation-service";
+import Geolocation from "react-native-geolocation-service";
 import { requestLocationPermission } from "../utils/functions";
-import { Coordinates } from "../graphql/types/place";
+import { Coordinates } from "../graphql/interfaces/entities/place.interface";
 
 export default function useLocation() {
   // Khai báo kiểu rõ ràng thay vì any

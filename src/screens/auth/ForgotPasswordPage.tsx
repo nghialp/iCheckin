@@ -9,7 +9,7 @@ import {
 import { t } from 'i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useMutation } from '@apollo/client/react';
-import { FORGOT_PASSWORD_MUTATION } from '../../graphql/queries/forgotPassword';
+import { FORGOT_PASSWORD_MUTATION } from '../../graphql/mutations/forgotPassword.mutation';
 import { ForgotPasswordResponse, ForgotPasswordVariables } from '../../graphql/types/forgotPassword';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';

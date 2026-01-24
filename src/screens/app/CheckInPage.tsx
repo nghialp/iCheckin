@@ -10,22 +10,23 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import { useQuery, useMutation } from '@apollo/client/react';
+import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
+import { useApolloMutationWrapper } from '../../hooks/useApolloMutationWrapper';
 import PagerView from 'react-native-pager-view';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { Appbar, IconButton, Button, Card, Divider } from 'react-native-paper';
-import { GET_NEARBY_PLACES } from '../../graphql/queries';
 import { CHECK_IN_PLACE_MUTATION } from '../../graphql/mutations';
 import useLocation from '../../hooks/useLocation';
-import { Coordinates, GooglePlace } from '../../graphql/types/place';
 import { getDistanceFromLatLonInKm } from '../../utils/functions';
+import { GET_NEARBY_PLACES } from '../../graphql/queries/map.query';
+import { Coordinates, MapPlace } from '../../graphql/interfaces/entities/place.interface';
 
 const { width } = Dimensions.get('window');
 
 // GraphQL Response types
 interface NearbyPlacesResponse {
-  nearbyPlaces: GooglePlace[];
+  nearbyPlaces: MapPlace[];
 }
 
 interface CheckInPlaceResponse {
@@ -43,7 +44,7 @@ interface CheckInPlaceResponse {
   };
 }
 
-type PlaceWithDistance = GooglePlace & { distance: number };
+type PlaceWithDistance = MapPlace & { distance: number };
 
 export default function CheckInPage() {
   const { t } = useTranslation();
@@ -51,7 +52,7 @@ export default function CheckInPage() {
   const location = useLocation();
 
   const [currentStep, setCurrentStep] = useState(0);
-  const [selectedPlace, setSelectedPlace] = useState<GooglePlace | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<MapPlace | null>(null);
   const [content, setContent] = useState('');
   const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
   const [currentLocation, setCurrentLocation] = useState<Coordinates | null>(null);
@@ -64,19 +65,24 @@ export default function CheckInPage() {
   }, [location]);
 
   // Step 2: Query nearby places
-  const { data, loading: loadingPlaces, error } = useQuery<NearbyPlacesResponse>(GET_NEARBY_PLACES, {
-    variables: {
-      lat: currentLocation?.lat || 10.762622,
-      lng: currentLocation?.lng || 106.660172,
-      radius: 5, // 5km radius
-    },
-    skip: !currentLocation,
-  });
+  const { data, loading: loadingPlaces, error } = useApolloQueryWrapper<NearbyPlacesResponse>(
+    GET_NEARBY_PLACES,
+    {
+      variables: {
+        lat: currentLocation?.lat || 10.762622,
+        lng: currentLocation?.lng || 106.660172,
+        radius: 5, // 5km radius
+      },
+      skip: !currentLocation,
+    }
+  );
 
   // Step 3: Check-in mutation
-  const [checkInPlace, { loading: loadingCheckIn }] = useMutation<CheckInPlaceResponse>(CHECK_IN_PLACE_MUTATION);
+  const { mutate: checkInPlace, loading: loadingCheckIn } = useApolloMutationWrapper<CheckInPlaceResponse>(
+    CHECK_IN_PLACE_MUTATION
+  );
 
-  const nearbyPlaces: PlaceWithDistance[] = React.useMemo(() => {
+  const nearbyPlaces: MapPlace[] = React.useMemo(() => {
     if (!data?.nearbyPlaces) return [];
     return data.nearbyPlaces.map((place) => ({
       ...place,
@@ -84,7 +90,7 @@ export default function CheckInPage() {
     }));
   }, [data, currentLocation]);
 
-  const handleSelectPlace = (place: GooglePlace) => {
+  const handleSelectPlace = (place: MapPlace) => {
     setSelectedPlace(place);
     setCurrentStep(2);
   };
@@ -94,11 +100,9 @@ export default function CheckInPage() {
 
     try {
       const res = await checkInPlace({
-        variables: {
-          placeId: selectedPlace.mapboxId,
-          content,
-          photos: selectedPhotos,
-        },
+        placeId: selectedPlace.mapboxId,
+        content,
+        photos: selectedPhotos,
       });
 
       if (res.data?.checkInPlace?.success) {

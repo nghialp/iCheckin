@@ -9,7 +9,7 @@ import {
   Switch,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from '@apollo/client/react';
+import { useApolloMutationWrapper } from '../../hooks/useApolloMutationWrapper';
 import { UPDATE_PRIVACY_SETTINGS_MUTATION } from '../../graphql/mutations';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -36,13 +36,11 @@ export default function PrivacyScreen({ navigation }: PrivacyScreenProps) {
     activityStatus: user?.privacySettings?.activityStatus ?? true,
   });
 
-  const [updateSettings, { loading }] = useMutation(UPDATE_PRIVACY_SETTINGS_MUTATION);
+  const { mutate: updateSettings, loading } = useApolloMutationWrapper(UPDATE_PRIVACY_SETTINGS_MUTATION);
 
   const handleSave = async () => {
     try {
-      const result = await updateSettings({
-        variables: { input: settings },
-      });
+      const result = await updateSettings({ input: settings });
 
       if ((result.data as any)?.updatePrivacySettings?.success) {
         Alert.alert(t('privacy.success'), t('privacy.settingsUpdated'));

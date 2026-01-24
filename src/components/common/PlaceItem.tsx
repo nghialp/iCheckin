@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { GooglePlace } from '../../graphql/types/place';
 import { getDistanceFromLatLonInKm } from '../../utils/functions';
 import useLocation from '../../hooks/useLocation';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
+import { MapPlace } from '../../graphql/interfaces/entities/place.interface';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 interface PlaceItemProps {
-  place: GooglePlace;
+  place: MapPlace;
 }
 
 const PlaceItem: React.FC<PlaceItemProps> = ({ place }) => {

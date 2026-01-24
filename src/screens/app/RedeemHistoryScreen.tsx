@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useQuery as useApolloQuery } from '@apollo/client/react';
+import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
 import { t } from 'i18next';
 import Icon from '../../components/common/Icon';
 import { GET_REDEEM_HISTORY } from '../../graphql/queries';
@@ -41,7 +41,7 @@ export default function RedeemHistoryScreen() {
   const [refreshing, setRefreshing] = useState(false);
 
   // Query redeem history
-  const { data: historyData, loading: historyLoading, refetch } = useApolloQuery(
+  const { data: historyData, loading: historyLoading } = useApolloQueryWrapper(
     GET_REDEEM_HISTORY,
     {
       variables: { limit: 50, offset: 0 },
@@ -54,15 +54,6 @@ export default function RedeemHistoryScreen() {
   if (filter !== 'all') {
     history = history.filter((item: RedemptionItem) => item.status === filter);
   }
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    try {
-      await refetch();
-    } finally {
-      setRefreshing(false);
-    }
-  };
 
   const handleShare = async (item: RedemptionItem) => {
     try {
@@ -185,7 +176,7 @@ export default function RedeemHistoryScreen() {
         keyExtractor={(item) => item.id}
         scrollEnabled={true}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          <RefreshControl refreshing={refreshing} />
         }
         ListHeaderComponent={
           <>

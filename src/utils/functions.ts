@@ -1,6 +1,6 @@
 import { PermissionsAndroid, Platform } from "react-native";
 import Geolocation from 'react-native-geolocation-service';
-import { Coordinates } from "../graphql/types/place";
+import { Coordinates } from "../graphql/interfaces/entities/place.interface";
 
 export async function requestLocationPermission(): Promise<boolean> {
   if (Platform.OS === 'android') {

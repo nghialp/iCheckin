@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useQuery as useApolloQuery, useMutation } from '@apollo/client/react';
+import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
+import { useApolloMutationWrapper } from '../../hooks/useApolloMutationWrapper';
 import { t } from 'i18next';
 import Icon from '../../components/common/Icon';
 import { GET_REWARD_DETAIL } from '../../graphql/queries';
@@ -50,13 +51,13 @@ export default function RewardDetailScreen() {
   const rewardId = route.params?.rewardId;
 
   // Query reward detail
-  const { data: rewardData, loading: rewardLoading } = useApolloQuery(GET_REWARD_DETAIL, {
+  const { data: rewardData, loading: rewardLoading } = useApolloQueryWrapper(GET_REWARD_DETAIL, {
     variables: { id: rewardId },
     skip: !rewardId,
   });
 
   // Redeem mutation
-  const [redeemReward] = useMutation(REDEEM_REWARD_MUTATION);
+  const { mutate: redeemReward } = useApolloMutationWrapper(REDEEM_REWARD_MUTATION);
 
   const reward = (rewardData as any)?.reward as RewardDetail;
   const userPoints = (rewardData as any)?.userRewards?.currentPoints || 0;
@@ -78,9 +79,7 @@ export default function RewardDetailScreen() {
 
     setIsRedeeming(true);
     try {
-      const result = await redeemReward({
-        variables: { rewardId },
-      });
+      const result = await redeemReward({ rewardId });
 
       if ((result.data as any)?.redeemReward?.success) {
         Alert.alert(

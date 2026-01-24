@@ -18,7 +18,11 @@ import { AuthProvider } from './src/providers/AuthProvider';
 import { CheckInProvider, CheckInContext } from './src/providers/CheckInProvider';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
 import CheckInModal from './src/components/common/CheckInModal';
+import { initializeMapbox } from './src/utils/mapboxConfig';
 enableScreens();
+
+// Initialize Mapbox with access token
+initializeMapbox();
 
 function AppContent() {
   const { isModalVisible, nearbyPlaces, closeCheckInModal } = useContext(CheckInContext);

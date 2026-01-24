@@ -10,6 +10,7 @@ import { RootStackParamList } from '../utils/router';
 import Icon from '../components/common/Icon';
 import RewardsPage from '../screens/app/RewardsPage';
 import { useTranslation } from 'react-i18next';
+import MapPage from '../screens/app/MapPage';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -53,7 +54,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="MapTab"
-        component={CheckInScreen}
+        component={MapPage}
         options={{
           title: t('map'),
           tabBarIcon: ({ focused }) => <TabIcon icon="map" focused={focused} />,

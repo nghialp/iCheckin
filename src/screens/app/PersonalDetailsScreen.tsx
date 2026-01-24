@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useAuth from '../../hooks/useAuth';
-import { useMutation } from '@apollo/client/react';
+import { useApolloMutationWrapper } from '../../hooks/useApolloMutationWrapper';
 import { UPDATE_PROFILE_MUTATION, UPDATE_USER_AVATAR_MUTATION } from '../../graphql/mutations';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -39,8 +39,8 @@ export default function PersonalDetailsScreen({ navigation }: PersonalDetailsScr
     location: user?.location || '',
   });
 
-  const [updateProfile, { loading: profileLoading }] = useMutation(UPDATE_PROFILE_MUTATION);
-  const [updateAvatar, { loading: avatarLoading }] = useMutation(UPDATE_USER_AVATAR_MUTATION);
+  const { mutate: updateProfile, loading: profileLoading } = useApolloMutationWrapper(UPDATE_PROFILE_MUTATION);
+  const { mutate: updateAvatar, loading: avatarLoading } = useApolloMutationWrapper(UPDATE_USER_AVATAR_MUTATION);
 
   const handleAvatarPicker = () => {
     const options = {
@@ -63,9 +63,7 @@ export default function PersonalDetailsScreen({ navigation }: PersonalDetailsScr
 
   const handleAvatarUpload = async (uri: string) => {
     try {
-      const result = await updateAvatar({
-        variables: { avatarUrl: uri },
-      });
+      const result = await updateAvatar({ avatarUrl: uri });
 
       if ((result.data as any)?.updateUserAvatar?.success) {
         Alert.alert(t('personalDetails.success'), t('personalDetails.avatarUpdated'));
@@ -95,11 +93,7 @@ export default function PersonalDetailsScreen({ navigation }: PersonalDetailsScr
     if (!validateForm()) return;
 
     try {
-      const result = await updateProfile({
-        variables: {
-          input: formData,
-        },
-      });
+      const result = await updateProfile({ input: formData });
 
       if ((result.data as any)?.updateProfile?.success) {
         Alert.alert(t('personalDetails.success'), t('personalDetails.savedSuccessfully'));

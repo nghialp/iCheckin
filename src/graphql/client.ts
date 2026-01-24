@@ -1,8 +1,8 @@
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink, Observable } from '@apollo/client';
 import { REFRESH_TOKEN } from './mutations';
-import { refreshTokenResponse } from './types/authen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
+import { refreshTokenResponse } from './interfaces/pages/authen.interface';
 
 // Use environment variable for GraphQL endpoint, fallback to localhost for development
 const GRAPHQL_ENDPOINT: string = (Config.GRAPHQL_ENDPOINT as string) || 'http://localhost:3000/graphql';

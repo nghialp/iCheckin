@@ -5,32 +5,18 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  SafeAreaView,
   ScrollView,
   Animated,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useQuery as useApolloQuery } from '@apollo/client/react';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
 import MapboxGL from '@rnmapbox/maps';
 import Icon from '../../components/common/Icon';
-import { GET_NEARBY_PLACES } from '../../graphql/queries';
 import useLocation from '../../hooks/useLocation';
+import { MapPlace, Place } from '../../graphql/interfaces/entities/place.interface';
+import { GET_NEARBY_PLACES } from '../../graphql/queries/map.query';
 
-interface Place {
-  id: string;
-  name: string;
-  type: string;
-  address: string;
-  image: string;
-  rating: number;
-  distance: number;
-  isOpenNow: boolean;
-  hours?: string;
-  lat: number;
-  lng: number;
-  recentCheckIns?: number;
-}
 
 export default function CheckInScreen() {
   const navigation = useNavigation<any>();
@@ -40,10 +26,10 @@ export default function CheckInScreen() {
   const [bottomSheetHeight] = useState(new Animated.Value(120));
 
   // Query for nearby places on map
-  const { data: nearbyData, loading: nearbyLoading } = useApolloQuery(GET_NEARBY_PLACES, {
+  const { data: nearbyData, loading: nearbyLoading } = useApolloQueryWrapper(GET_NEARBY_PLACES, {
     variables: {
-      latitude: location?.lat || 0,
-      longitude: location?.lng || 0,
+      lat: location?.lat || 0,
+      lng: location?.lng || 0,
       radius: 5000, // 5km radius for map
     },
     skip: !location,
@@ -143,9 +129,9 @@ export default function CheckInScreen() {
                     selectedPlace?.id === place.id && styles.pinMarkerActive,
                   ]}
                 >
-                  {place.image ? (
+                  {place.thumbnail ? (
                     <Image
-                      source={{ uri: place.image }}
+                      source={{ uri: place.thumbnail }}
                       style={styles.pinImage}
                     />
                   ) : (
@@ -199,9 +185,9 @@ export default function CheckInScreen() {
             <ScrollView style={styles.bottomSheetContent} scrollEnabled={false}>
               <View style={styles.placeCardInfo}>
                 {/* Thumbnail */}
-                {selectedPlace.image && (
+                {selectedPlace.thumbnail && (
                   <Image
-                    source={{ uri: selectedPlace.image }}
+                    source={{ uri: selectedPlace.thumbnail }}
                     style={styles.placeImage}
                   />
                 )}
@@ -209,7 +195,7 @@ export default function CheckInScreen() {
                 {/* Place Details */}
                 <View style={styles.placeDetailsSection}>
                   <Text style={styles.placeName}>{selectedPlace.name}</Text>
-                  <Text style={styles.placeType}>{selectedPlace.type}</Text>
+                  <Text style={styles.placeType}>{selectedPlace.types?.[0]}</Text>
 
                   {/* Location */}
                   <View style={styles.infoRow}>
@@ -218,7 +204,7 @@ export default function CheckInScreen() {
                   </View>
 
                   {/* Hours */}
-                  {selectedPlace.hours && (
+                  {/* {selectedPlace.hours && (
                     <View style={styles.infoRow}>
                       <Icon
                         name={selectedPlace.isOpenNow ? 'check-circle' : 'clock'}
@@ -236,10 +222,10 @@ export default function CheckInScreen() {
                         {selectedPlace.isOpenNow ? 'Open' : 'Closed'} • {selectedPlace.hours}
                       </Text>
                     </View>
-                  )}
+                  )} */}
 
                   {/* Rating & Distance */}
-                  <View style={styles.statsRow}>
+                  {/* <View style={styles.statsRow}>
                     <View style={styles.statItem}>
                       <Icon name="star" size={16} color="#FFB800" />
                       <Text style={styles.statText}>
@@ -260,7 +246,7 @@ export default function CheckInScreen() {
                         </Text>
                       </View>
                     )}
-                  </View>
+                  </View> */}
                 </View>
               </View>
 
