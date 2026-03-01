@@ -13,7 +13,7 @@ import { GetHomeDataResponse } from '../../graphql/interfaces/pages/home.interfa
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function HomePage() {
+const HomePage = () => {
   const location = useLocation();
   const { data, loading, error } = useApolloQueryWrapper<GetHomeDataResponse, Coordinates>(
     GET_HOME_DATA,
@@ -28,7 +28,7 @@ export default function HomePage() {
 
   const ListHeader = () => (
     <View style={styles.section}>
-      <ProfileCard />
+      <ProfileCard places={nearbyPlaces}/>
       <FriendsFollowingCard />
     </View>
   );
@@ -82,7 +82,9 @@ export default function HomePage() {
       />
     </AppLayout>
   );
-}
+};
+
+export default HomePage;
 
 const styles = StyleSheet.create({
   contentContainer: {

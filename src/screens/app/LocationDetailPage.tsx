@@ -56,7 +56,7 @@ interface Comment {
   user: User;
 }
 
-export default function LocationDetailPage({ place_id }: { place_id?: string }) {
+const LocationDetailPage = ({ place_id }: { place_id?: string }) => {
   const { t } = useTranslation();
 
   const { data, loading, error } = useApolloQueryWrapper<PlaceDetailResponse>(
@@ -283,4 +283,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
+
+export default LocationDetailPage;
 

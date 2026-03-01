@@ -11,7 +11,7 @@ interface User {
   country?: string;
 }
 
-export default function FriendsFollowingCard() {
+const FriendsFollowingCard = () => {
   const { data: friendsData, loading: friendsLoading } = useQuery<{ myFriends: User[] }>(GET_MY_FRIENDS);
   const { data: followingData, loading: followingLoading } = useQuery<{ myFollowings: User[] }>(GET_MY_FOLLOWINGS);
 
@@ -70,3 +70,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
   },
 });
+
+export default FriendsFollowingCard;

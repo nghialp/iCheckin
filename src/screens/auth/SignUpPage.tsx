@@ -40,7 +40,7 @@ const signUpSchema = yup.object({
     .oneOf([yup.ref('password')], 'Passwords do not match'),
 });
 
-export default function SignUpPage({ navigation }: any) {
+const SignUpPage = ({ navigation }: any) => {
   const { signUp, loading, errors, clearError } = useAuth();
 
   const {
@@ -177,4 +177,6 @@ export default function SignUpPage({ navigation }: any) {
     </View>
   );
 }
+
+export default SignUpPage;
 

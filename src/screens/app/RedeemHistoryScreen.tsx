@@ -34,7 +34,7 @@ interface RedemptionItem {
 
 type HistoryFilter = 'all' | 'active' | 'expired' | 'used';
 
-export default function RedeemHistoryScreen() {
+const RedeemHistoryScreen = () => {
   const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
   const [filter, setFilter] = useState<HistoryFilter>('all');
@@ -412,3 +412,5 @@ const styles = StyleSheet.create({
     color: '#999',
   },
 });
+
+export default RedeemHistoryScreen;

@@ -6,7 +6,7 @@ interface AuthCardProps {
   children: React.ReactNode;
 }
 
-export default function AuthCard({ children }: AuthCardProps) {
+const AuthCard = ({ children }: AuthCardProps) => {
   return (
       <View style={authTheme.cardWrapper}>
         <Card 
@@ -19,4 +19,6 @@ export default function AuthCard({ children }: AuthCardProps) {
         </Card>
       </View>
   );
-}
+};
+
+export default AuthCard;

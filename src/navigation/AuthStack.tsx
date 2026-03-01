@@ -8,7 +8,7 @@ import EmailSentPage from '../screens/auth/EmailSentPage';
 
 const Stack = createNativeStackNavigator(); 
 
-export default function AuthStack() {
+const AuthStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
@@ -17,4 +17,6 @@ export default function AuthStack() {
       <Stack.Screen name="EmailSent" component={EmailSentPage} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
-}
+};
+
+export default AuthStack;

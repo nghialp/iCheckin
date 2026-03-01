@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { View, Alert, Image } from 'react-native';
 import { Text, TextInput, Button } from 'react-native-paper';
-import { useMutation } from '@apollo/client/react';
-import { RESET_PASSWORD_MUTATION } from '../../graphql/mutations/resetPassword.mutation';
-import { ResetPasswordResponse, ResetPasswordVariables } from '../../graphql/types/resetPassword';
-import { t } from 'i18next';
+import { CHANGE_PASSWORD } from '../../graphql/mutations/resetPassword.mutation';
 import { authTheme } from '../../theme/authTheme';
+import { ChangePasswordResponse, ResetPasswordInput } from '../../graphql/interfaces/pages/authen.interface';
+import useAuth from '../../hooks/useAuth';
+import useApolloMutationWrapper from '../../hooks/useApolloMutationWrapper';
 
-export default function ChangePasswordPage({ navigation }: any) {
+const ChangePasswordPage = ({ navigation }: any) => {
+	const t = require('i18next').t;
+	const { user } = useAuth();
 	const [currentPassword, setCurrentPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 
-	const [resetPassword, { loading }] = useMutation<ResetPasswordResponse, ResetPasswordVariables>(RESET_PASSWORD_MUTATION);
+	const { mutate: resetPassword, loading } = useApolloMutationWrapper<ChangePasswordResponse, ResetPasswordInput>(CHANGE_PASSWORD);
 
 	const handleReset = async () => {
 		if (!newPassword || !currentPassword || !confirmPassword) {
@@ -23,14 +25,18 @@ export default function ChangePasswordPage({ navigation }: any) {
 			Alert.alert('Error', t('changePassword.errorMessage'));
 			return;
 		}
+		if (!user?.id) {
+			Alert.alert('Error', 'User not found');
+			return;
+		}
 
 		try {
-			const res = await resetPassword({ variables: { newPassword } });
-			if (res.data?.success) {
-				Alert.alert('Success', res.data?.message);
+			const res = await resetPassword({ userId: user.id, currentPassword, newPassword });
+			if (res.data?.changePassword) {
+				Alert.alert('Success', 'Password changed successfully');
 				navigation.replace('Home');
 			} else {
-				Alert.alert('Error', res.data?.message);
+				Alert.alert('Error', 'Failed to change password');
 			}
 		} catch (err) {
 			Alert.alert('Error', 'An error occurred while resetting the password.');
@@ -105,5 +111,7 @@ export default function ChangePasswordPage({ navigation }: any) {
 			</Button>
 		</View>
 	);
-}
+};
+
+export default ChangePasswordPage;
 

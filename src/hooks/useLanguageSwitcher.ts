@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LANGUAGE_KEY = 'appLanguage';
 
-export function useLanguageSwitcher() {
+const useLanguageSwitcher = () => {
   const { i18n } = useTranslation();
   const [language, setLanguage] = useState<string>(i18n.language);
 
@@ -29,4 +29,7 @@ export function useLanguageSwitcher() {
   };
 
   return { language, switchLanguage };
-}
+};
+
+export { useLanguageSwitcher };
+export default useLanguageSwitcher;

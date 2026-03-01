@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -19,9 +19,16 @@ interface ProfilePageProps {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Profile'>;
 }
 
-export default function ProfilePage({ navigation }: ProfilePageProps) {
+const ProfilePage = ({ navigation }: ProfilePageProps) => {
   const { t } = useTranslation();
-  const { user, logout } = useAuth();
+  const { user, logout, refreshUserData } = useAuth();
+
+  // Optimize data fetching with cache-first strategy
+  // This ensures fast navigation by using cached data when available
+  useEffect(() => {
+    // Optional: Refresh data when screen is focused
+    // Only if data is stale (could implement with focus event)
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -201,3 +208,5 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
+
+export default ProfilePage;

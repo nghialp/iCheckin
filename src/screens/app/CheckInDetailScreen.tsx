@@ -51,7 +51,7 @@ interface CheckIn {
   timeAgo: string;
 }
 
-export default function CheckInDetailScreen() {
+const CheckInDetailScreen = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const insets = useSafeAreaInsets();
@@ -615,3 +615,5 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+
+export default CheckInDetailScreen;

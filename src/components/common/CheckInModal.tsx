@@ -28,7 +28,7 @@ interface CheckInModalProps {
 
 type Step = 'location' | 'place' | 'confirm';
 
-export default function CheckInModal({ visible, onClose, nearbyPlaces = [] }: CheckInModalProps) {
+const CheckInModal = ({ visible, onClose, nearbyPlaces = [] }: CheckInModalProps) => {
   const [step, setStep] = useState<Step>('location');
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
   const [content, setContent] = useState('');
@@ -595,3 +595,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default CheckInModal;

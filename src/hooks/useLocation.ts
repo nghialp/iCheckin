@@ -4,7 +4,7 @@ import Geolocation from "react-native-geolocation-service";
 import { requestLocationPermission } from "../utils/functions";
 import { Coordinates } from "../graphql/interfaces/entities/place.interface";
 
-export default function useLocation() {
+const useLocation = () => {
   // Khai báo kiểu rõ ràng thay vì any
   const [location, setLocation] = useState<Coordinates | null>(null);
     useEffect(() => {
@@ -31,4 +31,6 @@ export default function useLocation() {
     }, []);
 
   return location;
-}
+};
+
+export default useLocation;

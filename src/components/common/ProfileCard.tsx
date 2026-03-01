@@ -1,42 +1,24 @@
 import React, { useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../utils/router';
 import useAuth from '../../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 import { CheckInContext } from '../../providers/CheckInProvider';
-import { useQuery } from '@apollo/client/react';
-import { GET_HOME_DATA } from '../../graphql/queries';
-import { Coordinates } from '../../graphql/types/place';
-import useLocation from '../../hooks/useLocation';
-import { GetHomeDataResponse } from '../../graphql/types';
+import { MapPlace } from '../../graphql/interfaces/entities/place.interface';
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
-
-export default function ProfileCard() {
+const ProfileCard = ({ places }: {places: MapPlace[] }) => {
   const { user } = useAuth();
   const { t } = useTranslation();
   const { openCheckInModal } = useContext(CheckInContext);
-  const location = useLocation();
-
-  const { data } = useQuery<GetHomeDataResponse, Coordinates>(
-    GET_HOME_DATA,
-    {
-      variables: { lat: location?.lat || 10.762622, lng: location?.lng || 106.660172 },
-    }
-  );
 
   const userData = user || {
     name: 'Guest',
     country: 'Unknown',
-    avatar: 'https://via.placeholder.com/100',
+    avatar: '../../assets/user_default.png',
     interests: 'Photography, Hiking'
   };
 
   const handleCheckIn = () => {
-    const nearbyPlaces = data?.nearbyPlaces || [];
-    openCheckInModal(nearbyPlaces);
+    openCheckInModal(places);
   };
 
   return (
@@ -122,3 +104,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default ProfileCard;

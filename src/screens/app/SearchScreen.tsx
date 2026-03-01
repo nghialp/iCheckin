@@ -25,7 +25,7 @@ interface Filter {
   isOpenNow: boolean;
 }
 
-export default function SearchPage() {
+const SearchPage = () => {
   const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
   const location = useLocation();
@@ -345,3 +345,5 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
 });
+
+export default SearchPage;

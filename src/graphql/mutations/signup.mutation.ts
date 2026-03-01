@@ -1,15 +1,16 @@
 import { gql } from '@apollo/client';
-import { ACCESS_TOKEN_FIELDS, USER_BASIC_FIELDS } from '../fragments/user.fragment';
 
 export const SIGNUP_MUTATION = gql`
   mutation Signup($input: SignupInput!) {
     signup(input: $input) {
-      ...ACCESS_TOKEN_FIELDS
+      accessToken
+      refreshToken
       user {
-        ...USER_BASIC_FIELDS
+        id
+        name
+        email
+        avatar
       }
     }
   }
-  ${ACCESS_TOKEN_FIELDS}    
-  ${USER_BASIC_FIELDS}
 `;

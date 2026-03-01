@@ -63,10 +63,10 @@ export interface UseApolloMutationWrapperResult<TData = unknown, TVariables exte
  * }
  * ```
  */
-export function useApolloMutationWrapper<TData = unknown, TVariables extends OperationVariables = OperationVariables>(
+const useApolloMutationWrapper = <TData = unknown, TVariables extends OperationVariables = OperationVariables>(
   mutation: DocumentNode,
   options?: UseApolloMutationWrapperOptions<TData, TVariables>,
-): UseApolloMutationWrapperResult<TData, TVariables> {
+): UseApolloMutationWrapperResult<TData, TVariables> => {
   const [executeMutation, result] = useMutation<TData>(mutation, {
     onCompleted: options?.onCompleted,
     onError: options?.onError as (error: Error) => void,
@@ -81,5 +81,8 @@ export function useApolloMutationWrapper<TData = unknown, TVariables extends Ope
     error: result.error,
     data: result.data,
   };
-}
+};
+
+export { useApolloMutationWrapper };
+export default useApolloMutationWrapper;
 

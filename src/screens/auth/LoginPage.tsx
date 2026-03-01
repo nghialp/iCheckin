@@ -140,4 +140,3 @@ export default function LoginPage({ navigation }: { navigation: any }) {
     </View>
   );
 }
-

@@ -8,22 +8,22 @@ import {
 } from 'react-native';
 import { t } from 'i18next';
 import { useNavigation } from '@react-navigation/native';
-import { useMutation } from '@apollo/client/react';
-import { FORGOT_PASSWORD_MUTATION } from '../../graphql/mutations/forgotPassword.mutation';
-import { ForgotPasswordResponse, ForgotPasswordVariables } from '../../graphql/types/forgotPassword';
+import { useApolloMutationWrapper } from '../../hooks/useApolloMutationWrapper';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
 import AuthCard from '../../components/common/AuthenCard';
 import { authTheme, colors } from '../../theme/authTheme';
 import InputField from '../../components/common/InputField';
+import { ForgetPasswordInput, ForgetPasswordResponse } from '../../graphql/interfaces/pages/authen.interface';
+import { FORGOT_PASSWORD_MUTATION } from '../../graphql/mutations/forgotPassword.mutation';
 
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'ForgotPassword'>;
-export default function ForgotPasswordPage() {
+const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const navigation = useNavigation<NavigationProp>();
-  const [forgotPassword] = useMutation<ForgotPasswordResponse, ForgotPasswordVariables>(FORGOT_PASSWORD_MUTATION);
+  const { mutate: forgotPassword, loading } = useApolloMutationWrapper<ForgetPasswordResponse, ForgetPasswordInput>(FORGOT_PASSWORD_MUTATION);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -45,12 +45,12 @@ export default function ForgotPasswordPage() {
     }
     
     try {
-      const res = await forgotPassword({ variables: { email } });
-      if (res.data?.success) {
-        Alert.alert('Success', res.data?.message);
+      const res = await forgotPassword({ email });
+      if (res.data?.forgetPassword) {
+        Alert.alert('Success', 'Reset instructions sent to your email');
         navigation.replace('EmailSent');
       } else {
-        Alert.alert('Error', res.data?.message);
+        Alert.alert('Error', 'Failed to send reset instructions');
       }
     } catch (err) {
       Alert.alert('Error', 'An error occurred while sending reset instructions.');
@@ -98,5 +98,7 @@ export default function ForgotPasswordPage() {
       </AuthCard>
     </View>
   );
-}
+};
+
+export default ForgotPasswordPage;
 

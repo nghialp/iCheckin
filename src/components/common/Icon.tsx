@@ -20,7 +20,7 @@ const COMMUNITY_ICONS = new Set([
   'bluetooth', 'battery', 'cloud', 'sun', 'moon', 'star-outline', 'heart-outline', 
 ]);
 
-export default function Icon({ name, size = 24, color = '#666', style }: IconProps) {
+const Icon = ({ name, size = 24, color = '#666', style }: IconProps) => {
   if (COMMUNITY_ICONS.has(name)) {
     return (
       <MaterialCommunityIcons
@@ -40,5 +40,7 @@ export default function Icon({ name, size = 24, color = '#666', style }: IconPro
       style={style}
     />
   );
-}
+};
+
+export default Icon;
 

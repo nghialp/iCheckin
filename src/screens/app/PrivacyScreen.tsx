@@ -14,8 +14,8 @@ import { UPDATE_PRIVACY_SETTINGS_MUTATION } from '../../graphql/mutations';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
-import useAuth from '../../hooks/useAuth';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import useUserData from '../../hooks/useUserData';
 
 type Props = NativeStackNavigationProp<RootStackParamList, 'Privacy'>;
 
@@ -23,9 +23,9 @@ interface PrivacyScreenProps {
   navigation: Props;
 }
 
-export default function PrivacyScreen({ navigation }: PrivacyScreenProps) {
+const PrivacyScreen = ({ navigation }: PrivacyScreenProps) => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, updateUserCache } = useUserData();
 
   const [settings, setSettings] = useState({
     locationAccess: user?.privacySettings?.locationAccess ?? true,
@@ -36,7 +36,19 @@ export default function PrivacyScreen({ navigation }: PrivacyScreenProps) {
     activityStatus: user?.privacySettings?.activityStatus ?? true,
   });
 
-  const { mutate: updateSettings, loading } = useApolloMutationWrapper(UPDATE_PRIVACY_SETTINGS_MUTATION);
+  const { mutate: updateSettings, loading } = useApolloMutationWrapper<any, any>(
+    UPDATE_PRIVACY_SETTINGS_MUTATION,
+    {
+      onCompleted: (data) => {
+        // Update global user context with new privacy settings
+        if (data?.updatePrivacySettings?.privacySettings) {
+          updateUserCache({
+            privacySettings: data.updatePrivacySettings.privacySettings,
+          });
+        }
+      },
+    }
+  );
 
   const handleSave = async () => {
     try {
@@ -301,3 +313,5 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
+
+export default PrivacyScreen;

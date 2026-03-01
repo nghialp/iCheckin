@@ -6,6 +6,17 @@ export const USER_BASIC_FIELDS = gql`
     name
     email
     avatar
+    interests
+    country
+  }
+`;
+
+export const USER_DETAILS_FIELDS = gql`
+  fragment UserDetailsFields on User {
+    id
+    name
+    email
+    avatar
     bio
     country
     interests

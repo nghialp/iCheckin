@@ -14,8 +14,8 @@ import { UPDATE_NOTIFICATION_SETTINGS_MUTATION } from '../../graphql/mutations';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
-import useAuth from '../../hooks/useAuth';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import useUserData from '../../hooks/useUserData';
 
 type Props = NativeStackNavigationProp<RootStackParamList, 'Notifications'>;
 
@@ -23,9 +23,9 @@ interface NotificationsScreenProps {
   navigation: Props;
 }
 
-export default function NotificationsScreen({ navigation }: NotificationsScreenProps) {
+const NotificationsScreen = ({ navigation }: NotificationsScreenProps) => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, updateUserCache } = useUserData();
 
   const [settings, setSettings] = useState({
     pushNotifications: user?.notificationSettings?.pushNotifications ?? true,
@@ -36,7 +36,19 @@ export default function NotificationsScreen({ navigation }: NotificationsScreenP
     reminders: user?.notificationSettings?.reminders ?? true,
   });
 
-  const { mutate: updateSettings, loading } = useApolloMutationWrapper(UPDATE_NOTIFICATION_SETTINGS_MUTATION);
+  const { mutate: updateSettings, loading } = useApolloMutationWrapper<any, any>(
+    UPDATE_NOTIFICATION_SETTINGS_MUTATION,
+    {
+      onCompleted: (data) => {
+        // Update global user context with new notification settings
+        if (data?.updateNotificationSettings?.notificationSettings) {
+          updateUserCache({
+            notificationSettings: data.updateNotificationSettings.notificationSettings,
+          });
+        }
+      },
+    }
+  );
 
   const handleSave = async () => {
     try {
@@ -290,3 +302,5 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
+
+export default NotificationsScreen;

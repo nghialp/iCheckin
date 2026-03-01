@@ -42,7 +42,7 @@ interface UserPoints {
   currentPoints: number;
 }
 
-export default function RewardDetailScreen() {
+const RewardDetailScreen = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const insets = useSafeAreaInsets();
@@ -604,3 +604,5 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+
+export default RewardDetailScreen;

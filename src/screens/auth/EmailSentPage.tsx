@@ -5,7 +5,7 @@ import { Text, Button, IconButton } from 'react-native-paper';
 import AuthCard from '../../components/common/AuthenCard';
 import { authTheme } from '../../theme/authTheme';
 
-export default function EmailSentPage({ navigation }: any) {
+const EmailSentPage = ({ navigation }: any) => {
 	const handleBackToLogin = () => {
 		navigation.replace('Login');
 	};
@@ -44,5 +44,7 @@ export default function EmailSentPage({ navigation }: any) {
 			</AuthCard>
 		</View>
 	);
-}
+};
+
+export default EmailSentPage;
 

@@ -58,10 +58,10 @@ export interface UseApolloSubscriptionWrapperResult<TData = unknown> {
  * }
  * ```
  */
-export function useApolloSubscriptionWrapper<TData = unknown, TVariables extends OperationVariables = OperationVariables>(
+const useApolloSubscriptionWrapper = <TData = unknown, TVariables extends OperationVariables = OperationVariables>(
   subscription: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options?: UseApolloSubscriptionWrapperOptions<TVariables>,
-): UseApolloSubscriptionWrapperResult<TData> {
+): UseApolloSubscriptionWrapperResult<TData> => {
   const result = useSubscription<TData>(subscription, {
     variables: options?.variables,
     skip: options?.skip,
@@ -72,5 +72,8 @@ export function useApolloSubscriptionWrapper<TData = unknown, TVariables extends
     loading: result.loading,
     error: result.error,
   };
-}
+};
+
+export { useApolloSubscriptionWrapper };
+export default useApolloSubscriptionWrapper;
 

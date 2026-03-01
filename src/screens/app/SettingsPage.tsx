@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
 import { useLanguageSwitcher } from '../../hooks/useLanguageSwitcher';
 
-export default function SettingsPage() {
+const SettingsPage = () => {
   const { t } = useTranslation();
   const { logout } = useAuth();
   const { language, switchLanguage } = useLanguageSwitcher();
@@ -168,3 +168,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default SettingsPage;

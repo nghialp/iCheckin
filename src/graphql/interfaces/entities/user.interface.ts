@@ -62,7 +62,7 @@ export interface User {
     securitySettings?: SecuritySettings;
 }
 
-export interface UserBasic {
+export interface UserDetails {
     id: string;
     name: string;
     email?: string;
@@ -74,5 +74,13 @@ export interface UserBasic {
     dateOfBirth?: string;
     gender?: string;
     hobby?: string;
+}
 
+export interface UserBasic {
+    id: string;
+    name: string;
+    email?: string;
+    avatar?: string;
+    country?: string;
+    interests?: string[];
 }

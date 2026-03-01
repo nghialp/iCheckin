@@ -43,7 +43,7 @@ interface UserRewards {
 type RewardFilter = 'all' | 'food' | 'travel' | 'service' | 'entertainment';
 type RewardSort = 'points-asc' | 'points-desc' | 'newest' | 'popular';
 
-export default function RewardsPage() {
+const RewardsPage = () => {
   const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
   const [filter, setFilter] = useState<RewardFilter>('all');
@@ -657,3 +657,5 @@ const styles = StyleSheet.create({
     color: '#999',
   },
 });
+
+export default RewardsPage;

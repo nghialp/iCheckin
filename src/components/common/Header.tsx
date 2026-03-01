@@ -8,7 +8,7 @@ import { RootStackParamList } from '../../utils/router';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-export default function Header() {
+const Header = () => {
 	const navigation = useNavigation<NavigationProp>();
 	const insets = useSafeAreaInsets();
 
@@ -27,3 +27,5 @@ const styles = StyleSheet.create({
 	logo: { fontSize: 25, fontWeight: 'bold' },
 	search: { fontSize: 20 },
 });
+
+export default Header;

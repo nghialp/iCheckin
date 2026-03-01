@@ -58,10 +58,10 @@ export interface UseApolloQueryWrapperResult<TData = unknown> {
  * }
  * ```
  */
-export function useApolloQueryWrapper<TData = unknown, TVariables extends OperationVariables = OperationVariables>(
+const useApolloQueryWrapper = <TData = unknown, TVariables extends OperationVariables = OperationVariables>(
   query: DocumentNode,
   options?: UseApolloQueryWrapperOptions<TVariables>,
-): UseApolloQueryWrapperResult<TData> {
+): UseApolloQueryWrapperResult<TData> => {
   const result = useQuery<TData>(query, {
     variables: options?.variables,
     skip: options?.skip,
@@ -72,5 +72,8 @@ export function useApolloQueryWrapper<TData = unknown, TVariables extends Operat
     loading: result.loading,
     error: result.error,
   };
-}
+};
+
+export { useApolloQueryWrapper };
+export default useApolloQueryWrapper;
 

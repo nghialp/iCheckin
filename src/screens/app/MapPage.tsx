@@ -30,7 +30,7 @@ interface CheckInsResponse {
   checkIns: Checkin[];
 }
 
-export default function MapPage() {
+const MapPage = () => {
   const navigation = useNavigation<NavigationProp>();
   const location = useLocation();
   const [selectedPlace, setSelectedPlace] = useState<MapPlace | null>(null);
@@ -208,4 +208,6 @@ const styles = StyleSheet.create({
   },
   navItem: { fontSize: 14, fontWeight: '500' },
 });
+
+export default MapPage;
 

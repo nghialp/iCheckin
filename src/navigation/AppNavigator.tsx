@@ -25,7 +25,7 @@ import GeneralSettingsScreen from '../screens/app/GeneralSettingsScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function AppNavigator() {
+const AppNavigator = () => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
@@ -135,4 +135,6 @@ export default function AppNavigator() {
       )}
     </NavigationContainer>
   );
-}
+};
+
+export default AppNavigator;

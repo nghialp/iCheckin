@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
 import { launchImageLibrary, MediaType } from 'react-native-image-picker';
+import useUserData from '../../hooks/useUserData';
 
 type Props = NativeStackNavigationProp<RootStackParamList, 'PersonalDetails'>;
 
@@ -25,9 +26,9 @@ interface PersonalDetailsScreenProps {
   navigation: Props;
 }
 
-export default function PersonalDetailsScreen({ navigation }: PersonalDetailsScreenProps) {
+const PersonalDetailsScreen = ({ navigation }: PersonalDetailsScreenProps) => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, updateUserCache } = useUserData();
 
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
@@ -39,8 +40,35 @@ export default function PersonalDetailsScreen({ navigation }: PersonalDetailsScr
     location: user?.location || '',
   });
 
-  const { mutate: updateProfile, loading: profileLoading } = useApolloMutationWrapper(UPDATE_PROFILE_MUTATION);
-  const { mutate: updateAvatar, loading: avatarLoading } = useApolloMutationWrapper(UPDATE_USER_AVATAR_MUTATION);
+  const { mutate: updateProfile, loading: profileLoading } = useApolloMutationWrapper<any, any>(
+    UPDATE_PROFILE_MUTATION,
+    {
+      onCompleted: (data) => {
+        // Update global user context immediately after successful mutation
+        if (data?.updateProfile?.user) {
+          updateUserCache({
+            name: data.updateProfile.user.name,
+            phone: data.updateProfile.user.phone,
+            dateOfBirth: data.updateProfile.user.dateOfBirth,
+            gender: data.updateProfile.user.gender,
+            location: data.updateProfile.user.location,
+          });
+        }
+      },
+    }
+  );
+  
+  const { mutate: updateAvatar, loading: avatarLoading } = useApolloMutationWrapper<any, any>(
+    UPDATE_USER_AVATAR_MUTATION,
+    {
+      onCompleted: (data) => {
+        // Update avatar in global context
+        if (data?.updateUserAvatar?.user) {
+          updateUserCache({ avatar: data.updateUserAvatar.user.avatar });
+        }
+      },
+    }
+  );
 
   const handleAvatarPicker = () => {
     const options = {
@@ -469,3 +497,5 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
+
+export default PersonalDetailsScreen;

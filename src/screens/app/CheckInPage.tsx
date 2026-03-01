@@ -46,7 +46,7 @@ interface CheckInPlaceResponse {
 
 type PlaceWithDistance = MapPlace & { distance: number };
 
-export default function CheckInPage() {
+const CheckInPage = () => {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
   const location = useLocation();
@@ -610,4 +610,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 });
+
+export default CheckInPage;
 

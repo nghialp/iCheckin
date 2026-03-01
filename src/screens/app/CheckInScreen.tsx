@@ -18,7 +18,7 @@ import { MapPlace, Place } from '../../graphql/interfaces/entities/place.interfa
 import { GET_NEARBY_PLACES } from '../../graphql/queries/map.query';
 
 
-export default function CheckInScreen() {
+const CheckInScreen = () => {
   const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
   const location = useLocation();
@@ -506,3 +506,5 @@ const styles = StyleSheet.create({
 
 // Note: Replace <View style={styles.mapPlaceholder}> with actual MapboxGL <MapView> component
 // For now using View placeholder to simulate map
+
+export default CheckInScreen;

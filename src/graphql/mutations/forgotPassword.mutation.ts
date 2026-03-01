@@ -8,3 +8,6 @@ export const FORGOT_PASSWORD_MUTATION = gql`
     }
   }
 `;
+
+// Backward compatibility export
+export const FORGET_PASSWORD = FORGOT_PASSWORD_MUTATION;

@@ -27,7 +27,7 @@ const TabIcon = ({ icon, focused }: { icon: string; focused: boolean }) => (
   </View>
 );
 
-export default function TabNavigator() {
+const TabNavigator = () => {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
 
@@ -78,5 +78,7 @@ export default function TabNavigator() {
       />
     </Tab.Navigator>
   );
-}
+};
+
+export default TabNavigator;
 
