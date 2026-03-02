@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const USER_BASIC_FIELDS = gql`
-  fragment UserBasicFields on User {
+  fragment USER_BASIC_FIELDS on User {
     id
     name
     email

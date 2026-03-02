@@ -1,6 +1,7 @@
 /**
  * GraphQL Fragments Index
  * Centralized exports for all fragment definitions
+ * Use these fragments to avoid duplication in queries and mutations
  */
 
 // User fragments
@@ -15,10 +16,13 @@ export {
   ACCESS_TOKEN_FIELDS,
 } from './user.fragment';
 
-// Place fragments
+// Place fragments - Main reusable place fragments
 export {
   PLACE_FIELDS,
   MAP_PLACE_FIELDS,
+  PLACE_DETAIL_FIELDS,
+  PLACE_WITH_CHECKINS_FIELDS,
+  SEARCH_PLACE_FIELDS,
 } from './place.fragment';
 
 // Check-in fragments

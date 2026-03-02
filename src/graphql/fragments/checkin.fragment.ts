@@ -3,17 +3,21 @@ import { PLACE_FIELDS } from "./place.fragment";
 import { USER_BASIC_FIELDS } from "./user.fragment";
 
 export const CHECKIN_FIELDS = gql`
-  fragment CheckinFields on Checkin {
+  fragment CHECKIN_FIELDS on Checkin {
     id
     mood
     status
     checkedAt
-    content
     place {
-      ...PlaceFields
+      ...PLACE_FIELDS
     }
     user {
-      ...UserBasicFields
+      ...USER_BASIC_FIELDS
+    }
+    comments {
+      id
+      content
+      createdAt
     }
   }
   ${PLACE_FIELDS}

@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { PLACE_FIELDS } from '../fragments/place.fragment';
+import { PLACE_FIELDS, SEARCH_PLACE_FIELDS } from '../fragments/place.fragment';
 import { CHECKIN_FIELDS } from '../fragments/checkin.fragment';
 
 /**
@@ -39,18 +39,13 @@ export const GET_PLACE_DETAIL_FULL = gql`
     place(id: $id) {
       id
       name
-      type
+      types
       address
-      city
-      image
       rating
-      hours
-      isOpenNow
-      description
+      thumbnail
+      mapboxId
       lat
       lng
-      distance
-      totalCheckIns
     }
   }
 `;
@@ -91,14 +86,8 @@ export const GET_PLACE_CHECKINS = gql`
 export const SEARCH_PLACES = gql`
   query SearchPlaces($query: String!, $lat: Float, $lng: Float) {
     searchPlaces(query: $query, lat: $lat, lng: $lng) {
-      mapboxId
-      name
-      rating
-      address
-      types
-      lat
-      lng
-      thumbnail
+      ...SEARCH_PLACE_FIELDS
     }
   }
+  ${SEARCH_PLACE_FIELDS}
 `;
