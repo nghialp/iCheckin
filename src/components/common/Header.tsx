@@ -17,7 +17,7 @@ const Header = () => {
 			<TouchableOpacity onPress={() => navigation.navigate("Home")}>
 				<Text style={styles.logo}>iCheckin</Text>
 			</TouchableOpacity>
-			<Appbar.Action icon="magnify" onPress={() => navigation.navigate('MapTab' as any)} />
+			<Appbar.Action icon="magnify" onPress={() => navigation.navigate('Search')} />
 		</View>
 	);
 }

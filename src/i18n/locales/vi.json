@@ -227,5 +227,95 @@
   "checkInFailedMessage": "Check-in không thành công. Vui lòng thử lại.",
   "comments": "Bình luận",
   "logout": "Đăng xuất",
-  "close": "Đóng"
+  "close": "Đóng",
+  "mapPage": {
+    "title": "Bản đồ",
+    "nearbyPlaces": "Địa điểm gần đây",
+    "loadingPlaces": "Đang tải địa điểm...",
+    "noPlaces": "Không có địa điểm nào",
+    "selectPlace": "Chọn địa điểm",
+    "checkInAt": "Check-in tại {{placeName}}"
+  },
+  "searchScreen": {
+    "title": "Tìm kiếm",
+    "placeholder": "Tìm kiếm địa điểm...",
+    "searchResults": "Kết quả tìm kiếm",
+    "nearbyPlaces": "Địa điểm gần đây",
+    "noPlacesFound": "Không tìm thấy địa điểm nào",
+    "noNearbyPlaces": "Không có địa điểm gần đây"
+  },
+  "checkInModal": {
+    "title": "Check-in",
+    "detectingPlaces": "Đang tìm kiếm địa điểm gần...",
+    "foundPlaces": "Tìm thấy {{count}} địa điểm gần đây",
+    "choosePlaces": "Chọn từ {{count}} địa điểm gần đây",
+    "selectPlace": "Chọn địa điểm",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận"
+  },
+  "checkInScreen": {
+    "title": "Check-in",
+    "loadingPlaces": "Đang tải địa điểm gần đây...",
+    "noLocation": "Không tìm thấy vị trí",
+    "selectPlace": "Chọn địa điểm để check-in"
+  },
+  "homePage": {
+    "title": "Trang chủ",
+    "loading": "Đang tải...",
+    "feedTitle": "Hoạt động gần đây"
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "retry": "Thử lại",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "save": "Lưu",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "previous": "Trước đó",
+    "empty": "Không có dữ liệu",
+    "noResults": "Không tìm thấy kết quả"
+  },
+  "rewardsPage": {
+    "title": "Phần thưởng",
+    "currentPoints": "Điểm hiện tại",
+    "pointsToNextTier": "{{points}} điểm để nâng lên tầng tiếp theo",
+    "history": "Lịch sử",
+    "scanQR": "Quét QR",
+    "howToEarn": "Cách kiếm điểm",
+    "allRewards": "Tất cả phần thưởng",
+    "foodRewards": "Phần thưởng ăn uống",
+    "travelRewards": "Phần thưởng du lịch",
+    "serviceRewards": "Phần thưởng dịch vụ",
+    "entertainmentRewards": "Phần thưởng giải trí",
+    "reward": "phần thưởng",
+    "rewards": "phần thưởng",
+    "outOfStock": "Hết hàng",
+    "limited": "Có hạn",
+    "inStock": "{{count}} còn lại",
+    "noRewards": "Không có phần thưởng",
+    "tryLater": "Hãy thử lại sau hoặc thay đổi bộ lọc",
+    "filter": {
+      "all": "Tất cả",
+      "food": "Ăn uống",
+      "travel": "Du lịch",
+      "service": "Dịch vụ",
+      "entertainment": "Giải trí"
+    },
+    "sort": {
+      "pointsAsc": "Điểm: Thấp đến cao",
+      "pointsDesc": "Điểm: Cao đến thấp",
+      "newest": "Mới nhất",
+      "popular": "Phổ biến nhất"
+    },
+    "tier": {
+      "bronze": "Đồng",
+      "silver": "Bạc",
+      "gold": "Vàng",
+      "platinum": "Bạch kim"
+    }
+  }
 }

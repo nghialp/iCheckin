@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
 import Icon from '../../components/common/Icon';
@@ -46,6 +47,7 @@ type RewardSort = 'points-asc' | 'points-desc' | 'newest' | 'popular';
 const RewardsPage = () => {
   const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<RewardFilter>('all');
   const [sortBy, setSortBy] = useState<RewardSort>('points-asc');
   const [refreshing, setRefreshing] = useState(false);
@@ -128,7 +130,7 @@ const RewardsPage = () => {
           {/* Stock Badge */}
           {!stockAvailable && (
             <View style={styles.stockBadge}>
-              <Text style={styles.stockText}>Out of Stock</Text>
+              <Text style={styles.stockText}>{t('rewardsPage.outOfStock')}</Text>
             </View>
           )}
 
@@ -136,7 +138,7 @@ const RewardsPage = () => {
           {item.isLimited && (
             <View style={styles.limitedBadge}>
               <Icon name="flash" size={16} color="#fff" />
-              <Text style={styles.limitedText}>Limited</Text>
+              <Text style={styles.limitedText}>{t('rewardsPage.limited')}</Text>
             </View>
           )}
 
@@ -144,7 +146,7 @@ const RewardsPage = () => {
           {item.tier && (
             <View style={[styles.tierBadge, { backgroundColor: getRewardColor(item.tier) }]}>
               <Icon name="crown" size={14} color="#fff" />
-              <Text style={styles.tierText}>{item.tier.toUpperCase()}</Text>
+              <Text style={styles.tierText}>{t(`rewardsPage.tier.${item.tier}`)}</Text>
             </View>
           )}
         </View>
@@ -177,7 +179,7 @@ const RewardsPage = () => {
             </View>
 
             <View style={styles.stockSection}>
-              <Text style={styles.stockCount}>{item.inStock} in stock</Text>
+              <Text style={styles.stockCount}>{t('rewardsPage.inStock', { count: item.inStock })}</Text>
             </View>
 
             {redeemable && (
@@ -195,7 +197,7 @@ const RewardsPage = () => {
     <SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Rewards</Text>
+        <Text style={styles.headerTitle}>{t('rewardsPage.title')}</Text>
         <TouchableOpacity onPress={handleSearch}>
           <Icon name="magnify" size={24} color="#000" />
         </TouchableOpacity>
@@ -217,19 +219,19 @@ const RewardsPage = () => {
                 <Icon name="trophy" size={48} color="#FFB800" />
               </View>
               <View style={styles.pointsCardMiddle}>
-                <Text style={styles.pointsLabel}>Current Points</Text>
+                <Text style={styles.pointsLabel}>{t('rewardsPage.currentPoints')}</Text>
                 <Text style={styles.pointsValue}>
                   {userRewards?.currentPoints.toLocaleString() || 0}
                 </Text>
                 {userRewards?.nextTierPoints && (
                   <Text style={styles.nextTier}>
-                    {userRewards.nextTierPoints} pts to next tier
+                    {t('rewardsPage.pointsToNextTier', { points: userRewards.nextTierPoints })}
                   </Text>
                 )}
               </View>
               <View style={styles.pointsCardRight}>
                 <View style={styles.tierBadgeSmall}>
-                  <Text style={styles.tierLabelSmall}>{userRewards?.tier || 'Bronze'}</Text>
+                  <Text style={styles.tierLabelSmall}>{t(`rewardsPage.tier.${userRewards?.tier || 'bronze'}`)}</Text>
                 </View>
               </View>
             </View>
@@ -241,17 +243,17 @@ const RewardsPage = () => {
                 onPress={handleViewHistory}
               >
                 <Icon name="history" size={20} color="#0066CC" />
-                <Text style={styles.actionText}>History</Text>
+                <Text style={styles.actionText}>{t('rewardsPage.history')}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.actionButton}>
                 <Icon name="qrcode" size={20} color="#0066CC" />
-                <Text style={styles.actionText}>Scan QR</Text>
+                <Text style={styles.actionText}>{t('rewardsPage.scanQR')}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.actionButton}>
                 <Icon name="information" size={20} color="#0066CC" />
-                <Text style={styles.actionText}>How to Earn</Text>
+                <Text style={styles.actionText}>{t('rewardsPage.howToEarn')}</Text>
               </TouchableOpacity>
             </View>
 
@@ -278,7 +280,7 @@ const RewardsPage = () => {
                           filter === f && styles.filterChipTextActive,
                         ]}
                       >
-                        {f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}
+                        {t(`rewardsPage.filter.${f}`)}
                       </Text>
                     </TouchableOpacity>
                   )
@@ -294,10 +296,10 @@ const RewardsPage = () => {
             {/* Rewards Header */}
             <View style={styles.rewardsHeader}>
               <Text style={styles.rewardsTitle}>
-                {filter === 'all' ? 'All Rewards' : `${filter.charAt(0).toUpperCase() + filter.slice(1)} Rewards`}
+                {filter === 'all' ? t('rewardsPage.allRewards') : t(`rewardsPage.${filter}Rewards`)}
               </Text>
               <Text style={styles.rewardsCount}>
-                {rewards.length} {rewards.length === 1 ? 'reward' : 'rewards'}
+                {rewards.length} {t(rewards.length === 1 ? 'rewardsPage.reward' : 'rewardsPage.rewards')}
               </Text>
             </View>
           </>
@@ -310,9 +312,9 @@ const RewardsPage = () => {
           !rewardsLoading ? (
             <View style={styles.emptyState}>
               <Icon name="gift" size={48} color="#ddd" />
-              <Text style={styles.emptyTitle}>No rewards available</Text>
+              <Text style={styles.emptyTitle}>{t('rewardsPage.noRewards')}</Text>
               <Text style={styles.emptySubtitle}>
-                Try checking back later or change your filter
+                {t('rewardsPage.tryLater')}
               </Text>
             </View>
           ) : null
@@ -322,7 +324,7 @@ const RewardsPage = () => {
       {/* Loading State */}
       {rewardsLoading && (
         <View style={styles.loadingOverlay}>
-          <Text style={styles.loadingText}>Loading rewards...</Text>
+          <Text style={styles.loadingText}>{t('common.loading')}</Text>
         </View>
       )}
     </SafeAreaView>

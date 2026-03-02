@@ -6,9 +6,11 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  ActivityIndicator,
+  ScrollView,
 } from 'react-native';
-import MapboxGL from '@rnmapbox/maps';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
@@ -33,6 +35,7 @@ interface CheckInsResponse {
 const MapPage = () => {
   const navigation = useNavigation<NavigationProp>();
   const location = useLocation();
+  const { t } = useTranslation();
   const [selectedPlace, setSelectedPlace] = useState<MapPlace | null>(null);
 
   // Query for nearby places on map
@@ -81,45 +84,54 @@ const MapPage = () => {
   return (
     <AppLayout>
       <View style={{ flex: 1 }}>
-        {/* Bản đồ */}
-        <MapboxGL.MapView
-          style={{ flex: 1 }}
-          styleURL={MapboxGL.StyleURL.Street}
-          onPress={() => handleSelectPlace(null)}
-        >
-          <MapboxGL.Camera
-            zoomLevel={12}
-            centerCoordinate={[
-              location?.lng || 106.660172,
-              location?.lat || 10.762622,
-            ]}
-            animationMode="flyTo"
-            animationDuration={1000}
-          />
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>{t('mapPage.nearbyPlaces')}</Text>
+          <Text style={styles.headerSubtitle}>{t('mapPage.loadingPlaces')}</Text>
+        </View>
 
-          {/* Markers for each check-in */}
-          {places.map((place) => (
-            <MapboxGL.MarkerView
-              key={place.mapboxId}
-              coordinate={[place.lng, place.lat]}
-            >
-              <TouchableOpacity
-                onPress={() => handleSelectPlace(place)}
-                activeOpacity={0.7}
-              >
-                <Image
-                  source={{ uri: place.thumbnail }}
+        {/* Loading State */}
+        {nearbyLoading && (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#0a84ff" />
+            <Text style={styles.loadingText}>{t('common.loading')}</Text>
+          </View>
+        )}
+
+        {/* Places List */}
+        {!nearbyLoading && (
+          <ScrollView style={styles.placesContainer} contentContainerStyle={styles.placesContent}>
+            {places.length > 0 ? (
+              places.map((place) => (
+                <TouchableOpacity
+                  key={place.mapboxId}
                   style={[
-                    styles.markerImage,
-                    selectedCheckIn?.place?.mapboxId === place.mapboxId && styles.markerImageSelected,
+                    styles.placeCard,
+                    selectedPlace?.mapboxId === place.mapboxId && styles.placeCardSelected,
                   ]}
-                />
-              </TouchableOpacity>
-            </MapboxGL.MarkerView>
-          ))}
-        </MapboxGL.MapView>
+                  onPress={() => handleSelectPlace(place)}
+                >
+                  {place.thumbnail && (
+                    <Image
+                      source={{ uri: place.thumbnail }}
+                      style={styles.placeImage}
+                    />
+                  )}
+                  <View style={styles.placeInfo}>
+                    <Text style={styles.placeName}>{place.name}</Text>
+                    <Text style={styles.placeAddress}>{place.address}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))
+            ) : (
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>{t('common.noResults')}</Text>
+              </View>
+            )}
+          </ScrollView>
+        )}
 
-        {/* Thẻ thông tin check-in */}
+        {/* Selected Check-in Info */}
         {selectedCheckIn && (
           <View style={styles.card}>
             <Text style={styles.placeName}>{selectedCheckIn.place.name}</Text>
@@ -143,37 +155,101 @@ const MapPage = () => {
             </View>
           </View>
         )}
-
-        {/* Thanh điều hướng */}
-        <View style={styles.navBar}>
-          <Text style={styles.navItem}>Home</Text>
-          <Text style={styles.navItem}>Map</Text>
-          <Text style={styles.navItem}>Rewards</Text>
-          <Text style={styles.navItem}>Profile</Text>
-        </View>
       </View>
     </AppLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  markerImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: '#fff',
+  header: {
+    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
   },
-  markerImageSelected: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    borderWidth: 3,
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#000',
+  },
+  headerSubtitle: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 4,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  loadingText: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 12,
+  },
+  placesContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  placesContent: {
+    paddingVertical: 12,
+  },
+  placeCard: {
+    flexDirection: 'row',
+    marginHorizontal: 12,
+    marginVertical: 8,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#f0f0f0',
+  },
+  placeCardSelected: {
     borderColor: '#0a84ff',
+    borderWidth: 2,
+  },
+  placeImage: {
+    width: 100,
+    height: 100,
+    backgroundColor: '#f0f0f0',
+  },
+  placeInfo: {
+    flex: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    justifyContent: 'center',
+  },
+  placeName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
+    marginBottom: 4,
+  },
+  placeAddress: {
+    fontSize: 12,
+    color: '#666',
+    marginBottom: 4,
+  },
+  placeRating: {
+    fontSize: 12,
+    color: '#FFB800',
+    fontWeight: '500',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 40,
+  },
+  emptyText: {
+    fontSize: 14,
+    color: '#999',
   },
   card: {
     position: 'absolute',
-    bottom: 80,
+    bottom: 16,
     left: 16,
     right: 16,
     backgroundColor: '#fff',
@@ -184,7 +260,6 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 4,
   },
-  placeName: { fontSize: 18, fontWeight: '600' },
   userName: { color: '#666', marginBottom: 8 },
   actionRow: { flexDirection: 'row', justifyContent: 'space-between' },
   actionButton: {
@@ -193,20 +268,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 4,
   },
-  navBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 60,
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderTopWidth: 1,
-    borderColor: '#ddd',
-  },
-  navItem: { fontSize: 14, fontWeight: '500' },
 });
 
 export default MapPage;

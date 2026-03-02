@@ -8,11 +8,11 @@ PODS:
   - hermes-engine (0.82.1):
     - hermes-engine/Pre-built (= 0.82.1)
   - hermes-engine/Pre-built (0.82.1)
-  - MapboxCommon (23.11.4)
+  - MapboxCommon (23.12.0)
   - MapboxCoreMaps (10.19.2):
     - MapboxCommon (~> 23.11)
-  - MapboxMaps (10.19.4):
-    - MapboxCommon (= 23.11.4)
+  - MapboxMaps (10.19.5):
+    - MapboxCommon (= 23.12.0)
     - MapboxCoreMaps (= 10.19.2)
     - MapboxMobileEvents (= 2.0.0)
     - Turf (= 2.8.0)
@@ -3004,11 +3004,11 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: 273e30e7fb618279934b0b95ffab60ecedb7acf5
-  MapboxCommon: cc47fafe3fe5408ca49240aa80fa64f27f275711
+  MapboxCommon: 9fe257ddc7385d55106345d4520a7fec3f4c0465
   MapboxCoreMaps: 35685edba03e44468aed57c3dfd7f8795edafda8
-  MapboxMaps: f87023cf0d72b180b40ea0b6fb4b2d7db6b73b71
+  MapboxMaps: f8d239f0474c07002443dd2f424c6dba2d44ec9a
   MapboxMobileEvents: d044b9edbe0ec7df60f6c2c9634fe9a7f449266b
-  RCT-Folly: 846fda9475e61ec7bcbf8a3fe81edfcaeb090669
+  RCT-Folly: 59ec0ac1f2f39672a0c6e6cecdd39383b764646f
   RCTDeprecation: f17e2ebc07876ca9ab8eb6e4b0a4e4647497ae3a
   RCTRequired: e2c574c1b45231f7efb0834936bd609d75072b63
   RCTTypeSafety: c693294e3993056955c3010eb1ebc574f1fcded6

@@ -231,5 +231,95 @@
   "checkInFailedMessage": "Failed to check in. Please try again.",
   "comments": "Comments",
   "logout": "Logout",
-  "close": "Close"
+  "close": "Close",
+  "mapPage": {
+    "title": "Map",
+    "nearbyPlaces": "Nearby Places",
+    "loadingPlaces": "Loading places...",
+    "noPlaces": "No places found",
+    "selectPlace": "Select a place",
+    "checkInAt": "Check-in at {{placeName}}"
+  },
+  "searchScreen": {
+    "title": "Search",
+    "placeholder": "Search places...",
+    "searchResults": "Search Results",
+    "nearbyPlaces": "Nearby Places",
+    "noPlacesFound": "No places found",
+    "noNearbyPlaces": "No nearby places"
+  },
+  "checkInModal": {
+    "title": "Check-in",
+    "detectingPlaces": "Detecting nearby places…",
+    "foundPlaces": "Found {{count}} nearby places",
+    "choosePlaces": "Choose from {{count}} nearby places",
+    "selectPlace": "Select a place",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "checkInScreen": {
+    "title": "Check-in",
+    "loadingPlaces": "Loading nearby places...",
+    "noLocation": "Location not found",
+    "selectPlace": "Select a place to check-in"
+  },
+  "homePage": {
+    "title": "Home",
+    "loading": "Loading...",
+    "feedTitle": "Recent Activity"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "empty": "No data",
+    "noResults": "No results found"
+  },
+  "rewardsPage": {
+    "title": "Rewards",
+    "currentPoints": "Current Points",
+    "pointsToNextTier": "{{points}} pts to next tier",
+    "history": "History",
+    "scanQR": "Scan QR",
+    "howToEarn": "How to Earn",
+    "allRewards": "All Rewards",
+    "foodRewards": "Food Rewards",
+    "travelRewards": "Travel Rewards",
+    "serviceRewards": "Service Rewards",
+    "entertainmentRewards": "Entertainment Rewards",
+    "reward": "reward",
+    "rewards": "rewards",
+    "outOfStock": "Out of Stock",
+    "limited": "Limited",
+    "inStock": "{{count}} in stock",
+    "noRewards": "No rewards available",
+    "tryLater": "Try checking back later or change your filter",
+    "filter": {
+      "all": "All",
+      "food": "Food",
+      "travel": "Travel",
+      "service": "Service",
+      "entertainment": "Entertainment"
+    },
+    "sort": {
+      "pointsAsc": "Points: Low to High",
+      "pointsDesc": "Points: High to Low",
+      "newest": "Newest",
+      "popular": "Popular"
+    },
+    "tier": {
+      "bronze": "Bronze",
+      "silver": "Silver",
+      "gold": "Gold",
+      "platinum": "Platinum"
+    }
+  }
 }

@@ -165,7 +165,7 @@ const SearchPage = () => {
         <FlatList
           data={places}
           renderItem={renderPlaceItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => item.id || item.mapboxId || `place-${index}`}
           scrollEnabled={false}
           contentContainerStyle={styles.listContent}
           ListEmptyComponent={
