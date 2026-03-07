@@ -102,17 +102,8 @@ const ChangePasswordPage = ({ navigation }: any) => {
 				<View style={{ width: 28 }} />
 			</View>
 
-			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-				{/* Header Section */}
-				<View style={styles.section}>
-					<View style={styles.sectionHeader}>
-						<Icon name="lock" size={24} color="#0066CC" />
-						<Text style={styles.sectionTitle}>{t('changePassword.title')}</Text>
-					</View>
-					<Text style={styles.subtitle}>{t('changePassword.subtitle')}</Text>
-				</View>
-
-				{/* Form Section */}
+		<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+			{/* Form Section */}
 				<View style={styles.formSection}>
 					{/* Current Password */}
 					<PasswordField
