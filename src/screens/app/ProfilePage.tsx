@@ -50,7 +50,7 @@ const ProfilePage = ({ navigation }: ProfilePageProps) => {
     },
     {
       id: 'privacy',
-      icon: 'shield-eye',
+      icon: 'eye-check',
       label: t('profile.privacy'),
       screen: 'Privacy',
     },

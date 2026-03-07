@@ -81,7 +81,9 @@
     "logout": "Logout",
     "logoutTitle": "Logout",
     "logoutMessage": "Are you sure you want to logout?",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "success": "Success"
   },
   "profile": {
     "title": "Profile",
@@ -154,12 +156,22 @@
   "security": {
     "title": "Security",
     "changePassword": "Change Password",
+    "changePasswordDesc": "Update your password",
     "twoFactorAuth": "Two-Factor Authentication",
     "twoFactorAuthDesc": "Enhance account security with 2FA",
+    "twoFactorAuthConfirm": "Do you want to enable two-factor authentication?",
+    "twoFactorAuthEnabled": "Two-factor authentication enabled",
     "loginAlerts": "Login Alerts",
     "loginAlertsDesc": "Get notified of new logins",
+    "biometricAuth": "Biometric Authentication",
+    "biometricAuthDesc": "Use fingerprint or face recognition to login",
     "activeSessions": "Active Sessions",
     "activeSessionsDesc": "View and manage active sessions",
+    "securityTips": "Security Tips",
+    "tip1": "Use strong passwords with at least 12 characters",
+    "tip2": "Enable two-factor authentication for maximum protection",
+    "tip3": "Sign out of old sessions to protect your privacy",
+    "tip4": "Update your password monthly for better security",
     "save": "Save Changes",
     "saving": "Saving..."
   },

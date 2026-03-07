@@ -81,7 +81,9 @@
     "logout": "Đăng xuất",
     "logoutTitle": "Đăng xuất",
     "logoutMessage": "Bạn có chắc muốn đăng xuất?",
-    "cancel": "Hủy"
+    "cancel": "Hủy",
+    "confirm": "Xác nhận",
+    "success": "Thành công"
   },
   "profile": {
     "title": "Hồ sơ",
@@ -153,9 +155,22 @@
   "security": {
     "title": "Bảo mật",
     "changePassword": "Đổi mật khẩu",
+    "changePasswordDesc": "Cập nhật mật khẩu của bạn",
     "twoFactorAuth": "Xác thực hai yếu tố",
+    "twoFactorAuthDesc": "Bảo vệ tài khoản của bạn bằng xác thực hai bước",
+    "twoFactorAuthConfirm": "Bạn có muốn bật xác thực hai yếu tố không?",
+    "twoFactorAuthEnabled": "Xác thực hai yếu tố đã bật",
     "loginAlerts": "Cảnh báo đăng nhập",
-    "trustedDevices": "Thiết bị tin cậy",
+    "loginAlertsDesc": "Nhận thông báo khi có lần đăng nhập mới",
+    "biometricAuth": "Xác thực sinh trắc học",
+    "biometricAuthDesc": "Sử dụng vân tay hoặc khuôn mặt để đăng nhập",
+    "activeSessions": "Phiên hoạt động",
+    "activeSessionsDesc": "Quản lý các thiết bị được phép truy cập",
+    "securityTips": "Mẹo bảo mật",
+    "tip1": "Sử dụng mật khẩu mạnh với ít nhất 12 ký tự",
+    "tip2": "Bật xác thực hai yếu tố để bảo vệ tối đa",
+    "tip3": "Đăng xuất khỏi các phiên cũ để bảo vệ quyền riêng tư",
+    "tip4": "Cập nhật mật khẩu hàng tháng để bảo mật",
     "save": "Lưu Thay Đổi",
     "saving": "Đang Lưu..."
   },
