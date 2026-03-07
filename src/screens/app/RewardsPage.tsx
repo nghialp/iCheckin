@@ -231,7 +231,7 @@ const RewardsPage = () => {
               </View>
               <View style={styles.pointsCardRight}>
                 <View style={styles.tierBadgeSmall}>
-                  <Text style={styles.tierLabelSmall}>{t(`rewardsPage.tier.${userRewards?.tier || 'bronze'}`)}</Text>
+                  <Text style={styles.tierLabelSmall}>{t(`rewardsPage.tier.${(userRewards?.tier || 'bronze').toLowerCase()}`)}</Text>
                 </View>
               </View>
             </View>

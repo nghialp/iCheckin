@@ -17,7 +17,8 @@ const COMMUNITY_ICONS = new Set([
   'check', 'alert', 'information', 'help', 'settings', 'logout', 'login',
   'user', 'users', 'edit', 'delete', 'download', 'upload', 'share', 'camera',
   'image', 'video', 'music', 'folder', 'file', 'lock', 'unlock', 'wifi',
-  'bluetooth', 'battery', 'cloud', 'sun', 'moon', 'star-outline', 'heart-outline', 
+  'bluetooth', 'battery', 'cloud', 'sun', 'moon', 'star-outline', 'heart-outline',
+  'trophy', 'qrcode', 'gift', 'flash', 'crown', 'history', 'sort',
 ]);
 
 const Icon = ({ name, size = 24, color = '#666', style }: IconProps) => {
