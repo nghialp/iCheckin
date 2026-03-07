@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import MapboxGL from '@rnmapbox/maps';
 import { useTranslation } from 'react-i18next';
-import { styles } from './LocationDetailPage.styles';
+import { styles } from '../../styles/screens/LocationDetailPage.styles';
 import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
 import { useApolloMutationWrapper } from '../../hooks/useApolloMutationWrapper';
 import { GET_PLACE_DETAIL } from '../../graphql/queries';
