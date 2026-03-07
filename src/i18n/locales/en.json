@@ -184,10 +184,18 @@
   "support": {
     "title": "Support",
     "faq": "FAQ",
+    "faqDesc": "Find answers to common questions",
     "contactUs": "Contact Us",
+    "contactUsDesc": "Send a message directly to our support team",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
-    "appVersion": "App Version 1.0.0"
+    "appVersion": "App Version",
+    "appVersionDesc": "Check the current app version",
+    "helpCenter": "Help Center",
+    "helpCenterDesc": "Access complete support documentation",
+    "sendMessage": "Send Message",
+    "reportBug": "Report Bug",
+    "reportBugDesc": "Help us improve by reporting issues"
   },
   "rewards": {
     "title": "Rewards",

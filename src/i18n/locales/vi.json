@@ -183,10 +183,18 @@
   "support": {
     "title": "Hỗ trợ",
     "faq": "Câu hỏi thường gặp",
+    "faqDesc": "Tìm câu trả lời cho các câu hỏi phổ biến",
     "contactUs": "Liên hệ chúng tôi",
+    "contactUsDesc": "Gửi tin nhắn trực tiếp cho nhóm hỗ trợ",
     "termsOfService": "Điều khoản dịch vụ",
     "privacyPolicy": "Chính sách bảo mật",
-    "appVersion": "Phiên bản ứng dụng"
+    "appVersion": "Phiên bản ứng dụng",
+    "appVersionDesc": "Kiểm tra phiên bản ứng dụng hiện tại",
+    "helpCenter": "Trung tâm trợ giúp",
+    "helpCenterDesc": "Truy cập tài liệu hỗ trợ đầy đủ",
+    "sendMessage": "Gửi tin nhắn",
+    "reportBug": "Báo cáo lỗi",
+    "reportBugDesc": "Giúp chúng tôi cải thiện bằng cách báo cáo vấn đề"
   },
   "rewards": {
     "title": "Phần thưởng",
