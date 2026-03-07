@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   Alert,
   Switch,
 } from 'react-native';
+import { Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useApolloMutationWrapper } from '../../hooks/useApolloMutationWrapper';
 import { UPDATE_PRIVACY_SETTINGS_MUTATION } from '../../graphql/mutations';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from '../../components/common/Icon';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useUserData from '../../hooks/useUserData';
+import { colors, spacing, typography } from '../../theme';
+import { headerStyles, cardStyles, containerStyles } from '../../styles';
 
 type Props = NativeStackNavigationProp<RootStackParamList, 'Privacy'>;
 
@@ -209,51 +211,51 @@ const PrivacyScreen = ({ navigation }: PrivacyScreenProps) => {
 }
 
 const styles = StyleSheet.create({
+  // Container
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.background,
   },
+
+  // Header
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    ...headerStyles.header,
   },
   headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#000',
+    ...headerStyles.headerTitle,
   },
+
+  // Scroll View
   scrollView: {
     flex: 1,
-    padding: 16,
+    padding: spacing.md,
   },
+
+  // Section
   section: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 12,
-    marginBottom: 16,
+    marginBottom: spacing.md,
     overflow: 'hidden',
   },
   sectionTitle: {
-    fontSize: 14,
+    ...typography.caption,
+    color: colors.textSecondary,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.xs,
     fontWeight: '600',
-    color: '#666',
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 8,
   },
+
+  // Setting Item
   settingItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: colors.border,
   },
   settingContent: {
     flex: 1,
@@ -261,56 +263,60 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    marginRight: 12,
+    marginRight: spacing.md,
   },
   settingText: {
     flex: 1,
   },
   settingLabel: {
-    fontSize: 15,
+    ...typography.bodyMedium,
+    color: colors.textPrimary,
     fontWeight: '500',
-    color: '#000',
   },
   settingDesc: {
-    fontSize: 12,
-    color: '#999',
-    marginTop: 4,
+    ...typography.caption,
+    color: colors.textTertiary,
+    marginTop: spacing.xs,
   },
   chevron: {
-    padding: 8,
+    padding: spacing.sm,
   },
+
+  // Action Item
   actionItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: colors.border,
   },
   actionLabel: {
     flex: 1,
-    fontSize: 15,
+    ...typography.bodyMedium,
+    color: colors.textPrimary,
     fontWeight: '500',
-    color: '#000',
-    marginLeft: 12,
+    marginLeft: spacing.md,
   },
+
+  // Button Container
   buttonContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#fff',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    backgroundColor: colors.white,
     borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
+    borderTopColor: colors.border,
   },
   saveButton: {
-    backgroundColor: '#0066CC',
+    backgroundColor: colors.primary,
     borderRadius: 8,
-    paddingVertical: 14,
+    paddingVertical: spacing.md - 2,
     alignItems: 'center',
   },
   saveButtonText: {
-    fontSize: 16,
+    ...typography.button,
+    color: colors.white,
     fontWeight: '600',
-    color: '#fff',
   },
 });
 

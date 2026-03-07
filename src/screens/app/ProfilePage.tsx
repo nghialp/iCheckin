@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   Image,
   ScrollView,
   Alert,
 } from 'react-native';
+import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from '../../components/common/Icon';
+import { colors, spacing, typography } from '../../theme';
+import { containerStyles, cardStyles, buttonStyles } from '../../styles';
 
 interface ProfilePageProps {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Profile'>;
@@ -128,84 +130,89 @@ const ProfilePage = ({ navigation }: ProfilePageProps) => {
 }
 
 const styles = StyleSheet.create({
+  // Container
   container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
+    ...containerStyles.screen,
   },
   scrollView: {
     flex: 1,
-    padding: 16,
+    padding: spacing.md,
   },
+
+  // Header Section
   headerSection: {
     alignItems: 'center',
-    paddingVertical: 32,
-    backgroundColor: '#fff',
+    paddingVertical: spacing.xl,
+    backgroundColor: colors.white,
     borderRadius: 12,
-    marginBottom: 24,
+    marginBottom: spacing.lg,
   },
   avatarContainer: {
-    marginBottom: 16,
+    marginBottom: spacing.md,
   },
   avatar: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: colors.gray200,
   },
   avatarPlaceholder: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   userName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000',
-    marginBottom: 4,
+    ...typography.heading2,
+    color: colors.textPrimary,
+    marginBottom: spacing.xs,
   },
   userEmail: {
-    fontSize: 14,
-    color: '#666',
+    ...typography.bodySmall,
+    color: colors.textSecondary,
   },
+
+  // Menu Section
   menuSection: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 12,
-    marginBottom: 24,
+    marginBottom: spacing.lg,
     overflow: 'hidden',
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
   },
   menuIcon: {
-    marginRight: 12,
+    marginRight: spacing.md,
   },
   menuLabel: {
-    fontSize: 16,
+    ...typography.bodyMedium,
+    color: colors.textPrimary,
     fontWeight: '500',
-    color: '#000',
     flex: 1,
   },
   divider: {
     height: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: colors.border,
     marginLeft: 52,
   },
+
+  // Logout Button
   logoutButton: {
-    backgroundColor: '#FF4444',
+    backgroundColor: colors.error,
     borderRadius: 8,
-    paddingVertical: 14,
+    paddingVertical: spacing.md - 2,
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: spacing.xxl,
   },
   logoutButtonDisabled: {
-    backgroundColor: '#CCC',
+    backgroundColor: colors.gray300,
   },
   logoutButtonText: {
-    fontSize: 16,
+    ...typography.button,
+    color: colors.white,
     fontWeight: '600',
-    color: '#fff',
   },
 });
 
