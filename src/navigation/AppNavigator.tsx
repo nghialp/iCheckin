@@ -122,7 +122,7 @@ const AppNavigator = () => {
           <Stack.Screen 
             name="ChangePassword" 
             component={ChangePasswordPage} 
-            options={{ title: 'Change Password' }}
+            options={{ headerShown: false }}
           />
           <Stack.Screen 
             name="CheckIn" 
