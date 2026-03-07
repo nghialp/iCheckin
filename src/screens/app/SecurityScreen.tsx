@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
@@ -9,10 +8,13 @@ import {
   Switch,
   Alert,
 } from 'react-native';
+import { Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../components/common/Icon';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../utils/router';
+import { colors, spacing, typography } from '../../theme';
+import { headerStyles, cardStyles, containerStyles, sectionStyles } from '../../styles';
 
 type Props = NativeStackNavigationProp<RootStackParamList, 'Security'>;
 
@@ -204,116 +206,91 @@ export default function SecurityScreen({ navigation }: SecurityScreenProps) {
 }
 
 const styles = StyleSheet.create({
+  // Container
   container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
+    ...containerStyles.screen,
   },
+
+  // Header
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    ...headerStyles.header,
   },
   headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#000',
+    ...headerStyles.headerTitle,
   },
+
+  // Content
   content: {
     flex: 1,
-    padding: 16,
+    padding: spacing.md,
   },
+
+  // Section
   section: {
-    marginBottom: 24,
+    marginBottom: spacing.lg,
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
-    paddingHorizontal: 4,
+    marginBottom: spacing.md,
   },
   sectionTitle: {
-    fontSize: 16,
+    ...typography.heading3,
+    color: colors.textPrimary,
     fontWeight: '600',
-    color: '#000',
-    marginLeft: 8,
+    marginLeft: spacing.sm,
   },
+
+  // Card
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3.84,
-    elevation: 2,
+    ...cardStyles.cardRow,
+    marginBottom: spacing.sm,
   },
   cardContent: {
     flex: 1,
   },
   cardTitle: {
-    fontSize: 16,
+    ...typography.bodyMedium,
+    color: colors.textPrimary,
     fontWeight: '600',
-    color: '#000',
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   cardDescription: {
-    fontSize: 12,
-    color: '#666',
+    ...typography.caption,
+    color: colors.textSecondary,
   },
+
+  // Setting Card
   settingCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3.84,
-    elevation: 2,
+    ...cardStyles.cardRow,
   },
   settingContent: {
     flex: 1,
   },
   settingTitle: {
-    fontSize: 16,
+    ...typography.bodyMedium,
+    color: colors.textPrimary,
     fontWeight: '600',
-    color: '#000',
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   settingDescription: {
-    fontSize: 12,
-    color: '#666',
+    ...typography.caption,
+    color: colors.textSecondary,
   },
+
+  // Tip Card
   tipCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3.84,
-    elevation: 2,
+    ...cardStyles.card,
   },
   tipItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
   tipText: {
-    fontSize: 14,
-    color: '#333',
-    marginLeft: 12,
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+    marginLeft: spacing.md,
     flex: 1,
   },
 });

@@ -15,6 +15,8 @@ import { CHANGE_PASSWORD } from '../../graphql/mutations/resetPassword.mutation'
 import { ChangePasswordResponse, ResetPasswordInput } from '../../graphql/interfaces/pages/authen.interface';
 import useAuth from '../../hooks/useAuth';
 import useApolloMutationWrapper from '../../hooks/useApolloMutationWrapper';
+import { colors, spacing, typography } from '../../theme';
+import { headerStyles, buttonStyles, inputStyles, containerStyles } from '../../styles';
 
 const ChangePasswordPage = ({ navigation }: any) => {
 	const { t } = useTranslation();
@@ -196,132 +198,94 @@ const ChangePasswordPage = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
+	// Container
 	container: {
-		flex: 1,
-		backgroundColor: '#f5f5f5',
+		...containerStyles.screen,
 	},
+
+	// Header
 	header: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		paddingHorizontal: 16,
-		paddingVertical: 12,
-		backgroundColor: '#fff',
-		borderBottomWidth: 1,
-		borderBottomColor: '#f0f0f0',
+		...headerStyles.header,
 	},
 	headerTitle: {
-		fontSize: 18,
-		fontWeight: '600',
-		color: '#000',
+		...headerStyles.headerTitle,
 	},
+
+	// Content
 	content: {
 		flex: 1,
-		padding: 16,
+		padding: spacing.md,
 	},
-	section: {
-		marginBottom: 24,
-		paddingBottom: 16,
-		borderBottomWidth: 1,
-		borderBottomColor: '#eee',
-	},
-	sectionHeader: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginBottom: 12,
-	},
-	sectionTitle: {
-		fontSize: 18,
-		fontWeight: '700',
-		color: '#000',
-		marginLeft: 12,
-	},
-	subtitle: {
-		fontSize: 14,
-		color: '#666',
-		marginTop: 8,
-	},
+
+	// Form Section
 	formSection: {
-		marginBottom: 24,
+		marginBottom: spacing.lg,
 	},
+
+	// Field Container
 	fieldContainer: {
-		marginBottom: 20,
+		marginBottom: spacing.lg,
 	},
 	fieldLabel: {
-		fontSize: 14,
-		fontWeight: '600',
-		color: '#000',
-		marginBottom: 8,
+		...inputStyles.inputLabel,
 	},
 	inputWrapper: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		backgroundColor: '#fff',
-		borderRadius: 12,
-		borderWidth: 1,
-		borderColor: '#ddd',
-		paddingHorizontal: 12,
+		...inputStyles.inputWrapper,
 	},
 	input: {
-		flex: 1,
-		paddingVertical: 12,
-		fontSize: 16,
-		color: '#000',
+		...inputStyles.input,
 	},
 	iconButton: {
-		padding: 8,
+		...inputStyles.inputSuffix,
+		paddingRight: spacing.sm,
 	},
+
+	// Requirements Card
 	requirementsCard: {
-		backgroundColor: '#f9f9f9',
+		backgroundColor: colors.primaryLight,
 		borderRadius: 12,
-		padding: 16,
-		marginTop: 16,
+		padding: spacing.md,
+		marginTop: spacing.lg,
 		borderLeftWidth: 4,
-		borderLeftColor: '#0066CC',
+		borderLeftColor: colors.primary,
 	},
 	requirementsTitle: {
-		fontSize: 14,
-		fontWeight: '600',
-		color: '#000',
-		marginBottom: 12,
+		...typography.label,
+		color: colors.textPrimary,
+		marginBottom: spacing.md,
 	},
 	requirementItem: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: 8,
+		marginBottom: spacing.sm,
 	},
 	requirementText: {
-		fontSize: 13,
-		marginLeft: 8,
+		...typography.caption,
+		color: colors.textSecondary,
+		marginLeft: spacing.sm,
 	},
+
+	// Actions
 	actions: {
-		marginBottom: 32,
+		marginBottom: spacing.xxl,
+		gap: spacing.sm,
 	},
 	button: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 14,
-		paddingHorizontal: 16,
-		borderRadius: 12,
-		marginBottom: 12,
+		...buttonStyles.button,
+		marginBottom: spacing.sm,
 	},
 	submitButton: {
-		backgroundColor: '#0066CC',
+		...buttonStyles.buttonPrimary,
 	},
 	cancelButton: {
-		backgroundColor: '#f0f0f0',
-		borderWidth: 1,
-		borderColor: '#ddd',
+		...buttonStyles.buttonSecondary,
 	},
 	buttonDisabled: {
 		opacity: 0.6,
 	},
 	buttonText: {
-		fontSize: 16,
-		fontWeight: '600',
-		color: '#fff',
-		marginLeft: 8,
+		...buttonStyles.buttonPrimaryText,
+		marginLeft: spacing.sm,
 	},
 });
 
