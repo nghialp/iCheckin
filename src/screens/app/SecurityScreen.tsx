@@ -83,7 +83,7 @@ export default function SecurityScreen({ navigation }: SecurityScreenProps) {
             <View style={styles.cardContent}>
               <Text style={styles.cardTitle}>{t('security.changePassword')}</Text>
               <Text style={styles.cardDescription}>
-                Update your password regularly for better security
+                {t('security.changePasswordHint')}
               </Text>
             </View>
             <Icon name="chevron-right" size={24} color="#999" />
@@ -100,7 +100,7 @@ export default function SecurityScreen({ navigation }: SecurityScreenProps) {
             <View style={styles.settingContent}>
               <Text style={styles.settingTitle}>{t('security.twoFactorAuth')}</Text>
               <Text style={styles.settingDescription}>
-                Add an extra layer of security to your account
+                {t('security.twoFactorAuthHint')}
               </Text>
             </View>
             <Switch
@@ -122,7 +122,7 @@ export default function SecurityScreen({ navigation }: SecurityScreenProps) {
             <View style={styles.settingContent}>
               <Text style={styles.settingTitle}>{t('security.loginAlerts')}</Text>
               <Text style={styles.settingDescription}>
-                Get notified when someone logs into your account
+                {t('security.loginAlertsHint')}
               </Text>
             </View>
             <Switch
@@ -138,13 +138,13 @@ export default function SecurityScreen({ navigation }: SecurityScreenProps) {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Icon name="fingerprint" size={20} color="#0066CC" />
-            <Text style={styles.sectionTitle}>Biometric Authentication</Text>
+            <Text style={styles.sectionTitle}>{t('security.biometricAuth')}</Text>
           </View>
           <View style={styles.settingCard}>
             <View style={styles.settingContent}>
-              <Text style={styles.settingTitle}>Fingerprint/Face ID</Text>
+              <Text style={styles.settingTitle}>{t('security.biometricAuth')}</Text>
               <Text style={styles.settingDescription}>
-                Use biometric login for faster access
+                {t('security.biometricAuthHint')}
               </Text>
             </View>
             <Switch
@@ -160,13 +160,13 @@ export default function SecurityScreen({ navigation }: SecurityScreenProps) {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Icon name="devices" size={20} color="#0066CC" />
-            <Text style={styles.sectionTitle}>Active Sessions</Text>
+            <Text style={styles.sectionTitle}>{t('security.activeSessions')}</Text>
           </View>
           <TouchableOpacity style={styles.card}>
             <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>Manage Active Sessions</Text>
+              <Text style={styles.cardTitle}>{t('security.manageActiveSessions')}</Text>
               <Text style={styles.cardDescription}>
-                View and manage devices logged into your account
+                {t('security.activeSessionsHint')}
               </Text>
             </View>
             <Icon name="chevron-right" size={24} color="#999" />
@@ -177,24 +177,24 @@ export default function SecurityScreen({ navigation }: SecurityScreenProps) {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Icon name="lightbulb" size={20} color="#0066CC" />
-            <Text style={styles.sectionTitle}>Security Tips</Text>
+            <Text style={styles.sectionTitle}>{t('security.securityTips')}</Text>
           </View>
           <View style={styles.tipCard}>
             <View style={styles.tipItem}>
               <Icon name="check-circle" size={20} color="#4CAF50" />
-              <Text style={styles.tipText}>Use a strong, unique password</Text>
+              <Text style={styles.tipText}>{t('security.tip1')}</Text>
             </View>
             <View style={styles.tipItem}>
               <Icon name="check-circle" size={20} color="#4CAF50" />
-              <Text style={styles.tipText}>Enable two-factor authentication</Text>
+              <Text style={styles.tipText}>{t('security.tip2')}</Text>
             </View>
             <View style={styles.tipItem}>
               <Icon name="check-circle" size={20} color="#4CAF50" />
-              <Text style={styles.tipText}>Keep your email secure</Text>
+              <Text style={styles.tipText}>{t('security.tip3')}</Text>
             </View>
             <View style={styles.tipItem}>
               <Icon name="check-circle" size={20} color="#4CAF50" />
-              <Text style={styles.tipText}>Review login activity regularly</Text>
+              <Text style={styles.tipText}>{t('security.tip4')}</Text>
             </View>
           </View>
         </View>
