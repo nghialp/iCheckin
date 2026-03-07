@@ -22,6 +22,7 @@ const COMMUNITY_ICONS = new Set([
   'check-circle', 'check-all', 'alert-circle', 'help-circle', 'account-circle',
   'bell', 'bell-alert', 'shield-lock', 'shield-check', 'chevron-right', 'eye-check',
   'fingerprint', 'devices', 'lightbulb', 'comment-question', 'file-document', 'bug',
+  'eye', 'eye-off', 'circle-outline',
 ]);
 
 const Icon = ({ name, size = 24, color = '#666', style }: IconProps) => {
