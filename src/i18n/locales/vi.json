@@ -28,11 +28,18 @@
   },
   "changePassword": {
     "title": "Đổi mật khẩu",
+    "subtitle": "Cập nhật mật khẩu của tài khoản",
+    "currentPassword": "Mật khẩu hiện tại",
     "newPassword": "Mật khẩu mới",
     "confirmPassword": "Xác nhận mật khẩu",
     "button": "Đổi mật khẩu",
-    "subtitle": "Tạo tài khoản mới để bắt đầu",
-    "errorMessage": "Mật khẩu không khớp"
+    "fillAllFields": "Vui lòng điền tất cả các trường",
+    "passwordTooShort": "Mật khẩu phải có ít nhất 8 ký tự",
+    "passwordMismatch": "Mật khẩu không khớp",
+    "userNotFound": "Không tìm thấy người dùng",
+    "successMessage": "Mật khẩu đã được thay đổi thành công",
+    "failedMessage": "Không thể thay đổi mật khẩu",
+    "errorMessage": "Lỗi khi thay đổi mật khẩu"
   },
   "signUp": {
     "title": "Đăng ký",
@@ -296,6 +303,7 @@
   "common": {
     "loading": "Đang tải...",
     "error": "Lỗi",
+    "success": "Thành công",
     "retry": "Thử lại",
     "cancel": "Hủy",
     "confirm": "Xác nhận",

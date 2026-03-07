@@ -28,11 +28,18 @@
   },
   "changePassword": {
     "title": "Change Password",
+    "subtitle": "Update your account password",
+    "currentPassword": "Current Password",
     "newPassword": "New Password",
     "confirmPassword": "Confirm Password",
     "button": "Change Password",
-    "subtitle": "Create a new account to get started",
-    "errorMessage": "Passwords do not match"
+    "fillAllFields": "Please fill in all fields",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordMismatch": "Passwords do not match",
+    "userNotFound": "User not found",
+    "successMessage": "Password changed successfully",
+    "failedMessage": "Failed to change password",
+    "errorMessage": "Error changing password"
   },
   "signUp": {
     "title": "Sign Up",
@@ -297,6 +304,7 @@
   "common": {
     "loading": "Loading...",
     "error": "Error",
+    "success": "Success",
     "retry": "Retry",
     "cancel": "Cancel",
     "confirm": "Confirm",
