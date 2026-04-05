@@ -119,8 +119,14 @@
     "saving": "Updating...",
     "cancel": "Cancel",
     "success": "Profile updated successfully!",
-    "avatarUploaded": "Avatar updated successfully!"
-
+    "savedSuccessfully": "Your information has been saved successfully!",
+    "avatarUploaded": "Avatar updated successfully!",
+    "error": "Error",
+    "nameRequired": "Please enter your name",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidPhone": "Phone number must be at least 10 digits",
+    "avatarUpdateFailed": "Failed to update avatar. Please try again.",
+    "saveFailed": "Failed to save your information. Please try again."
   },
   "notifications": {
     "title": "Notifications",

@@ -13,10 +13,10 @@ interface User {
 
 const FriendsFollowingCard = () => {
   const { data: friendsData, loading: friendsLoading } = useQuery<{ myFriends: User[] }>(GET_MY_FRIENDS);
-  const { data: followingData, loading: followingLoading } = useQuery<{ myFollowings: User[] }>(GET_MY_FOLLOWINGS);
+  const { data: followingData, loading: followingLoading } = useQuery<{ me: { followings: User[] } }>(GET_MY_FOLLOWINGS);
 
   const friendsCount = friendsData?.myFriends?.length || 0;
-  const followingCount = followingData?.myFollowings?.length || 0;
+  const followingCount = followingData?.me?.followings?.length || 0;
 
   return (
     <View style={styles.container}>

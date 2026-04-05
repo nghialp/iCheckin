@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LOGIN_MUTATION, SIGNUP_MUTATION } from '../graphql/mutations';
 import { UserBasic } from '../graphql/interfaces/entities/user.interface';
 import { LoginInput, LoginResponse, SignupInput, SignupResponse } from '../graphql/interfaces/pages/authen.interface';
+import { setOnUnauthenticatedCallback } from '../graphql/client';
 
 interface AuthState {
   accessToken?: string;
@@ -38,6 +39,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const loginMutation = useMutation<LoginResponse, LoginInput>(LOGIN_MUTATION)[0];
   const signUpMutation = useMutation<SignupResponse, SignupInput>(SIGNUP_MUTATION)[0];
 
+  const handleLogout = useCallback(async () => {
+    setUser(null);
+    setAuth({});
+    setErrors(null);
+    await AsyncStorage.removeItem('auth_user');
+  }, []);
+
   useEffect(() => {
     (async () => {
       try {
@@ -57,7 +65,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setInitialLoading(false);
       }
     })();
-  }, []);
+
+    // 🔥 FIX: Setup callback để redirect khi token hết hạn
+    setOnUnauthenticatedCallback(() => {
+      console.warn('[AuthProvider] Token expired or invalid - logging out');
+      handleLogout();
+    });
+
+    return () => {
+      setOnUnauthenticatedCallback(null);
+    };
+  }, [handleLogout]);
 
   const login = useCallback(
     async (email: string, password: string, remember: boolean) => {
@@ -206,6 +224,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setAuth({});
     setErrors(null);
     await AsyncStorage.removeItem('auth_user');
+    // Cleanup callback khi logout
+    setOnUnauthenticatedCallback(null);
   }, []);
 
   const clearError = useCallback(() => {

@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import useAuth from '../../hooks/useAuth';
 import { useApolloMutationWrapper } from '../../hooks/useApolloMutationWrapper';
 import { styles } from '../../styles/screens/PersonalDetailsScreen.styles';
 import { UPDATE_PROFILE_MUTATION, UPDATE_USER_AVATAR_MUTATION } from '../../graphql/mutations';
@@ -106,10 +105,6 @@ const PersonalDetailsScreen = ({ navigation }: PersonalDetailsScreenProps) => {
       Alert.alert(t('personalDetails.error'), t('personalDetails.nameRequired'));
       return false;
     }
-    if (!formData.email.includes('@')) {
-      Alert.alert(t('personalDetails.error'), t('personalDetails.invalidEmail'));
-      return false;
-    }
     if (formData.phone && !/^\d{10,}$/.test(formData.phone.replace(/\D/g, ''))) {
       Alert.alert(t('personalDetails.error'), t('personalDetails.invalidPhone'));
       return false;
@@ -121,14 +116,51 @@ const PersonalDetailsScreen = ({ navigation }: PersonalDetailsScreenProps) => {
     if (!validateForm()) return;
 
     try {
-      const result = await updateProfile({ input: formData });
+      // Remove email from input as it cannot be updated
+      const { email, ...updateInput } = formData;
+      
+      // Clean up: remove empty strings AND null values
+      const cleanInput = Object.entries(updateInput).reduce((acc, [key, value]) => {
+        // Only include non-empty, non-null values
+        if (value !== '' && value !== null) {
+          return {
+            ...acc,
+            [key]: value,
+          };
+        }
+        return acc;
+      }, {} as any);
+      
+      console.log('📤 Form data (raw):', JSON.stringify(updateInput, null, 2));
+      console.log('📤 Form data (cleaned - only changed fields):', JSON.stringify(cleanInput, null, 2));
+      console.log('📤 About to call updateProfile with:', { input: cleanInput });
+      
+      const result = await updateProfile({ input: cleanInput });
+
+      console.log('✅ Profile update response:', JSON.stringify(result, null, 2));
 
       if ((result.data as any)?.updateProfile?.success) {
         Alert.alert(t('personalDetails.success'), t('personalDetails.savedSuccessfully'));
         setEditMode(false);
+      } else {
+        const errorMsg = (result.data as any)?.updateProfile?.message || t('personalDetails.saveFailed');
+        Alert.alert(t('personalDetails.error'), errorMsg);
       }
     } catch (error: any) {
-      Alert.alert(t('personalDetails.error'), error.message || t('personalDetails.saveFailed'));
+      console.error('❌ Error updating profile full error:', error);
+      console.error('  - message:', error.message);
+      console.error('  - graphQLErrors:', error.graphQLErrors);
+      console.error('  - networkError:', error.networkError);
+      console.error('  - extensions:', error.extensions);
+      
+      // Extract more detail from GraphQL error
+      if (error.graphQLErrors?.length > 0) {
+        const details = error.graphQLErrors.map((err: any) => err.message).join(', ');
+        console.error('  - GraphQL Error Details:', details);
+        Alert.alert(t('personalDetails.error'), details || error.message || t('personalDetails.saveFailed'));
+      } else {
+        Alert.alert(t('personalDetails.error'), error.message || t('personalDetails.saveFailed'));
+      }
     }
   };
 
@@ -198,22 +230,12 @@ const PersonalDetailsScreen = ({ navigation }: PersonalDetailsScreenProps) => {
             )}
           </View>
 
-          {/* Email Field */}
+          {/* Email Field - Read Only */}
           <View style={styles.fieldContainer}>
             <View style={styles.fieldHeader}>
               <Text style={styles.fieldLabel}>{t('personalDetails.email')}</Text>
             </View>
-            {editMode ? (
-              <TextInput
-                style={styles.input}
-                value={formData.email}
-                onChangeText={(text) => setFormData({ ...formData, email: text })}
-                placeholder={t('personalDetails.enterEmail')}
-                editable={false}
-              />
-            ) : (
-              <Text style={styles.fieldValue}>{formData.email}</Text>
-            )}
+            <Text style={[styles.fieldValue, { color: '#999' }]}>{formData.email}</Text>
           </View>
 
           {/* Phone Field */}

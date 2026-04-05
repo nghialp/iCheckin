@@ -67,19 +67,34 @@ const useApolloMutationWrapper = <TData = unknown, TVariables extends OperationV
   mutation: DocumentNode,
   options?: UseApolloMutationWrapperOptions<TData, TVariables>,
 ): UseApolloMutationWrapperResult<TData, TVariables> => {
-  const [executeMutation, result] = useMutation<TData>(mutation, {
+  const [executeMutation, result] = useMutation<TData, TVariables>(mutation, {
     onCompleted: options?.onCompleted,
     onError: options?.onError as (error: Error) => void,
-  }) as [
-    (variables?: TVariables) => Promise<{ data: TData }>,
-    { loading: boolean; error?: Error; data?: TData }
-  ];
+  });
+
+  const mutate = async (variables?: TVariables): Promise<{ data: TData }> => {
+    try {
+      const res = await executeMutation({ variables: variables as TVariables });
+      
+      // Ensure we always return a data object
+      if (res && res.data) {
+        return { data: res.data as TData };
+      }
+      
+      // If no data, return empty object or throw
+      console.warn('⚠️ Mutation completed without data:', res);
+      return { data: {} as TData };
+    } catch (error) {
+      console.error('❌ Mutation error in wrapper:', error);
+      throw error;
+    }
+  };
 
   return {
-    mutate: executeMutation,
+    mutate,
     loading: result.loading,
     error: result.error,
-    data: result.data,
+    data: result.data || undefined,
   };
 };
 

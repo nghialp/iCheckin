@@ -10,12 +10,12 @@ import { USER_BASIC_FIELDS } from './user.fragment';
  * Basic comment fields
  */
 export const COMMENT_BASIC_FIELDS = gql`
-  fragment CommentBasicFields on Comment {
+  fragment COMMENT_BASIC_FIELDS on Comment {
     id
     content
     createdAt
     user {
-      ...UserBasicFields
+      ...USER_BASIC_FIELDS
     }
   }
   ${USER_BASIC_FIELDS}
@@ -25,7 +25,7 @@ export const COMMENT_BASIC_FIELDS = gql`
  * Comment with extended fields
  */
 export const COMMENT_FIELDS = gql`
-  fragment CommentFields on Comment {
+  fragment COMMENT_FIELDS on Comment {
     id
     content
     createdAt
@@ -34,7 +34,7 @@ export const COMMENT_FIELDS = gql`
     likes
     liked
     user {
-      ...UserBasicFields
+      ...USER_BASIC_FIELDS
     }
   }
   ${USER_BASIC_FIELDS}
@@ -44,7 +44,7 @@ export const COMMENT_FIELDS = gql`
  * Comment with replies
  */
 export const COMMENT_WITH_REPLIES_FIELDS = gql`
-  fragment CommentWithRepliesFields on Comment {
+  fragment COMMENT_WITH_REPLIES_FIELDS on Comment {
     id
     content
     createdAt
@@ -53,10 +53,10 @@ export const COMMENT_WITH_REPLIES_FIELDS = gql`
     likes
     liked
     user {
-      ...UserBasicFields
+      ...USER_BASIC_FIELDS
     }
     replies {
-      ...CommentFields
+      ...COMMENT_FIELDS
     }
   }
   ${USER_BASIC_FIELDS}

@@ -119,7 +119,14 @@
     "saving": "Đang cập nhật...",
     "cancel": "Hủy",
     "success": "Cập nhật thành công!",
-    "avatarUploaded": "Cập nhật ảnh đại diện thành công!"
+    "savedSuccessfully": "Thông tin của bạn đã được lưu thành công!",
+    "avatarUploaded": "Cập nhật ảnh đại diện thành công!",
+    "error": "Lỗi",
+    "nameRequired": "Vui lòng nhập họ và tên của bạn",
+    "invalidEmail": "Vui lòng nhập địa chỉ email hợp lệ",
+    "invalidPhone": "Số điện thoại phải có ít nhất 10 chữ số",
+    "avatarUpdateFailed": "Cập nhật ảnh đại diện thất bại. Vui lòng thử lại.",
+    "saveFailed": "Lưu thông tin thất bại. Vui lòng thử lại."
   },
   "notifications": {
     "title": "Thông báo",

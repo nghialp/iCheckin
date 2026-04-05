@@ -4,6 +4,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
 import { refreshTokenResponse } from './interfaces/pages/authen.interface';
 
+// Global callback để xử lý unauthenticated
+let onUnauthenticated: (() => void) | null = null;
+
+export const setOnUnauthenticatedCallback = (callback: (() => void) | null) => {
+  onUnauthenticated = callback;
+};
+
 // Use environment variable for GraphQL endpoint, fallback to localhost for development
 const GRAPHQL_ENDPOINT: string = (Config.GRAPHQL_ENDPOINT as string) || 'http://localhost:3000/graphql';
 
@@ -15,6 +22,40 @@ export const DEFAULT_COORDINATES = {
 
 export const useApolloClientWithAuth = () => {
   const httpLink = new HttpLink({ uri: GRAPHQL_ENDPOINT });
+
+  // Logging link to debug all requests
+  const loggingLink = new ApolloLink((operation, forward) => {
+    console.log(`🔵 [GraphQL] ${operation.operationName}`, {
+      variables: operation.variables,
+      query: operation.query.loc?.source.body.substring(0, 100),
+    });
+
+    return new Observable(observer => {
+      const subscription = forward(operation).subscribe({
+        next: result => {
+          if (result.errors) {
+            console.error(`⚠️ [GraphQL] ${operation.operationName} has errors`, result.errors);
+          } else {
+            console.log(`✅ [GraphQL] ${operation.operationName} success`);
+          }
+          observer.next(result);
+        },
+        error: err => {
+          console.error(`❌ [GraphQL] ${operation.operationName} error`, {
+            message: err.message,
+            graphQLErrors: err.graphQLErrors,
+            networkError: err.networkError,
+          });
+          observer.error(err);
+        },
+        complete: () => {
+          observer.complete();
+        },
+      });
+
+      return () => subscription.unsubscribe();
+    });
+  });
 
   // ApolloLink middleware để gắn token từ context
   const authLink = new ApolloLink((operation, forward) => {
@@ -29,6 +70,10 @@ export const useApolloClientWithAuth = () => {
           const raw = await AsyncStorage.getItem('auth_user');
           const parsed = raw ? JSON.parse(raw) : null;
           const token = parsed?.accessToken;
+
+          if (operation.operationName === 'UpdateProfile') {
+            console.log(`🔐 [Auth] ${operation.operationName} - Token:`, token ? `${token.substring(0, 20)}...` : 'NO TOKEN');
+          }
 
           operation.setContext({
             headers: {
@@ -83,13 +128,18 @@ export const useApolloClientWithAuth = () => {
       const handleError = async (result: any) => {
         const graphQLErrors = result?.errors;
         if (graphQLErrors?.some((err: any) => err.extensions?.code === 'UNAUTHENTICATED')) {
+          console.error('[GqlAuthGuard] UNAUTHENTICATED - Attempting token refresh...');
           try {
             const raw = await AsyncStorage.getItem('auth_user');
             const parsed = raw ? JSON.parse(raw) : null;
             const refreshToken = parsed?.refreshToken;
             
             if (!refreshToken) {
+              console.error('[GqlAuthGuard] No refresh token found - logging out');
               await AsyncStorage.removeItem('auth_user');
+              if (onUnauthenticated) {
+                onUnauthenticated();
+              }
               observer.error(new Error('No refresh token'));
               return;
             }
@@ -109,9 +159,11 @@ export const useApolloClientWithAuth = () => {
             const newRefreshToken = res?.data?.refreshToken?.refreshToken;
             
             if (!newAccessToken || !newRefreshToken) {
+              console.error('[GqlAuthGuard] Token refresh failed - no tokens received');
               throw new Error('No tokens received from refresh');
             }
 
+            console.log('[GqlAuthGuard] Token refreshed successfully - retrying request');
             await AsyncStorage.setItem(
               'auth_user',
               JSON.stringify({
@@ -136,11 +188,27 @@ export const useApolloClientWithAuth = () => {
               complete: () => observer.complete(),
             });
           } catch (e) {
+            console.error('[GqlAuthGuard] Token refresh failed:', (e as Error).message);
             await AsyncStorage.removeItem('auth_user');
+            // 🔥 FIX: Gọi callback để redirect sang login
+            if (onUnauthenticated) {
+              console.warn('[GqlAuthGuard] Triggering logout callback');
+              onUnauthenticated();
+            }
             observer.error(e);
           }
+        } else if (graphQLErrors?.some((err: any) => err.extensions?.code === 'FORBIDDEN' || err.extensions?.code === 'UNAUTHORIZED')) {
+          // Xử lý các lỗi token không hợp lệ khác
+          console.error('[GqlAuthGuard] FORBIDDEN/UNAUTHORIZED - logging out');
+          await AsyncStorage.removeItem('auth_user');
+          if (onUnauthenticated) {
+            onUnauthenticated();
+          }
+          observer.error(new Error('Token invalid'));
         } else {
+          // ✅ Emit result and complete
           observer.next(result);
+          observer.complete();
         }
       };
 
@@ -161,7 +229,7 @@ export const useApolloClientWithAuth = () => {
   });
 
   return new ApolloClient({
-    link: ApolloLink.from([authLink, errorLink, httpLink]),
+    link: ApolloLink.from([loggingLink, authLink, errorLink, httpLink]),
     cache: new InMemoryCache(),
   });
 };

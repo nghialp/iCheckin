@@ -11,8 +11,22 @@ export const USER_BASIC_FIELDS = gql`
   }
 `;
 
+export const USER_BASIC_INFO_FIELDS = gql`
+  fragment USER_BASIC_INFO_FIELDS on UserBasicInfo {
+    id
+    name
+    email
+    avatar
+    phone
+    dateOfBirth
+    gender
+    location
+    bio
+  }
+`;
+
 export const USER_DETAILS_FIELDS = gql`
-  fragment UserDetailsFields on User {
+  fragment USER_DETAILS_FIELDS on User {
     id
     name
     email
@@ -29,7 +43,7 @@ export const USER_DETAILS_FIELDS = gql`
 `;
 
 export const USER_SETTINGS_FIELDS = gql`
-  fragment UserSettingsFields on User {
+  fragment USER_SETTINGS_FIELDS on User {
     notificationSettings {
       pushNotifications
       emailNotifications
@@ -66,7 +80,7 @@ export const USER_SETTINGS_FIELDS = gql`
 `;
 
 export const USER_RELATIONS_FIELDS = gql`
-  fragment UserRelationsFields on User {
+  fragment USER_RELATIONS_FIELDS on User {
     sentFriendRequests { id status }
     receivedFriendRequests { id status }
     checkins { id status mood }
@@ -81,7 +95,7 @@ export const USER_RELATIONS_FIELDS = gql`
 `;
 
 export const NOTIFICATION_SETTINGS_FIELDS = gql`
-  fragment NotificationSettingsFields on NotificationSettings {
+  fragment NOTIFICATION_SETTINGS_FIELDS on NotificationSettings {
     pushNotifications
     emailNotifications
     smsNotifications
@@ -92,7 +106,7 @@ export const NOTIFICATION_SETTINGS_FIELDS = gql`
 `;
 
 export const PRIVACY_SETTINGS_FIELDS = gql`
-  fragment PrivacySettingsFields on PrivacySettings {
+  fragment PRIVACY_SETTINGS_FIELDS on PrivacySettings {
     locationAccess
     contactsAccess
     cameraAccess
@@ -103,7 +117,7 @@ export const PRIVACY_SETTINGS_FIELDS = gql`
 `;
 
 export const SECURITY_SETTINGS_FIELDS = gql`
-  fragment SecuritySettingsFields on SecuritySettings {
+  fragment SECURITY_SETTINGS_FIELDS on SecuritySettings {
     twoFactorEnabled
     loginHistory {
       timestamp
@@ -123,7 +137,7 @@ export const SECURITY_SETTINGS_FIELDS = gql`
 
 // Fragment gom phần chung của Login/Signup/RefreshToken
 export const ACCESS_TOKEN_FIELDS = gql`
-  fragment AccessTokenFields on AccessTokenFields {
+  fragment ACCESS_TOKEN_FIELDS on AccessTokenFields {
     accessToken
     refreshToken
   }

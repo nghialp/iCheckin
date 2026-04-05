@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { USER_DETAILS_FIELDS } from '../fragments/user.fragment';
+import { USER_BASIC_INFO_FIELDS } from '../fragments/user.fragment';
 
 /**
  * Profile Mutations
@@ -16,11 +16,11 @@ export const UPDATE_PROFILE_MUTATION = gql`
       success
       message
       user {
-        ...UserDetailsFields
+        ...USER_BASIC_INFO_FIELDS
       }
     }
   }
-  ${USER_DETAILS_FIELDS}
+  ${USER_BASIC_INFO_FIELDS}
 `;
 
 /**

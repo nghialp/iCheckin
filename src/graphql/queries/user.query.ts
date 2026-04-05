@@ -33,12 +33,6 @@ export const GET_USER_PROFILE = gql`
       securitySettings {
         ...SECURITY_SETTINGS_FIELDS
       }
-      
-      # Stats (for profile display)
-      rewardPoints
-      totalCheckins
-      totalBadges
-      visitedPlaces
     }
   }
     ${USER_DETAILS_FIELDS}
@@ -102,12 +96,15 @@ export const GET_MY_FRIENDS = gql`
  */
 export const GET_MY_FOLLOWINGS = gql`
   query GetMyFollowings {
-    myFollowings {
+    me {
       id
-      name
-      avatar
-      bio
-      country
+      followings {
+        id
+        name
+        avatar
+        bio
+        country
+      }
     }
   }
 `;
