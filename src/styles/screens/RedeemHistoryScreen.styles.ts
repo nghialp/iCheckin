@@ -1,0 +1,178 @@
+import { StyleSheet } from 'react-native';
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  backButton: {
+    padding: 8,
+  },
+  headerTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
+    flex: 1,
+    textAlign: 'center',
+  },
+  filterTabs: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 8,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  filterTab: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  filterTabActive: {
+    backgroundColor: '#0066CC',
+    borderColor: '#0066CC',
+  },
+  filterTabText: {
+    fontSize: 12,
+    color: '#666',
+    fontWeight: '600',
+  },
+  filterTabTextActive: {
+    color: '#fff',
+  },
+  countText: {
+    fontSize: 12,
+    color: '#999',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: '#f5f5f5',
+  },
+  listContent: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+  },
+  historyCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    marginBottom: 12,
+    overflow: 'hidden',
+    flexDirection: 'row',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 3.84,
+    elevation: 2,
+  },
+  rewardImage: {
+    width: 100,
+    height: 100,
+    backgroundColor: '#f0f0f0',
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    justifyContent: 'space-between',
+  },
+  contentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: 8,
+    marginBottom: 8,
+  },
+  rewardTitle: {
+    flex: 1,
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  statusBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 12,
+  },
+  statusText: {
+    fontSize: 10,
+    fontWeight: '600',
+  },
+  datesSection: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  dateItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  dateLabel: {
+    fontSize: 10,
+    color: '#999',
+    marginTop: 2,
+  },
+  dateValue: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#333',
+    marginTop: 1,
+  },
+  divider: {
+    width: 1,
+    backgroundColor: '#f0f0f0',
+  },
+  usedText: {
+    fontSize: 10,
+    color: '#999',
+    marginTop: 6,
+    fontStyle: 'italic',
+  },
+  qrButton: {
+    width: 44,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    borderLeftWidth: 1,
+    borderLeftColor: '#f0f0f0',
+  },
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: 48,
+  },
+  emptyTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+    marginTop: 12,
+  },
+  emptySubtitle: {
+    fontSize: 12,
+    color: '#999',
+    marginTop: 4,
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 14,
+    color: '#999',
+  },
+});

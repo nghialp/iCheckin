@@ -51,8 +51,8 @@ bundle exec pod install
 For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
 
 ```sh
-# Using npm
-npm run ios
+# Using pnpm
+pnpm run ios
 
 # OR using Yarn
 yarn ios
