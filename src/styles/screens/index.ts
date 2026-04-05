@@ -10,3 +10,5 @@ export { styles as homePageStyles } from './HomePage.styles';
 export { styles as mapPageStyles } from './MapPage.styles';
 export { styles as searchScreenStyles } from './SearchScreen.styles';
 export { styles as checkInScreenStyles } from './CheckInScreen.styles';
+export { styles as checkInDetailScreenStyles } from './CheckInDetailScreen.styles';
+export { styles as notificationsScreenStyles } from './NotificationsScreen.styles';
