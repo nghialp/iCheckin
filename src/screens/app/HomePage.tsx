@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, FlatList, View, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { Text, FlatList, View, ScrollView, Dimensions } from 'react-native';
 import { useApolloQueryWrapper } from '../../hooks/useApolloQueryWrapper';
 import ProfileCard from '../../components/common/ProfileCard';
 import FriendsFollowingCard from '../../components/common/FriendsFollowingCard';
@@ -10,6 +10,7 @@ import useLocation from '../../hooks/useLocation';
 import { GET_HOME_DATA } from '../../graphql/queries/home.query';
 import { Coordinates } from '../../graphql/interfaces/entities/place.interface';
 import { GetHomeDataResponse } from '../../graphql/interfaces/pages/home.interface';
+import { styles } from '../../styles/screens/HomePage.styles';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -85,26 +86,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-const styles = StyleSheet.create({
-  contentContainer: {
-    paddingVertical: 12,
-  },
-  section: {
-    marginBottom: 8,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 12,
-    marginHorizontal: 16,
-  },
-  placesScrollContainer: {
-    paddingHorizontal: 16,
-    gap: 12,
-  },
-  placeItemWrapper: {
-    width: screenWidth * 0.9,
-    marginRight: 12,
-  },
-});
